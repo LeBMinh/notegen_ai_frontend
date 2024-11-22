@@ -1,0 +1,71 @@
+#root {
+  max-width: 1280px;
+  margin: 0.5rem 0.2rem;
+  /* Neutral color_light */
+  --light: #FFFFFF;
+  --light-2: #F4F4F4;
+  --light-3: #DFDFDF;
+  --light-4: #D2D2D2;
+  --light-5: #C3C3C3;
+  /* Neutral color_dark */
+  --dark: #656565;
+  --dark-2: #545454;
+  --dark-3: #3C3C3C;
+  --dark-4: #2F2F2F;
+  --dark-5: #222222;
+  /* Color border */
+  --lightBorder: #DFDFDF;
+  --darkBorder: #545454;
+  /* Gradient color */
+  --gradient-light: linear-gradient(90deg, #6EEAD2, #25BBFF);
+  --gradient-dark: linear-gradient(90deg, #25C1B3, #3372FF);
+  /* SF Pro font */
+  --font: 
+  /* padding: 0.5rem 0.2rem; */
+}
+
+img,
+.icon-class {
+  pointer-events: none;
+  /* Vô hiệu hóa tương tác của chuột */
+  -webkit-user-drag: none;
+  /* Vô hiệu kéo-thả */
+  user-select: none;
+  /* Vô hiệu bôi đen chọn văn bản */
+}
+
+/* .logo {
+  height: 6em;
+  padding: 1.5em;
+  will-change: filter;
+  transition: filter 300ms;
+}
+.logo:hover {
+  filter: drop-shadow(0 0 2em #646cffaa);
+}
+.logo.react:hover {
+  filter: drop-shadow(0 0 2em #61dafbaa);
+}
+
+@keyframes logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  a:nth-of-type(2) .logo {
+    animation: logo-spin infinite 20s linear;
+  }
+}
+
+.card {
+  padding: 2em;
+}
+
+.read-the-docs {
+  color: #888;
+} */

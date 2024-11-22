@@ -1,0 +1,264 @@
+/* Sidebar container */
+.sidebar {
+    position: relative;
+    top: 0;
+    left: 0;
+    height: 97vh;
+    width: 236px;
+    background-color: var(--light);
+    color: var(--dark-3);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+    border-radius: 20px;
+    border: 1px solid var(--lightBorder);
+    transition: width 0.3s ease;
+    margin: 0.6rem; /* Apply the global margin */
+  }
+  
+  .sidebar.collapsed {
+    width: 80px;
+  }
+
+  /* Logo */
+  .logo-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 1.7rem;
+  }
+  
+  .full-logo, .sole-logo {
+    /* Adjust based on your layout */
+    max-height: 24px; 
+    max-width: 1440px;
+    transition: opacity 0.3s ease;
+  }
+  
+  .full-logo {
+    display: block;
+    width: 100%; /* Increase size proportionally */
+    max-height: 30px; /* Adjust height based on your design */
+    max-width: 170px; /* Optional: restrict max width */
+  }
+  
+  .sole-logo {
+    display: none;
+  }
+  
+  .sidebar.collapsed .full-logo {
+    display: none;
+  }
+  
+  .sidebar.collapsed .sole-logo {
+    display: block;
+  }
+  
+  
+  /* Toggle button */
+  .toggle-btn {
+    position: absolute;
+    top: 50%; /* Center vertically */
+    right: -15px; /* Move it outside the sidebar to create the jut effect */
+    transform: translateY(-50%); /* Adjust for centering */
+    width: 30px; /* Adjust width */
+    height: 30px; /* Adjust height */
+    background-color: var(--light-2); /* Make it visually distinct */
+    border: 1px solid var(--lightBorder);
+    border-radius: 50%; /* Make it circular */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    /* margin: 0.5rem; */
+    /* font-size: 1.2rem; */
+
+    -webkit-user-drag: none; /* Vô hiệu kéo-thả */
+    user-select: none; /* Vô hiệu bôi đen chọn văn bản */
+  }
+  
+  /* Links container */
+  .links-container {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    justify-content: space-between;
+    margin: 0 10px;
+  }
+  
+  /* Link styles */
+  .sidebar-link {
+    display: flex;
+    align-items: center;
+    padding: 0.6rem 1rem;
+    text-decoration: none;
+    color: var(--dark-3);
+    transition: background-color 0.3s ease, color 0.3s ease;
+
+    -webkit-user-drag: none; /* Vô hiệu kéo-thả */
+    user-select: none; /* Vô hiệu bôi đen chọn văn bản */
+  }
+  
+  .sidebar-link .icon {
+    width: 22px;
+    height: 22px;
+    margin-right: 1rem;
+    transition: transform 0.3s ease, filter 0.3s ease;
+  }
+
+  .label-style {
+    /* font-family: 'San Francisco Pro', Helvetica, san-serif; */
+    font-family: -apple-system, BlinkMacSystemFont, "San Francisco Pro", sans-serif;
+    font-size: 12px;
+    font-weight: 400;
+    margin-top: 1px;
+    /* text-align: center; */
+  }
+
+  .bottom-links{
+    margin-bottom: 0.5rem;
+    /* display: flex;
+    flex-direction: column;
+    align-items: stretch; */
+  } 
+  
+  /* Custom styling for GrabYourNote link */
+  .GrabYourNote-link .sidebar-link{
+    border-radius: 16px;
+    background: linear-gradient(90deg, #25BBFF, #6EEAD2); /* Gradient border */
+  }
+
+.GrabYourNote-link .icon {
+    margin-left: 0.4rem;
+}
+
+  .GrabYourNote-link .GrabYourNote-text {
+    font-size: 13px;
+    font-weight: 700;
+    background: none !important; /* Remove the gradient background */
+    -webkit-text-fill-color: white !important; /* Force white text */
+    color: white !important;
+  }
+
+  /* Custom styling for subscription link */
+  .subscription-link {
+    padding: 0.15rem;
+    border-radius: 18px;
+    background: linear-gradient(#25C1B3, #3372FF); /* Gradient border */
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+
+    align-items: center; /* Centers the content vertically */
+    justify-content: flex-start; /* Aligns the content horizontally if needed */
+}
+
+.subscription-link .sidebar-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* padding: 1rem; */
+    background: var(--light);
+    border-radius: 16px;
+    transition: transform 0.3s ease;
+}
+
+.subscription-link .icon {
+    width: 44px;
+    height: 41px;
+    margin-right: 0.9rem;
+    background: linear-gradient(#6EEAD2, #25BBFF);
+    -webkit-mask-image: url('../../../assets/Icon_fill/SubscribeNow.svg');
+    -webkit-mask-repeat: no-repeat;
+    -webkit-mask-size: contain;
+    mask-image: url('../../../assets/Icon_fill/SubscribeNow.svg');
+    mask-repeat: no-repeat;
+    mask-size: contain;
+}
+
+.subscription-link span {
+    font-size: 14px;
+    font-weight: 700;
+    background: linear-gradient(#25C1B3, #3372FF);
+    /* -webkit-background-clip: text; */
+    background-clip: text; /* Standard property for compatibility */
+    -moz-background-clip: text; /* Firefox */
+    -ms-background-clip: text; /* Internet Explorer */
+    -webkit-text-fill-color: transparent;
+}
+
+
+  /* Hover effects */
+  .sidebar-link:hover {
+    background-color: var(--light-2);
+    border-radius: 16px;
+    /* transform: scale(1.02); */
+}
+
+.sidebar-link:hover .icon {
+    filter: brightness(1.05);
+  }
+  
+  /* Active link styles */
+  .sidebar-link.active {
+    border-radius: 16px;
+    border: 1px solid var(--lightBorder);
+  }
+
+  /* Active link text */
+.sidebar-link.active span {
+    background: linear-gradient(#25C1B3, #3372FF);
+    /* -webkit-background-clip: text; */
+    background-clip: text; /* Standard property for compatibility */
+    -moz-background-clip: text; /* Firefox */
+    -ms-background-clip: text; /* Internet Explorer */
+    -webkit-text-fill-color: transparent;
+    color: transparent; /* Fallback for older browsers */
+  }
+  
+  .sidebar-link.active .icon {
+    transform: scale(1.05);
+    /* filter: brightness(1.1); */
+    /* filter: invert(50%) sepia(100%) saturate(1000%) hue-rotate(100deg);  Can be used to change one color*/
+    /* filter: invert(100%) brightness(100%); Can be used for theme*/
+  }
+  
+  
+  /* Collapsed state adjustments */
+  .sidebar.collapsed .sidebar-link {
+    justify-content: center;
+    padding: 0.5rem;
+  }
+  
+  .sidebar.collapsed .sidebar-link span {
+    display: none;
+  }
+  
+  .sidebar.collapsed .sidebar-link .icon {
+    margin-right: 0;
+  }
+
+  /* Collapsed state for 'Grab Your Note' link*/
+  .sidebar.collapsed .custom-top-link{
+    padding: 0.7rem 0.8rem;
+  }
+
+  .sidebar.collapsed .custom-top-link .icon {
+    margin-right: 0.4rem;
+}
+
+  /* Collapsed state for 'Subscription Now!' link*/
+  .sidebar.collapsed .custom-link{
+    padding: 0.4rem 0.5rem;
+  }
+
+  .sidebar.collapsed .custom-link .icon{
+    width: 44px;
+    height: 41px;
+  }
+
+  
+  
+  
+
+  
