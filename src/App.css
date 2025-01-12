@@ -1,6 +1,6 @@
-#root {
-  max-width: 1280px;
-  margin: 0.5rem 0.2rem;
+:root {
+  /* max-width: 1280px; */
+  /* margin: 0.5rem 0.2rem; */
   /* Neutral color_light */
   --light: #FFFFFF;
   --light-2: #F4F4F4;
@@ -19,7 +19,22 @@
   /* Gradient color */
   --gradient-light: linear-gradient(90deg, #6EEAD2, #25BBFF);
   --gradient-dark: linear-gradient(90deg, #25C1B3, #3372FF);
+  /* Primary color (Blue)*/
+  --primary-1: #d2efff;
+  --primary-2: #98deff;
+  --primary-3: #5fccff;
+  --primary-4: #25bbff;    /* Main color */
+  --primary-5: #2c97ff;
+  --primary-6: #3372ff;
+  /* Secondary color (Green)*/
+  --secondary-1: #c5eae3;
+  --secondary-2: #99eadb;
+  --secondary-3: #6eead2;
+  --secondary-4: #42EACA;  /* Main color */
+  --secondary-5: #25C1B3;
+  --secondary-6: #08979C;
   /* SF Pro font */
+  font-family: -apple-system, BlinkMacSystemFont, "San Francisco Pro", sans-serif;
   --font: 
   /* padding: 0.5rem 0.2rem; */
 }

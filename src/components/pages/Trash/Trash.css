@@ -1,0 +1,43 @@
+/* .trashContainer{
+  margin-top: 0.9rem;
+} */
+
+.noFile-content{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: calc(38rem + 4rem);
+    /* border: 1px solid var(--light-3); */
+    border-radius: 1rem;
+}
+
+@media (max-width: 1200px) {
+    .noFile-content {
+        height: calc(36rem + 4rem); /* Smaller height for tablets */
+    }
+}
+
+.trashZero{
+    font-size: 1.5rem;
+    font-weight: bold;
+    background: linear-gradient(#25C1B3, #3372FF);
+    background-clip: text;  /* Standard property for compatibility */
+    -moz-background-clip: text; /* Firefox */
+    -ms-background-clip: text; /* Internet Explorer */
+    -webkit-text-fill-color: transparent;
+}
+
+.noFileTrash{
+    margin-top: 0.3rem;
+    font-size: 0.8rem;
+    color: var(--dark-4);
+}
+
+.trashZero,
+.noFileTrash{
+    pointer-events: none; /* Disable mouse interactions */
+    -webkit-user-drag: none; /* Disable drag functionality */
+    user-select: none; /* Disable text selection */
+    -webkit-touch-callout: none; /* Prevent text selection on iOS */
+}

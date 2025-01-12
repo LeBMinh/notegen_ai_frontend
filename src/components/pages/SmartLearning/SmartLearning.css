@@ -1,0 +1,66 @@
+.smartlearn-container{
+  /* margin-top: 0.9rem; */
+  font-family: -apple-system, BlinkMacSystemFont, "San Francisco Pro", sans-serif;
+}
+
+.smartlearn-content{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: calc(38rem + 4rem);
+    /* border: 1px solid var(--light-3); */
+    border-radius: 1rem;
+}
+
+@media (max-width: 1200px) {
+    .smartlearn--content {
+        height: calc(36rem + 4rem); /* Smaller height for tablets */
+    }
+}
+
+.trybeta-btn{
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    justify-content: center;
+    margin: 1.5rem;
+    padding: 0.8rem 1.5rem;
+    border-radius: 1rem;
+    font-size: 0.9rem;
+    font-weight: 700;
+    background: linear-gradient(90deg, #25BBFF, #6EEAD2);
+    border: 1px solid #e0e0e0;
+    color: var(--light-2);
+    cursor: pointer;
+}
+
+.tryBeta-icon{
+    width: 1.3rem;
+    filter: invert(100%) brightness(100%);
+}
+
+.comming-soon{
+    font-size: 1.5rem;
+    font-weight: bold;
+    background: linear-gradient(#25C1B3, #3372FF);
+    background-clip: text;  /* Standard property for compatibility */
+    -moz-background-clip: text; /* Firefox */
+    -ms-background-clip: text; /* Internet Explorer */
+    -webkit-text-fill-color: transparent;
+}
+
+.smartlearn-description{
+    margin-top: 0.4rem;
+    font-size: 0.8rem;
+    color: var(--dark-4);
+    text-align: center;
+}
+
+.comming-soon,
+.smartlearn-description{
+    pointer-events: none; /* Disable mouse interactions */
+    -webkit-user-drag: none; /* Disable drag functionality */
+    user-select: none; /* Disable text selection */
+    -webkit-touch-callout: none; /* Prevent text selection on iOS */
+}

@@ -1,0 +1,325 @@
+/* Subscription Page Styles */
+.subscription-container {
+    margin-top: 0.9rem;
+    /* background-color: #daddda65; */
+    text-align: center;
+  }
+
+  .subscription-title {
+    font-size: 2.5rem;
+    margin-bottom: 2rem;
+    background: linear-gradient(#25C1B3, #2c97ff);
+      background-clip: text;  /* Standard property for compatibility */
+      -moz-background-clip: text; /* Firefox */
+      -ms-background-clip: text; /* Internet Explorer */
+      -webkit-text-fill-color: transparent;
+  }  
+  
+  .subscription-plans {
+    display: flex;
+    justify-content: center;
+    /* align-items: center; */
+    gap: 1.5rem;
+    flex-wrap: wrap;
+    /* max-height: 33rem; */
+  }
+  
+  .subscription-card {
+    position: relative;
+    background: #fff;
+    border: 2px solid #ddd;
+    border-radius: 16px;
+    padding: 42px 24px;
+    width: 262px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+
+  .subscription-card:hover {
+    transform: scale(1.02);
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
+    transition: all 0.3s ease-out, box-shadow 0.3s ease-in;
+  }
+
+  /* Card-Border Styles Color */
+  .subscription-card.free {
+    border-color: var(--light-5);
+    max-height: 411px;
+  }
+  
+  .subscription-card.learners {
+    border: 2px solid #0000;   /* Must be 4-char alpha-hex make gradient border work */
+    background:
+      linear-gradient(white,white) padding-box,
+      linear-gradient(#25C1B3,#3372FF) border-box;
+    max-height: 541px;
+  }
+  
+  .subscription-card.pro {
+    border-color: var(--secondary-5);
+    max-height: 541px;
+  }
+  
+  .subscription-card.unlimited {
+    border-color: var(--primary-6);
+    max-height: 411px;
+  }
+
+/* Card Container */
+  .recommended-tag {
+    position: absolute;
+    top: 10px; /* Adjust as needed */
+    right: 10px; /* Adjust as needed */
+    z-index: 1;
+  }
+  
+  .recommended-tag img {
+    width: 30px; 
+    height: auto;
+    filter: invert(63%) sepia(67%) saturate(654%) hue-rotate(53deg) brightness(93%) contrast(85%);
+  }  
+
+  .subscription-folder-icon{
+    width: 4rem;
+    filter: invert(85%) sepia(7%) saturate(0%) hue-rotate(180deg) brightness(92%) contrast(89%);  /* Neutral color_light/5 */
+  }
+
+  .sLearner-crown-icon{
+    width: 4rem;
+  }
+
+  .sProUser-crown-icon{
+    width: 4rem;
+    filter: invert(51%) sepia(52%) saturate(7239%) hue-rotate(158deg) brightness(95%) contrast(94%);  /* Teal */
+  }
+
+  .sUnlimited-crown-icon {
+    width: 4rem;
+    filter: invert(41%) sepia(41%) saturate(5436%) hue-rotate(212deg) brightness(100%) contrast(108%); /* Blue */
+  }
+  
+  .subscription-card-title {
+    font-size: 1rem;
+    color: var(--dark-4);
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+  }
+
+  .s-learner{
+    background: linear-gradient(#25C1B3, #3372FF);
+    background-clip: text;  /* Standard property for compatibility */
+    -moz-background-clip: text; /* Firefox */
+    -ms-background-clip: text; /* Internet Explorer */
+    -webkit-text-fill-color: transparent;
+  }
+
+  .s-proUser{
+    color: var(--secondary-5);
+  }
+
+  .s-unlimited{
+    color: var(--primary-6);
+  }
+  
+  .subscription-price {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--primary-6);
+    margin-bottom: 0.3rem;
+  }
+
+  .subscription-price .subscription-time{
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--dark-5);
+  }
+  
+  .subscription-duration {
+    font-size: 0.9rem;
+    color: #666;
+    margin-bottom: 1.5rem;
+  }
+  
+  /* Subscription list of details and icons */
+  .subscription-features {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    text-align: left;
+  }
+  
+  .subscription-features li {
+    margin-bottom: 0.6rem;
+    font-size: 14px;
+    color: var(--dark-4);
+    display: flex;
+    align-items: center; 
+  }
+
+  .subscription-feature-icon{
+    width: 0.9rem;
+    height: 0.9rem;
+    margin-right: 0.6rem;
+  }
+
+  .icon-create-note-style{
+    filter: invert(39%) sepia(100%) saturate(500%) hue-rotate(170deg);
+    padding: 0.16rem;
+    background-color: #bae0ff79;
+    border-radius: 6px;
+    box-sizing: content-box; /* Ensure padding does not shrink the icon size */
+    display: inline-block;
+  }
+
+  .icon-note-storage-style{
+    filter: invert(77%) sepia(26%) saturate(6331%) hue-rotate(125deg) brightness(97%) contrast(71%);
+    padding: 0.15rem;
+    background-color: #1316153f;
+    border-radius: 6px;
+    box-sizing: content-box; /* Ensure padding does not shrink the icon size */
+    display: inline-block;
+  }
+
+  .icon-unlimited-words-style{
+    filter: invert(25%) sepia(74%) saturate(2526%) hue-rotate(303deg) brightness(80%) contrast(102%);
+    padding: 0.15rem;
+    background-color: #1c181930;
+    border-radius: 6px;
+    box-sizing: content-box; /* Ensure padding does not shrink the icon size */
+    display: inline-block;
+  }
+
+  .icon-note-enhance-style{
+    filter: invert(82%) sepia(77%) saturate(1510%) hue-rotate(344deg) brightness(100%) contrast(97%);
+    padding: 0.15rem;
+    background-color: #12121120;
+    border-radius: 6px;
+    box-sizing: content-box; /* Ensure padding does not shrink the icon size */
+    display: inline-block;
+  }
+
+  .unlimited-features p{
+    text-align: center;
+    font-weight: 700;
+    font-size: 0.9rem;
+  }
+
+  .subscription-tiny-icons{
+    margin-top: 0.8rem;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    /* gap: 0.5rem; */
+  }
+  
+  .subscription-button {
+    display: inline-flex;
+    gap: 10px;
+    align-items: center;
+    justify-content: center;
+    margin: 2rem 0 0.5rem 0;
+    padding: 0.8rem 2rem;
+    border-radius: 1rem;
+    font-size: 1rem;
+    font-weight: 700;
+    background: linear-gradient(90deg, #25BBFF, #6EEAD2);
+    border: 1px solid #e0e0e0;
+    color: var(--light-2);
+    cursor: pointer;
+  }
+  
+  .subscription-button:hover {
+    background: linear-gradient(90deg, #2c97ff, #25C1B3);
+  }
+  
+  
+  /* Styles for smaller screens */
+@media screen and (max-width: 768px) {
+    .subscription-container {
+      margin-top: 0.6rem;
+    }
+  
+    .subscription-title {
+      font-size: 2rem; /* Reduce the title size */
+    }
+  
+    .subscription-plans {
+      gap: 1rem; /* Decrease gap between cards */
+    }
+  
+    .subscription-card {
+      padding: 24px 16px; /* Reduce padding */
+      width: 200px; /* Decrease width */
+      max-height: 400px; /* Adjust height */
+      box-shadow: 0 3px 5px rgba(0, 0, 0, 0.1); /* Softer shadow */
+    }
+  
+    .subscription-card-title {
+      font-size: 0.9rem; /* Reduce title font size */
+      margin-bottom: 1rem;
+    }
+  
+    .subscription-price {
+      font-size: 0.9rem; /* Reduce price font size */
+    }
+  
+    .subscription-price .subscription-time {
+      font-size: 0.8rem; /* Smaller time text */
+    }
+  
+    .subscription-duration {
+      font-size: 0.8rem; /* Reduce duration text */
+      margin-bottom: 1rem;
+    }
+  
+    .subscription-features li {
+      font-size: 12px; /* Smaller font for features */
+      margin-bottom: 0.5rem;
+    }
+  
+    .subscription-feature-icon {
+      width: 0.7rem; /* Smaller icon size */
+      height: 0.7rem;
+      margin-right: 0.4rem;
+    }
+  
+    .icon-create-note-style,
+    .icon-note-storage-style,
+    .icon-unlimited-words-style,
+    .icon-note-enhance-style {
+      padding: 0.1rem; /* Reduce icon padding */
+    }
+  
+    .subscription-button {
+      padding: 0.6rem 1.5rem; /* Reduce button padding */
+      font-size: 0.9rem; /* Smaller button text */
+      margin: 1.5rem 0 0.5rem 0;
+    }
+  }
+  
+  /* Styles for extra small screens */
+  @media screen and (max-width: 480px) {
+    .subscription-plans {
+      flex-direction: column; /* Stack cards vertically */
+      gap: 1rem;
+      align-items: center;
+    }
+  
+    .subscription-card {
+      width: 90%; /* Use most of the screen width */
+      padding: 20px 12px;
+    }
+  
+    .subscription-title {
+      font-size: 1.8rem; /* Further reduce title size */
+    }
+  
+    .subscription-price {
+      font-size: 0.8rem; /* Smaller price text */
+    }
+  
+    .subscription-features li {
+      font-size: 11px; /* Reduce feature text size further */
+    }
+  }
+  

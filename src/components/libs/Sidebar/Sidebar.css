@@ -14,7 +14,7 @@
     border-radius: 20px;
     border: 1px solid var(--lightBorder);
     transition: width 0.3s ease;
-    margin: 0.6rem; /* Apply the global margin */
+    margin: 0 0.6rem; /* Apply the global margin */
   }
   
   .sidebar.collapsed {
@@ -142,7 +142,7 @@
     color: white !important;
   }
 
-  /* Custom styling for subscription link */
+  /* Custom styling for Subscription link */
   .subscription-link {
     padding: 0.15rem;
     border-radius: 18px;
@@ -167,6 +167,7 @@
     width: 44px;
     height: 41px;
     margin-right: 0.9rem;
+    /* margin: 0 0.9rem 0 -0.4rem; */
     background: linear-gradient(#6EEAD2, #25BBFF);
     -webkit-mask-image: url('../../../assets/Icon_fill/SubscribeNow.svg');
     -webkit-mask-repeat: no-repeat;
@@ -177,7 +178,7 @@
 }
 
 .subscription-link span {
-    font-size: 14px;
+    font-size: 15px;
     font-weight: 700;
     background: linear-gradient(#25C1B3, #3372FF);
     /* -webkit-background-clip: text; */
@@ -185,6 +186,18 @@
     -moz-background-clip: text; /* Firefox */
     -ms-background-clip: text; /* Internet Explorer */
     -webkit-text-fill-color: transparent;
+}
+
+.subscription-link .sidebar-link:hover {
+  background-color: var(--light);
+}
+
+.logoutBtn-style{
+    text-align: left; /* Ensures label alignment */
+    width: 100%; /* Matches the full width of other links */
+    border: none; /* Removes button borders */
+    background-color: var(--light);
+    cursor: pointer;
 }
 
 

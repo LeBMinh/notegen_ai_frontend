@@ -1,0 +1,208 @@
+  .contact-container{
+  margin-top: 0.2rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 42rem;
+      /* border: 1px solid var(--light-3); */
+      border-radius: 1rem;
+     font-family: -apple-system, BlinkMacSystemFont, "San Francisco Pro", sans-serif;
+  }
+  
+  @media (max-width: 1200px) {
+      .contact-content {
+          height: 40rem; /* Smaller height for tablets */
+      }
+  }
+  
+  .contactUs_3D-icon{
+      width: 6.5rem;
+  }
+
+  .contactUs-title{
+      margin-bottom: 10%;
+      font-size: 1.3rem;
+      font-weight: bold;
+      background: linear-gradient(#25C1B3, #3372FF);
+      background-clip: text;  /* Standard property for compatibility */
+      -moz-background-clip: text; /* Firefox */
+      -ms-background-clip: text; /* Internet Explorer */
+      -webkit-text-fill-color: transparent;
+  }
+
+
+  .issues-table {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 35rem;
+    min-width: 10rem;
+    padding: 1rem;
+    border: 1px solid #e0e0e0;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  }
+
+  @media (max-width: 800px) {
+    .issues-table {
+        width: 30rem; /* Smaller height for tablets */
+    }
+ }
+
+  @media (max-width: 600px) {
+    .issues-table {
+        width: 25rem; /* Smaller height for tablets */
+    }
+ }
+  
+  .issues-table h4 {
+    margin-bottom: 0.7rem;
+    font-size: 1.1rem;
+    align-self: flex-start;
+  }
+
+  .issues-grid {
+    display: flex;
+    flex-wrap: wrap; /* Allow buttons to wrap to the next line */
+    gap: 10px; /* Add spacing between buttons */
+    max-height: 150px; /* Adjust height to fit 6 issues */
+    width: 100%;
+    overflow-y: auto; /* Enable vertical scrolling */
+    scrollbar-width: thin; /* For modern browsers, thin scrollbar */
+  }
+
+  .issues-grid button {
+    width: calc(50% - 10px); /* Make buttons take 50% of the container width, minus gap */
+    box-sizing: border-box; /* Ensure padding and border are included in the width */
+  }
+  
+  .issues-grid::-webkit-scrollbar {
+    width: 8px; /* Width of the scrollbar for Webkit browsers */
+  }
+  
+  .issues-grid::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.3); /* Scrollbar thumb color */
+    border-radius: 4px; /* Rounded scrollbar */
+  }
+  
+  .issues-grid button {
+    background-color: var(--light);
+    border: 1px solid #d0d0d0;
+    border-radius: 8px;
+    padding: 0.2rem 0.3rem;
+    cursor: pointer;
+    transition: ease-in-out 0.2s ease-in-out;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+
+  .issue-icon{
+    height: 60%;
+  }
+  
+  .issues-grid button:hover {
+    background-color: var(--light-2);
+    color: var(--primary-3);
+}
+
+  .issues-grid button.active {
+    background-color: var(--primary-5);
+    color: white;
+    border: 1px solid var(--primary-5);
+    transition: all 0.2s ease;
+
+  }
+
+  .issues-grid button.active .issue-icon{
+    filter: invert(100%) brightness(100%);
+    transition: all 0.2s ease;
+  }
+
+  .issues-textarea{
+    width: 100%;
+    background-color: #ededed;
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+    padding: 0.7rem;
+    margin-bottom: 1rem;
+  }
+
+  .issues-textarea label{
+    font-size: 0.9rem;
+    color: var(--dark-4);
+  }
+  
+  .textarea-box{
+    margin-top: 0.6rem;
+    width: 100%; /* Ensure it spans the full width of the parent */
+    height: 3rem;
+    padding: 0.5rem; /* Adjust padding for better usability */
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    resize: none;
+    box-sizing: border-box; /* Include padding in width calculation */
+    resize: vertical; /* Allows resizing only vertically */
+  }
+  
+  .contact-table form {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 600px;
+  }
+  
+  .asterisk {
+    color: red;
+  }
+
+  .contact-table form label {
+    font-size: 0.9rem;
+    margin-bottom: 0.3rem;
+  }
+  
+  .contact-table form input {
+    height: 2.5rem;
+    margin-bottom: 1rem;
+    padding: 0.5rem;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+  }
+  
+  .contact-table form button {
+    height: 2.5rem;
+    background: linear-gradient( #25C1B3, #3372FF);
+    border: none;
+    color: white;
+    font-size: 0.9rem;
+    border-radius: 8px;
+    cursor: pointer;
+    -webkit-user-drag: none; /* Disable drag functionality */
+    user-select: none; /* Disable text selection */
+  }
+  
+  .contact-table form button:hover {
+    background: linear-gradient(90deg, #3372FF, #25C1B3);
+  }
+
+  .contactUs-title,
+  .issues-table h4,
+  .issues-textarea label,
+  .contact-table form label{
+    pointer-events: none; /* Disable mouse interactions */
+    -webkit-user-drag: none; /* Disable drag functionality */
+    user-select: none; /* Disable text selection */
+    -webkit-touch-callout: none; /* Prevent text selection on iOS */
+  }
+
+  input::placeholder, textarea::placeholder {
+    user-select: none;
+  }
+  
+  input, textarea {
+    -webkit-user-drag: none;
+    user-select: none;
+  }
+  

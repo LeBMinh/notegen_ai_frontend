@@ -1,7 +1,10 @@
 import React, { useState } from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
+import { signOut } from 'firebase/auth';
+import { auth } from '../../../auth/Firebase';
 import './Sidebar.css';
 import { PATH_NAME, Pathname } from '../../../router/Pathname';
+import { publicRoutes } from '../../../router/routerConfig';
 
 // Importing icons
 import FullLogo from '../../../assets/Logo/Full_NG-Logo.svg';
@@ -24,8 +27,9 @@ import ActiveInformationIcon from '../../../assets/Icon_fill-sidebarGradient/Inf
 import ActiveTrashIcon from '../../../assets/Icon_fill-sidebarGradient/Trash.svg';
 import ActiveHelpIcon from '../../../assets/Icon_fill-sidebarGradient/NeedHelp.svg';
 
-export default function Sidebar() {
+export default function Sidebar({ onLogout }) {
     const [isCollapsed, setIsCollapsed] = useState(false);
+    const navigate = useNavigate();
 
     const toggleSidebar = () => {
         setIsCollapsed(!isCollapsed);
@@ -34,7 +38,7 @@ export default function Sidebar() {
     // Define links for the sidebar
     const topLinks = [
         // Official Grab-Your-Note Path here
-        { path: Pathname('GRAB_YOUR_NOTE'), label: 'Grab Your Note', defaultIcon: GrabYourNoteIcon },
+        { path: Pathname('NEW_NOTE'), label: 'Grab Your Note', defaultIcon: GrabYourNoteIcon },
         { path: Pathname('DASHBOARD'), label: 'Dashboard', defaultIcon: DashboardIcon, activeIcon: ActiveDashboardIcon },
         { path: Pathname('NOTE_GALLERY'), label: 'Note Gallery', defaultIcon: NoteGalleryIcon, activeIcon: ActiveNoteGalleryIcon },
         { path: Pathname('SMART_LEARNING'), label: 'Smart Learning', defaultIcon: SmartLearningIcon, activeIcon: ActiveSmartLearningIcon },
@@ -45,7 +49,7 @@ export default function Sidebar() {
     const bottomLinks = [
         { path: Pathname('SUBSCRIPTION_NOW'), label: 'Subscription Now', defaultIcon: SubscriptionIcon },
         { path: Pathname('HELP_CENTER'), label: 'Help Center', defaultIcon: HelpIcon, activeIcon: ActiveHelpIcon },
-        { path: Pathname('LOGOUT'), label: 'Logout', defaultIcon: LogoutIcon },
+        { label: 'Logout', onClick: onLogout, defaultIcon: LogoutIcon },
     ];
 
     return (
@@ -64,32 +68,32 @@ export default function Sidebar() {
             </button>
 
             <div className="links-container">
-            {/* Top section */}
-            <div className="top-links">
-                {/* Grab Your Note link button*/}
-                <div className="GrabYourNote-link">
-                    <NavLink
-                        to={PATH_NAME.GRAB_YOUR_NOTE}
-                        className='sidebar-link custom-top-link'
-                        activeClassName="active"
-                    >
-                        <img
+                {/* Top section */}
+                <div className="top-links">
+                    {/* Grab Your Note link button*/}
+                    <div className="GrabYourNote-link">
+                        <NavLink
+                            to={PATH_NAME.GRAB_YOUR_NOTE}
+                            className='sidebar-link custom-top-link'
+                            // activeClassName="active"
+                        >
+                            <img
                                 src={GrabYourNoteIcon}
                                 alt="GrabYourNote Icon"
                                 className="icon"
                             />
-                        {!isCollapsed && <span className="label-style GrabYourNote-text">Grab Your Note</span>}
-                    </NavLink>
-                </div>
-                
-                {/* Other top links */}
+                            {!isCollapsed && <span className="label-style GrabYourNote-text">Grab Your Note</span>}
+                        </NavLink>
+                    </div>
+
+                    {/* Other top links */}
                     {topLinks
                         .filter(link => link.label !== 'Grab Your Note')
                         .map((link) => (
                             <NavLink
                                 to={link.path}
                                 className='sidebar-link'
-                                activeClassName="active"
+                                // activeClassName="active"
                                 key={link.label}
                             >
                                 {({ isActive }) => (
@@ -113,7 +117,7 @@ export default function Sidebar() {
                         <NavLink
                             to={PATH_NAME.SUBSCRIPTION_NOW}
                             className="sidebar-link custom-link"
-                            activeClassName="active"
+                            // activeClassName="active"
                         >
                             <div className="icon" />
                             {!isCollapsed && <span className="label-style">Subscription Now!</span>}
@@ -123,25 +127,37 @@ export default function Sidebar() {
                     {/* Map through other links */}
                     {bottomLinks
                         .filter(link => link.label !== 'Subscription Now')
-                        .map((link) => (
-                            <NavLink
-                                to={link.path}
-                                className='sidebar-link'
-                                // className={`sidebar-link ${link.label === 'Subscription Now' ? 'custom-link' : ''}`}
-                                activeClassName="active"
-                                key={link.label}
-                            >
-                                {({ isActive }) => (
-                                    <>
-                                        <img
-                                            src={isActive ? link.activeIcon : link.defaultIcon}
-                                            alt={`${link.label} Icon`}
-                                            className="icon"
-                                        />
-                                        {!isCollapsed && <span className="label-style">{link.label}</span>}
-                                    </>
-                                )}
-                            </NavLink>
+                        .map((link, index) => (
+                            link.path ? (
+                                <NavLink
+                                    to={link.path}
+                                    className='sidebar-link'
+                                    // className={`sidebar-link ${link.label === 'Subscription Now' ? 'custom-link' : ''}`}
+                                    // activeClassName="active"
+                                    key={index}
+                                // onClick={link.onClick || undefined} 
+                                >
+                                    {({ isActive }) => (
+                                        <>
+                                            <img
+                                                src={isActive ? link.activeIcon : link.defaultIcon}
+                                                alt={`${link.label} Icon`}
+                                                className="icon"
+                                            />
+                                            {!isCollapsed && <span className="label-style">{link.label}</span>}
+                                        </>
+                                    )}
+                                </NavLink>
+                            ) : (
+                                <button
+                                    key={index}
+                                    onClick={link.onClick}
+                                    className="sidebar-link logoutBtn-style"
+                                >
+                                    <img src={link.defaultIcon} alt={`${link.label} Icon`} className="icon" />
+                                    {!isCollapsed && <span className="label-style">{link.label}</span>}
+                                </button>
+                            )
                         ))}
                 </div>
             </div>

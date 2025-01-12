@@ -1,6 +1,6 @@
 export const PATH_NAME = {
     SIGNUP: "/signup",
-    LOGOUT: "/signup",
+    SIGNIN: "/signin",
     DASHBOARD: "/dashboard",
     NOTE_GALLERY: "/noteGallery",
     SMART_LEARNING: "/smartLearning",

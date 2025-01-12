@@ -1,7 +1,26 @@
-import React from 'react'
+import React from 'react';
+import './SmartLearning.css';
+import SubcriptionNow_3D from '../../../assets/Stock3D-png/SubcriptionNow.png';
+import TryBeta from '../../../assets/Icon_fill/EnhanceNote.svg';
 
 export default function SmartLearning() {
   return (
-    <div>SmartLearning</div>
+    <div className='smartlearn-container'>
+          <div className="smartlearn-content">
+            <img
+              src={SubcriptionNow_3D}
+              alt={'SubcriptionNow_3D Icon'}
+              className="subcriptionNow_3D-icon"
+            />
+            <button className='trybeta-btn'>
+              <img src={TryBeta} alt="Try Beta Icon" className="tryBeta-icon" />
+              Try Beta
+            </button>
+            <p className='comming-soon'>Comming soon</p>
+            <p className='smartlearn-description'>
+              This feature is currently under development. <br/>
+            You can try out the flashcard review set in beta mode now.</p>
+          </div>
+        </div>
   )
 }
