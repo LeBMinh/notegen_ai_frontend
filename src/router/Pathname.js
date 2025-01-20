@@ -8,7 +8,8 @@ export const PATH_NAME = {
     TRASH: "/trash",
     SUBSCRIPTION_NOW: "/subcription",
     HELP_CENTER: "/helpCenter",
-    NEW_NOTE: "/newNote",
+    NOTE_CANVAS: "/notes:id",
+    // NEW_FOLDER: "/untitleFolder",
 };
 
 /**

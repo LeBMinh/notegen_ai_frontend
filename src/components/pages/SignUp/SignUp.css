@@ -2,7 +2,7 @@
 .signup-container {
     display: flex;
     height: 100vh;
-    font-family: Arial, sans-serif;
+    font-family: -apple-system, BlinkMacSystemFont, "San Francisco Pro", sans-serif;
     overflow: hidden;
   }
   

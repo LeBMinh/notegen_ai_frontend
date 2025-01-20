@@ -12,10 +12,15 @@ export default function SmartLearning() {
               alt={'SubcriptionNow_3D Icon'}
               className="subcriptionNow_3D-icon"
             />
-            <button className='trybeta-btn'>
+            <a
+             href="https://notegenai01.framer.website/" 
+             target="_blank" 
+             rel="noopener noreferrer" 
+             className="trybeta-btn"
+             >
               <img src={TryBeta} alt="Try Beta Icon" className="tryBeta-icon" />
               Try Beta
-            </button>
+            </a>
             <p className='comming-soon'>Comming soon</p>
             <p className='smartlearn-description'>
               This feature is currently under development. <br/>

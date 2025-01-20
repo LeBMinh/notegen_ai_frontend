@@ -15,11 +15,11 @@ export default function MainPage({ user, setAuthenticated }) {
         try {
             await signOut(auth); // Firebase sign-out
             setAuthenticated(false); // Reset authentication state
-            const signupPath = Pathname('SIGNUP'); // Fetch path
-            if (signupPath) {
-                navigate(signupPath); // Navigate to signup
+            const signinPath = Pathname('SIGNIN'); // Fetch path
+            if (signinPath) {
+                navigate(signinPath); // Navigate to signin
             } else {
-                console.error("Signup path is undefined.");
+                console.error("Signin path is undefined.");
             }
         } catch (error) {
             console.error('Error during logout:', error);
@@ -33,7 +33,7 @@ export default function MainPage({ user, setAuthenticated }) {
 
             {/* Main content area */}
             <div className='MainP-content'>
-            <Routes>
+                <Routes>
                     {/* Information Page Route */}
                     <Route
                         path="/information"

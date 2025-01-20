@@ -32,7 +32,14 @@
     background: linear-gradient(90deg, #25BBFF, #6EEAD2);
     border: 1px solid #e0e0e0;
     color: var(--light-2);
+    text-decoration: none;
     cursor: pointer;
+    -webkit-user-drag: none; /* Disable drag functionality */
+    user-select: none; /* Disable text selection */
+}
+
+.trybeta-btn:hover {
+    background: linear-gradient(90deg, #2c97ff, #25C1B3);
 }
 
 .tryBeta-icon{

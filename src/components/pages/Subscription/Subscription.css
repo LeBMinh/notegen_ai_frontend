@@ -7,7 +7,7 @@
 
   .subscription-title {
     font-size: 2.5rem;
-    margin-bottom: 2rem;
+    margin-bottom: 1.6rem;
     background: linear-gradient(#25C1B3, #2c97ff);
       background-clip: text;  /* Standard property for compatibility */
       -moz-background-clip: text; /* Firefox */
@@ -26,7 +26,7 @@
   
   .subscription-card {
     position: relative;
-    background: #fff;
+    /* background: var(--dark-3); */
     border: 2px solid #ddd;
     border-radius: 16px;
     padding: 42px 24px;
@@ -49,8 +49,10 @@
   .subscription-card.learners {
     border: 2px solid #0000;   /* Must be 4-char alpha-hex make gradient border work */
     background:
+    /* Dark background */
+    /* linear-gradient(var(--dark-3), var(--dark-3)) padding-box,  */
       linear-gradient(white,white) padding-box,
-      linear-gradient(#25C1B3,#3372FF) border-box;
+      linear-gradient(#25C1B3,#3372FF) border-box; /* Gradient border */
     max-height: 541px;
   }
   
@@ -226,12 +228,25 @@
     border: 1px solid #e0e0e0;
     color: var(--light-2);
     cursor: pointer;
+    -webkit-user-drag: none; /* Disable drag functionality */
+    user-select: none; /* Disable text selection */
   }
   
   .subscription-button:hover {
     background: linear-gradient(90deg, #2c97ff, #25C1B3);
   }
   
+  .subscription-title,
+  .subscription-card-title,
+  .subscription-price,
+  .subscription-time,
+  .subscription-duration {
+    pointer-events: none; /* Disable mouse interactions */
+    -webkit-user-drag: none; /* Disable drag functionality */
+    user-select: none; /* Disable text selection */
+    -webkit-touch-callout: none; /* Prevent text selection on iOS */
+  }
+
   
   /* Styles for smaller screens */
 @media screen and (max-width: 768px) {

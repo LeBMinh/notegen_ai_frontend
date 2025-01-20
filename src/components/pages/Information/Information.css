@@ -59,17 +59,20 @@
   }
 
   .stats-number {
-    font-size: 1.1em;
-    font-weight: 700;
-    color: var(--light);
-    background-color: var(--light-5);
-    border-radius: 25px;
-    padding: 5px 6px;
+    display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  background-color: var(--light-5);
+  color: var(--light);
+  font-size: 1.1em;
+  font-weight: 700;
+  border-radius: 50%;
   }
 
   .stats-item:hover .stats-number {
     background: linear-gradient(180deg, #25C1B3, #3372FF); /* Gradient background for tag */
-    color: #ffffff; /* Change text color for contrast */
   }
 
   .stats-item p,
