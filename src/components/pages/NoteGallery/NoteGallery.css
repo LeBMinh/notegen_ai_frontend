@@ -61,20 +61,37 @@
   
   /* NoteGallery Folder Cards */
 .noteGallery-folders-container {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 20px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(10em, 1fr)); /* Adaptive grid */
   margin-bottom: 1.4rem;
-  overflow-x: auto;  /* Enable horizontal scrolling */
-  scrollbar-width: thin;
-  padding-bottom: 10px; /* Spacing below for scrollbar */
   max-width: 100%; 
+  max-height: 350px; /* Limit the container's height */
+  overflow-y: auto; /* Add vertical scrolling when content overflows */
+}
+
+/* Custom scrollbar styling for WebKit browsers (e.g., Chrome, Edge, Safari) */
+.noteGallery-folders-container::-webkit-scrollbar {
+  width: 5px; /* Set scrollbar width */
+}
+
+.noteGallery-folders-container::-webkit-scrollbar-thumb {
+  background-color: var(--primary-1); /* Color of the scrollbar thumb */
+  border-radius: 4px; /* Rounded scrollbar edges */
+}
+
+.noteGallery-folders-container::-webkit-scrollbar-thumb:hover {
+  background: var(--primary-3); /* Darker color on hover */
+}
+
+.noteGallery-folders-container::-webkit-scrollbar-track {
+  background-color: var(--light);  /* Scrollbar track background color */
 }
 
 .noteGallery-folder-card {
   background-color: #ffffff;
   border-radius: 26px;
   padding: calc(5px - 1px) calc(14px - 2px); /* Matches Information padding */
+  margin-bottom: 1.1rem;
   border: 1px solid var(--lightBorder);
   width: 10em;
   height: 6.2em;
@@ -167,6 +184,7 @@
   .notes-gallery-container {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
+    /* grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); */
     gap: 0.9rem;
   }
   

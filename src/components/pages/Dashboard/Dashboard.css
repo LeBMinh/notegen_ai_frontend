@@ -9,6 +9,7 @@
     gap: 0.5rem;
     justify-content: center;
     align-items: center;
+    text-align: center;
     margin-bottom: 1rem;
 }
 
@@ -79,9 +80,20 @@
     background: linear-gradient(90deg, #2c97ff, #25C1B3);
   }
 
+  .highlight {
+    background-color: yellow; /* Highlight color */
+    font-weight: bold;
+  }
+
+  .empty-search-found{
+    color: var(--dark);
+    font-size: 1.1rem;
+    margin: 8px;
+  }
+
   /* Dashboard Take Note Now board */
   .dashboard-takeNote-board{
-    width: 80%;
+    width: 95%;
     margin: 1.5rem auto; /* Center the element itself */
   }
 
@@ -135,6 +147,7 @@
 }
 
 /* Dashboard Notes List */
+
 .dashboard-recent-note-container{
     display: flex;
     flex-direction: row;
@@ -165,12 +178,24 @@
     /* Enable horizontal scrolling */
     overflow-x: auto; 
     white-space: nowrap; /* Ensure cards don't wrap to a new line */
-    width: 1270px; /* Add width to constrain the limit of container */
-  
+    width: 78vw; /* Add width to constrain the limit of container */
+
     /* Optional: Add padding to avoid cards sticking to the edge */
     padding-bottom: 0.5rem;
   }
+  
+  /* Styling for responsive cards */
+  @media (max-width: 1285.6px) {
+    .dashboard-note-cards-container {
+        width: 75vw;
+    }
+  }
 
+  @media (max-width: 700px) {
+    .dashboard-note-cards-container {
+        width: 400px;
+    }
+  }
   
   /* Styling for smooth scrolling */
   .dashboard-note-cards-container::-webkit-scrollbar {
@@ -196,7 +221,6 @@
       linear-gradient(#6EEAD2,#25BBFF) border-box;
     border-radius: 17px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    /* padding: 1rem; */
     min-width: 250px;
     width: calc(25% - 1rem); /* 4 cards per row */
     height: 155px; 
@@ -230,7 +254,6 @@
       -moz-background-clip: text; /* Firefox */
       -ms-background-clip: text; /* Internet Explorer */
       -webkit-text-fill-color: transparent;
-    /* margin: 1rem 0 0.3rem 0; */
     margin-bottom: 0.3rem;
     }
   
@@ -276,16 +299,29 @@
     padding: 0.4rem;
     box-sizing: content-box; /* Ensure padding does not shrink the icon size */
     display: inline-block;
+    filter: invert(90%) sepia(0%) saturate(1%) hue-rotate(283deg) brightness(94%) contrast(95%);
+    cursor: pointer; /* Add a pointer cursor to indicate interactivity */
+}
+
+.dashboard-note-card:hover .dashboard-note-pin-icon{
+    filter: invert(100%) brightness(100%);
+    background: linear-gradient(90deg, #363737, #4d4e4e);
+    border-radius: 50%;
+}
+
+.dashboard-note-card:active .dashboard-note-pin-icon{
     filter: invert(100%) brightness(100%);
     background: linear-gradient(90deg, #6EEAD2, #25BBFF);
     border-radius: 50%;
     transform: rotate(45deg);
-
 }
+
 
 .takeNote-title-board,
 .takeNote-des-board,
-.dashboard-header h1{
+.dashboard-header h1,
+.dashboard-recent-note-title,
+.empty-search-found{
     -webkit-user-drag: none; /* Disable drag functionality */
     user-select: none; /* Disable text selection */
     -webkit-touch-callout: none; /* Prevent text selection on iOS */
