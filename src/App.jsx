@@ -18,6 +18,14 @@ const pageVariants = {
 };
 
 function App() {
+  const mutedWarnings = ['DOMNodeInserted'];
+  const originalConsoleWarn = console.warn;
+  console.warn = (...args) => {
+    if (!mutedWarnings.some((warning) => args[0]?.includes(warning))) {
+      originalConsoleWarn(...args);
+    }
+  };
+
   const [authenticated, setAuthenticated] = useState(false);
   const [user, setUser] = useState(null); // Track user information
   const [isSigningUp, setIsSigningUp] = useState(true); // Toggle between SignUp and SignIn
@@ -74,11 +82,11 @@ function App() {
             {/* <Routes>
               <Route path="/*" element={<MainPage />} />
             </Routes> */}
-            <MainPage setAuthenticated={setAuthenticated} user={user}/>
+            <MainPage setAuthenticated={setAuthenticated} user={user} />
           </motion.div>
         )}
       </AnimatePresence>
-      </Router>
+    </Router>
   )
 }
 

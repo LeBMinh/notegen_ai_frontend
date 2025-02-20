@@ -4,7 +4,7 @@
     top: 0;
     left: 0;
     height: 97vh;
-    width: 236px;
+    min-width: 236px;
     background-color: var(--light);
     color: var(--dark-3);
     display: flex;
@@ -13,12 +13,12 @@
     box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
     border-radius: 20px;
     border: 1px solid var(--lightBorder);
-    transition: width 0.3s ease;
+    transition: min-width 0.4s ease;
     margin: 0 0.6rem; /* Apply the global margin */
   }
   
   .sidebar.collapsed {
-    width: 80px;
+    min-width: 80px;
   }
 
   /* Logo */
@@ -156,7 +156,7 @@
 .subscription-link .sidebar-link {
     display: flex;
     align-items: center;
-    justify-content: center;
+    /* justify-content: center; */
     /* padding: 1rem; */
     background: var(--light);
     border-radius: 16px;

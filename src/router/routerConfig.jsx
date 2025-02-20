@@ -8,6 +8,7 @@ import Information from "../components/pages/Information/Information";
 import Trash from "../components/pages/Trash/Trash";
 import Subscription from "../components/pages/Subscription/Subscription";
 import HelpCenter from "../components/pages/HelpCenter/HelpCenter";
+import NoteCanvas from "../components/pages/NoteCanvas/NoteCanvas";
 
 export const publicRoutes = [
     { path: PATH_NAME.SIGNUP, element: <SignUp /> },
@@ -23,4 +24,5 @@ export const privateRoutes = [
     { path: PATH_NAME.TRASH, element: <Trash />},
     { path: PATH_NAME.SUBSCRIPTION_NOW, element: <Subscription />},
     { path: PATH_NAME.HELP_CENTER, element: <HelpCenter />},
+    { path: PATH_NAME.NOTE_CANVAS, element: <NoteCanvas />},
 ];

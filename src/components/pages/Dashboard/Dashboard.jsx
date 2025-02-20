@@ -2,6 +2,8 @@ import React, { useState, useMemo } from "react";
 import './Dashboard.css';
 // import folder and note list
 import folders from "../../libs/FolderList/FolderData";
+//import modals for new note
+import DBoardModals from "../../libs/DBoardModals/DBoardModals";
 //import icons
 import MagnifyingGlass from '../../../assets/Icon_line/FindNow.svg';
 import RecentlyNote from '../../../assets/Icon_fill/RecentlyNote.svg';
@@ -14,6 +16,7 @@ import LgGradientNoteNow from '../../../assets/Icon_line-Gradient/GrabYourNote_L
 export default function Dashboard() {
   const [searchTerm, setSearchTerm] = useState("");
   const [pinnedNotes, setPinnedNotes] = useState([]);
+  const [openMd, setOpenMd] = useState(true);
 
   // Flatten notes from folders
   const notes = folders.flatMap((folder) => folder.notes);
@@ -60,7 +63,7 @@ export default function Dashboard() {
       ),
     ];
   }, [searchTerm, pinnedNotes, notes]);
-  
+
 
   const highlightText = (text, searchTerm) => {
     if (!searchTerm) return text;  // No search term, return original text
@@ -68,6 +71,10 @@ export default function Dashboard() {
     return text.replace(regex, (match) => `<span class="highlight">${match}</span>`);
   };
 
+  const handleNavigateToCanvas = () => {
+    console.log("Navigating to NoteCanvas...");
+    setOpenMd(false);
+  };
 
   return (
     <div className='dashboard-container'>
@@ -114,6 +121,11 @@ export default function Dashboard() {
             Unlock your potential by turning your notes into action.<br />
             Every note is a step toward mastering your goals!"</p>
         </div>
+        <DBoardModals
+          openMd={open}
+          onClose={() => setOpenMd(false)}
+          onNavigateToCanvas={handleNavigateToCanvas}
+        />
       </div>
 
       {/* Dashboard Note List */}

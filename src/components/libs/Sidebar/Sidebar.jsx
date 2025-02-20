@@ -38,7 +38,7 @@ export default function Sidebar({ onLogout }) {
     // Define links for the sidebar
     const topLinks = [
         // Official Grab-Your-Note Path here
-        { path: Pathname('NEW_NOTE'), label: 'Grab Your Note', defaultIcon: GrabYourNoteIcon },
+        { path: Pathname('NOTE_CANVAS'), label: 'Grab Your Note', defaultIcon: GrabYourNoteIcon },
         { path: Pathname('DASHBOARD'), label: 'Dashboard', defaultIcon: DashboardIcon, activeIcon: ActiveDashboardIcon },
         { path: Pathname('NOTE_GALLERY'), label: 'Note Gallery', defaultIcon: NoteGalleryIcon, activeIcon: ActiveNoteGalleryIcon },
         { path: Pathname('SMART_LEARNING'), label: 'Smart Learning', defaultIcon: SmartLearningIcon, activeIcon: ActiveSmartLearningIcon },
@@ -120,7 +120,7 @@ export default function Sidebar({ onLogout }) {
                             // activeClassName="active"
                         >
                             <div className="icon" />
-                            {!isCollapsed && <span className="label-style">Subscription Now!</span>}
+                            {!isCollapsed && <span className="label-style">Subscription <br/> Now!</span>}
                         </NavLink>
                     </div>
 

@@ -1,95 +1,95 @@
 const folders = [
     {
-      id: "folder-1", // Unique folder ID
+      id: "folder1", // Unique folder ID
       title: "English Language Class",
       notes: [
-        { id: "note_1", title: "Grammar Basics", content: "Introduction to verbs, nouns, and tenses." },
-        { id: "note_2", title: "Advanced Vocabulary", content: "Explore complex words and their usages." },
-        { id: "note_3", title: "Essay Writing", content: "Learn to write impactful essays." }
+        { id: "note1", title: "Grammar Basics", content: "Introduction to verbs, nouns, and tenses." },
+        { id: "note2", title: "Advanced Vocabulary", content: "Explore complex words and their usages." },
+        { id: "note3", title: "Essay Writing", content: "Learn to write impactful essays." }
       ]
     },
     {
-      id: "folder-2",
+      id: "folder2",
       title: "Art Renaissance to Modern",
       notes: [
-        { id: "note_4", title: "The Renaissance Era", content: "Exploring art and culture in Europe during the 14th century." },
-        { id: "note_5", title: "Impressionism", content: "Analyzing the impact of Impressionist painters." }
+        { id: "note4", title: "The Renaissance Era", content: "Exploring art and culture in Europe during the 14th century." },
+        { id: "note5", title: "Impressionism", content: "Analyzing the impact of Impressionist painters." }
       ]
     },
     {
-      id: "folder-3",
+      id: "folder3",
       title: "Art Renaissance to Modern",
       notes: [
-        { id: "note_6", title: "The Renaissance Era", content: "Exploring art and culture in Europe during the 14th century." },
-        { id: "note_7", title: "Impressionism", content: "Analyzing the impact of Impressionist painters." }
+        { id: "note6", title: "The Renaissance Era", content: "Exploring art and culture in Europe during the 14th century." },
+        { id: "note7", title: "Impressionism", content: "Analyzing the impact of Impressionist painters." }
       ]
     },
     {
-      id: "folder-4",
+      id: "folder4",
       title: "Art Renaissance to Modern",
       notes: [
-        { id: "note_8", title: "The Renaissance Era", content: "Exploring art and culture in Europe during the 14th century." },
-        { id: "note_9", title: "Impressionism", content: "Analyzing the impact of Impressionist painters." },
-        { id: "note_10", title: "Impressionism", content: "Analyzing the impact of Impressionist painters. Analyzing the impact of Impressionist painters. Analyzing the impact of Impressionist painters. Analyzing the impact of Impressionist painters." },
-        { id: "note_11", title: "The Renaissance Era", content: "Exploring art and culture in Europe during the 14th century." },
-        { id: "note_12", title: "The Renaissance Era", content: "Exploring art and culture in Europe during the 14th century." },
-        { id: "note_13", title: "Impressionism", content: "Analyzing the impact of Impressionist painters." },
+        { id: "note8", title: "The Renaissance Era", content: "Exploring art and culture in Europe during the 14th century." },
+        { id: "note9", title: "Impressionism", content: "Analyzing the impact of Impressionist painters." },
+        { id: "note10", title: "Impressionism", content: "Analyzing the impact of Impressionist painters. Analyzing the impact of Impressionist painters. Analyzing the impact of Impressionist painters. Analyzing the impact of Impressionist painters." },
+        { id: "note11", title: "The Renaissance Era", content: "Exploring art and culture in Europe during the 14th century." },
+        { id: "note12", title: "The Renaissance Era", content: "Exploring art and culture in Europe during the 14th century." },
+        { id: "note13", title: "Impressionism", content: "Analyzing the impact of Impressionist painters." },
       ]
     },
     {
-      id: "folder-5",
+      id: "folder5",
       title: "Art Renaissance to Modern",
       notes: [
-        { id: "note_14", title: "The Renaissance Era", content: "Exploring art and culture in Europe during the 14th century." },
-        { id: "note_15", title: "Impressionism", content: "Analyzing the impact of Impressionist painters." }
+        { id: "note14", title: "The Renaissance Era", content: "Exploring art and culture in Europe during the 14th century." },
+        { id: "note15", title: "Impressionism", content: "Analyzing the impact of Impressionist painters." }
       ]
     },
     {
-      id: "folder-6",
+      id: "folder6",
       title: "Art Renaissance to Modern",
       notes: [
-        { id: "note_16", title: "The Renaissance Era", content: "Exploring art and culture in Europe during the 14th century." },
-        { id: "note_17", title: "Impressionism", content: "Analyzing the impact of Impressionist painters." }
+        { id: "note16", title: "The Renaissance Era", content: "Exploring art and culture in Europe during the 14th century." },
+        { id: "note17", title: "Impressionism", content: "Analyzing the impact of Impressionist painters." }
       ]
     },
     {
-      id: "folder-7",
+      id: "folder7",
       title: "Art Renaissance to Modern",
       notes: [
-        { id: "note_18", title: "The Renaissance Era", content: "Exploring art and culture in Europe during the 14th century." },
-        { id: "note_19", title: "Impressionism", content: "Analyzing the impact of Impressionist painters." }
+        { id: "note18", title: "The Renaissance Era", content: "Exploring art and culture in Europe during the 14th century." },
+        { id: "note19", title: "Impressionism", content: "Analyzing the impact of Impressionist painters." }
       ]
     },
     {
-      id: "folder-7",
+      id: "folder8",
       title: "Art Renaissance to Modern",
       notes: [
-        { id: "note_20", title: "The Renaissance Era", content: "Exploring art and culture in Europe during the 14th century." },
-        { id: "note_21", title: "Impressionism", content: "Analyzing the impact of Impressionist painters." }
+        { id: "note20", title: "The Renaissance Era", content: "Exploring art and culture in Europe during the 14th century." },
+        { id: "note21", title: "Impressionism", content: "Analyzing the impact of Impressionist painters." }
       ]
     },
     {
-      id: "folder-8",
+      id: "folder9",
       title: "Art Renaissance to Modern",
       notes: [
-        { id: "note_22", title: "The Renaissance Era", content: "Exploring art and culture in Europe during the 14th century." },
-        { id: "note_23", title: "Impressionism", content: "Analyzing the impact of Impressionist painters." }
+        { id: "note22", title: "The Renaissance Era", content: "Exploring art and culture in Europe during the 14th century." },
+        { id: "note23", title: "Impressionism", content: "Analyzing the impact of Impressionist painters." }
       ]
     },
     {
-      id: "folder-9",
+      id: "folder10",
       title: "Art Renaissance to Modern",
       notes: [
-        { id: "note_24", title: "The Renaissance Era", content: "Exploring art and culture in Europe during the 14th century." },
-        { id: "note_25", title: "History of Vietnam culture", content: "Analyzing the impact of Impressionist painters." }
+        { id: "note24", title: "The Renaissance Era", content: "Exploring art and culture in Europe during the 14th century." },
+        { id: "note25", title: "History of Vietnam culture", content: "Analyzing the impact of Impressionist painters." }
       ]
     },
     {
-      id: "folder-10",
+      id: "folder11",
       title: "History of Vietnam Culture",
       notes: [
-        { id: "note_26", title: "Ancient Vietnam", content: "Understanding cultural roots and traditions." },
-        { id: "note_27", title: "Colonial Influence", content: "Impact of French colonization on Vietnamese culture." }
+        { id: "note26", title: "Ancient Vietnam", content: "Understanding cultural roots and traditions." },
+        { id: "note27", title: "Colonial Influence", content: "Impact of French colonization on Vietnamese culture." }
       ]
     }
   ];

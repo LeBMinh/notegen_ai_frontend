@@ -1,0 +1,14 @@
+.dialog-title {
+    text-align: center;
+    font-size: 1.5rem;
+    font-weight: bold;
+  }
+  
+  .dialog-content {
+    padding: 16px;
+  }
+  
+  .dialog-actions {
+    justify-content: space-between;
+  }
+  

@@ -1,0 +1,303 @@
+.noteCanvas-container {
+  display: grid;
+  grid-template-columns: 5fr 1fr;
+  height: 95vh;
+  gap: 10px;
+}
+
+.noteCanvas-main {
+  display: flex;
+  flex-direction: column;
+  padding: 8px;
+}
+
+/* Back button and Note title */
+.noteCanvas-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  /* margin-bottom: 16px; */
+  gap: 20px;
+}
+
+.noteCanvas-header-left{
+  display: flex;
+  align-items: center;
+  margin-bottom: 16px;
+  gap: 20px;
+}
+
+.noteCanvas-back-btn-container {
+  height: 35px;
+  align-items: center;
+  border: 1px solid var(--light-3);
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.noteCanvas-back-btn-container:hover {
+  background-color: var(--light-2);
+}
+
+.backToPrevious-icon {
+  width: 32px;
+  height: 32px;
+  padding: 6px;
+}
+
+.noteCanvas-noteTitle-container {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.noteCanvas-noteTitle-icon {
+  width: 28px;
+  filter: invert(32%) sepia(0%) saturate(0%) hue-rotate(323deg) brightness(96%) contrast(88%);
+}
+
+.noteCanvas-title {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: var(--dark-2);
+}
+
+/* Note Canvas Editor */
+.noteCanvas-main .ql-container.ql-snow {
+  height: 600px ;
+  max-height: 600px ;
+  /* border-radius: 0  0 8px 8px; */
+  border-radius: 8px;
+  
+}
+
+.noteCanvas-main .ql-toolbar.ql-snow {
+  border-radius: 8px 8px 0  0 ;
+  display: flex;
+}
+
+.noteCanvas-main .ql-editor {
+  flex: 1;
+  max-height: 600px;
+  padding: 12px 15px;
+  border-radius: 8px;
+  /* background-color: #F5F5F5; */
+}
+
+.noteCanvas-quill {
+  flex: 1;
+  /* border: 1px solid #ccc;
+  border-radius: 8px; */
+  padding: 2px;
+}
+
+#toolbar {
+  display: flex;
+  gap: 8px;
+  padding: 8px;
+  background: var(--light-2);
+  border-radius: 16px;
+  margin-bottom: 10px;
+  border-color: var(--light-3);
+  align-items: center;
+}
+
+#toolbar button {
+  width: 36px;
+  height: 35px;
+  background: white;
+  border: none;
+  padding: 8px 6px;
+  cursor: pointer;
+  border-radius: 8px;
+}
+
+#toolbar button:hover {
+  background: #e0e0e0;
+}
+
+/* Active state (when a button is selected) */
+#toolbar button.ql-active {
+  background-color: var(--secondary-1); /* Change to desired highlight color */
+  color: white; /* Ensure icons inside remain visible */
+}
+
+#toolbar button img {
+  display: inline-block !important; /* Show your custom image */
+  width: 21px;
+  height: 21px;
+  object-fit: contain;
+}
+
+.ql-toolbar button::before {
+  content: none !important; /* Remove Quill’s default icons */
+}
+
+.ql-editor hr {
+  /* border: none; */
+  /* border-top: 2px solid #ccc; */
+  margin: 16px 0; /* Adds space above and below the Divider */
+  width: 100%;
+}
+
+.toolbar-wrapper{
+  background: white;
+  border-radius: 8px;
+  /* border-left: 2px solid #ccc; */
+}
+
+.toolbar-divider {
+  width: 1px;
+  height: 32px; 
+  background-color: var(--light-5); 
+  margin: 0 2px; /* Spacing between sections */
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.undo-redo-filterIcon{
+  filter: invert(54%) sepia(72%) saturate(6580%) hue-rotate(159deg) brightness(97%) contrast(94%);
+}
+
+/* Note enhance button */
+.noteCanvas-config {
+  display: flex;
+  flex-direction: column;
+  padding: 0.5rem 0rem;
+}
+
+.noteCanvas-enhance-btn-container {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 10px;
+  padding: 1rem 1.5rem;
+  border-radius: 1rem;
+  font-size: 14px;
+  font-weight: 700;
+  background: linear-gradient(90deg, #25BBFF, #6EEAD2);
+  border: 1px solid #e0e0e0;
+  color: var(--light);
+  cursor: pointer;
+  -webkit-user-drag: none; /* Disable drag functionality */
+  user-select: none; /* Disable text selection */
+}
+
+.enhanceNote-icon {
+  width: 1.3rem;
+  filter: invert(100%) brightness(100%);
+}
+
+/* Word count and Spelling mistakes Cards */
+.noteCanvas-stats {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-bottom: 16px;
+}
+
+.noteCanvas-stat-card {
+  position: relative;
+  background-color: var(--light);
+  padding: 12px;
+  border: 1px solid var(--light-3);
+  border-radius: 16px;
+  font-size: 14px;
+}
+
+.wordsCount-icon{
+  width: 1.4rem;
+  filter: invert(39%) sepia(100%) saturate(500%) hue-rotate(170deg);
+  padding: 0.3rem;
+  background-color: #bae0ff79;
+  border-radius: 10px;
+  box-sizing: content-box; /* Ensure padding does not shrink the icon size */
+  display: inline-block;
+  margin-bottom: 5px;
+}
+
+.spellingMistake-icon{
+  width: 1.4rem;
+  filter: invert(54%) sepia(72%) saturate(6580%) hue-rotate(159deg) brightness(97%) contrast(94%);
+  padding: 0.3rem;
+  background-color: #1316153f;
+  border-radius: 10px;
+  box-sizing: content-box; /* Ensure padding does not shrink the icon size */
+  display: inline-block;
+  margin-bottom: 5px;
+}
+
+.noteCanvas-wordCount-stats-number, 
+.noteCanvas-spellingMistake-stats-number {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  font-size: 1.1em;
+  font-weight: 700;
+  border-radius: 25px;
+  padding: 0 1.2rem;
+  /* padding: 0 1.5rem; */
+}
+
+.noteCanvas-wordCount-stats-number {
+  background-color: var(--primary-1);
+  color: var(--primary-6);
+}
+
+.noteCanvas-spellingMistake-stats-number{
+  background-color: var(--secondary-1);
+  color: var(--secondary-6);
+}
+
+/* Folder assigned and Time edited */
+.noteCanvas-folder-info {
+  margin-top: auto;  /* Do not delete this line */
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  color: var(--dark-2);
+  font-size: 0.8rem;
+}
+
+.folderTitle-icon{
+  width: 1.4rem;
+  filter: invert(31%) sepia(6%) saturate(21%) hue-rotate(19deg) brightness(98%) contrast(90%);
+}
+
+.noteCanvas-last-edit {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  margin-top: 16px;
+  color: var(--dark-2);
+  font-size: 0.8rem;
+}
+
+.lastEditTime-icon{
+  width: 1.4rem;
+  filter: invert(31%) sepia(6%) saturate(21%) hue-rotate(19deg) brightness(98%) contrast(90%);
+}
+
+.noteCanvas-error{
+  display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.8rem;
+    color: var(--dark-4);
+}
+
+.noFolder-icon{
+  margin-bottom: 0.3rem;
+}
+
+.noteCanvas-error,
+.noteCanvas-stat-card {
+    pointer-events: none; /* Disable mouse interactions */
+    -webkit-user-drag: none; /* Disable drag functionality */
+    user-select: none; /* Disable text selection */
+    -webkit-touch-callout: none; /* Prevent text selection on iOS */
+}
