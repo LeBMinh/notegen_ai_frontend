@@ -16,14 +16,14 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  /* margin-bottom: 16px; */
+  margin-bottom: 3px;
   gap: 20px;
 }
 
 .noteCanvas-header-left{
   display: flex;
   align-items: center;
-  margin-bottom: 16px;
+  /* margin-bottom: 16px; */
   gap: 20px;
 }
 
@@ -84,6 +84,23 @@
   /* background-color: #F5F5F5; */
 }
 
+.ql-editor hr {
+  /* border: none; */
+  /* border-top: 2px solid #ccc; */
+  margin: 16px 0; /* Adds space above and below the Divider */
+  width: 100%;
+}
+
+/* Scrollbar Styling */
+.noteCanvas-main .ql-editor::-webkit-scrollbar {
+  width: 6px;
+}
+
+.noteCanvas-main .ql-editor::-webkit-scrollbar-thumb {
+  background: #ccc;
+  border-radius: 3px;
+}
+
 .noteCanvas-quill {
   flex: 1;
   /* border: 1px solid #ccc;
@@ -133,13 +150,6 @@
   content: none !important; /* Remove Quill’s default icons */
 }
 
-.ql-editor hr {
-  /* border: none; */
-  /* border-top: 2px solid #ccc; */
-  margin: 16px 0; /* Adds space above and below the Divider */
-  width: 100%;
-}
-
 .toolbar-wrapper{
   background: white;
   border-radius: 8px;
@@ -159,13 +169,56 @@
   filter: invert(54%) sepia(72%) saturate(6580%) hue-rotate(159deg) brightness(97%) contrast(94%);
 }
 
-/* Note enhance button */
+/* Quill color picker style */
+.ql-snow .ql-color-picker .ql-picker-label, .ql-snow .ql-icon-picker .ql-picker-label {
+  margin: -1px;   /* Positioning the color picker icon align with the others */
+  padding: 2px;
+  border: none;
+}
+
+.ql-color-label {
+  /* Override the Default color indicator line style in the Quill toolbar */
+  stroke-width: 3px !important; /* Adjust thickness */
+}
+
+.ql-snow .ql-color-picker .ql-picker-options {
+  padding: 8px 11px;
+  width: 200px;
+  height: 190px;
+}
+
+.ql-snow .ql-picker-options {
+  border-radius: 4%;
+}
+
+.ql-snow .ql-picker.ql-expanded .ql-picker-options {
+  margin-top: 4px;  /* Positioning the color option table down a little */
+}
+
+.ql-snow .ql-color-picker.ql-color .ql-picker-item{
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  border: 1px solid var(--light-3);
+}
+
+.ql-snow .ql-stroke {
+  stroke-width: 1.5px;
+}
+
+.ql-snow .ql-transparent {
+  opacity: 2.4;
+}
+
+
+/* Right side note info and stats */
 .noteCanvas-config {
   display: flex;
   flex-direction: column;
   padding: 0.5rem 0rem;
 }
 
+/* Note enhance button */
 .noteCanvas-enhance-btn-container {
   display: flex;
   gap: 12px;
@@ -300,4 +353,21 @@
     -webkit-user-drag: none; /* Disable drag functionality */
     user-select: none; /* Disable text selection */
     -webkit-touch-callout: none; /* Prevent text selection on iOS */
+}
+
+@media (max-width: 768px) {
+  .noteCanvas-header {
+  flex-direction: column;
+  align-items: flex-start;
+  }
+
+  .noteCanvas-main .ql-container.ql-snow {
+    height: 470px ;
+    max-height: 470px ;
+  }
+
+  .noteCanvas-main .ql-editor {
+    flex: 1;
+    max-height: 470px;
+  }
 }

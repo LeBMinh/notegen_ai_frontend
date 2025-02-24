@@ -202,6 +202,11 @@ export default function NoteCanvas() {
                 <img src={NumberedList} alt="Numbered List" />
               </button>
 
+              {/* Text Color */}
+              <button className="color-picker-btn">
+                <select className="ql-color"></select>
+              </button>
+
               {/* Alignment */}
               <button className="ql-align" value="">
                 <img src={LeftAlign} alt="Left Align" />
@@ -213,6 +218,7 @@ export default function NoteCanvas() {
                 <img src={RightAlign} alt="Right Align" />
               </button>
 
+              {/* Line Divider */}
               <button onClick={handleLineDivider}>
                 <img src={UntitledNote} alt="Insert Divider" />
               </button>

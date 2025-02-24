@@ -8,15 +8,43 @@ import './SignUp.css';
 import NoteGenLogo from '../../../assets/Logo/Full_NG-Logo.svg';
 import GoogleIcon from '../../../assets/Others/GoogleIcon.png';
 import NGgif from '../../../assets/Others/NG_atSignUp.gif';
+import DropHere from '../../../assets/Icon_line/DropHere.svg';
 
 export default function SignUp({ setAuthenticated, setUser, toggleSignIn }) {
   const [fullname, setFullname] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState(""); // For Confirm Password
   const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [selectedImage, setSelectedImage] = useState(null);
+
+  const handleImageUpload = (event) => {
+    const file = event.target.files[0];
+
+    if (file) {
+      // Check file type
+      const allowedTypes = ["image/png", "image/jpg", "image/jpeg"];
+      if (!allowedTypes.includes(file.type)) {
+        alert("Only PNG, JPG, and JPEG files are allowed!");
+        return;
+      }
+
+      // Show preview
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setSelectedImage(reader.result);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
 
   const handleTogglePasswordVisibility = () => {
     setShowPassword(!showPassword);
+  };
+
+  const handleToggleConfirmPasswordVisibility = () => {
+    setShowConfirmPassword(!showConfirmPassword);
   };
 
   const handleSignUpWithEmail = async () => {
@@ -70,72 +98,133 @@ export default function SignUp({ setAuthenticated, setUser, toggleSignIn }) {
           </p> */}
 
         <div className='signup-form'>
-          {/* Full Name Field */}
-          <TextField
-            id="outlined-fullname"
-            sx={{
-              m: 1,
-              width: '35ch',
-              "& .MuiOutlinedInput-root": {
-                borderRadius: "8px", // Set your desired border radius
-                height: "52px",
-              },
-            }}
-            label="Full Name"
-            value={fullname}
-            onChange={(e) => setFullname(e.target.value)}
-            margin="normal"
-          />
-          {/* Email Field */}
-          <TextField
-            id="outlined-email"
-            sx={{
-              m: 1,
-              width: '35ch',
-              "& .MuiOutlinedInput-root": {
-                borderRadius: "8px", 
-                height: "52px",
-              },
-            }}
-            label="Email"
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            margin="normal"
-          />
-          {/* Password Field with Visibility Toggle */}
-          <TextField
-            sx={{
-              m: 1,
-              width: '35ch',
-              "& .MuiOutlinedInput-root": {
-                borderRadius: "8px", 
-                height: "52px",
-              },
-            }}
-            label="Password"
-            type={showPassword ? "text" : "password"}
-            variant="outlined"
-            InputProps={{
-              endAdornment: (
-                <InputAdornment position="end">
-                  <IconButton
-                    onClick={handleTogglePasswordVisibility}
-                    edge="end"
-                    aria-label={showPassword ? "Hide password" : "Show password"}
-                  >
-                    {showPassword ? <VisibilityOff /> : <Visibility />}
-                  </IconButton>
-                </InputAdornment>
-              ),
-            }}
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-          <button onClick={handleSignUpWithEmail} className="new-signup-button">
-            Sign up an Account
-          </button>
+          {/* Upload Image Field */}
+          <div className="signup-imageUploader-container">
+            <input
+              type="file"
+              accept="image/png, image/jpg, image/jpeg"
+              onChange={handleImageUpload}
+              style={{ display: "none" }}
+              id="imageUpload"
+            />
+
+            {/* Upload Box */}
+            <label htmlFor="imageUpload" className="signup-upload-box">
+              {selectedImage ? (
+                <img src={selectedImage} alt="Preview" className="signup-preview-image" />
+              ) : (
+                <>
+                  <img src={DropHere} alt="DropHere Icon" className="signup-dropHere-icon" />
+                  <p>Upload your profile picture here</p>
+                </>
+              )}
+            </label>
+          </div>
+
+          <div className='signup-fields-container'>
+            {/* Full Name Field */}
+            <TextField
+              id="outlined-fullname"
+              sx={{
+                m: 1,
+                width: '30ch',
+                "& .MuiOutlinedInput-root": {
+                  borderRadius: "8px", // Set your desired border radius
+                  height: "50px",
+                },
+              }}
+              label="Full Name"
+              value={fullname}
+              onChange={(e) => setFullname(e.target.value)}
+              margin="normal"
+              className='signup-input'
+            />
+
+            {/* Email Field */}
+            <TextField
+              id="outlined-email"
+              sx={{
+                m: 1,
+                width: '30ch',
+                "& .MuiOutlinedInput-root": {
+                  borderRadius: "8px",
+                  height: "50px",
+                },
+              }}
+              label="Email"
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              margin="normal"
+              className='signup-input'
+            />
+
+            {/* Password Field with Visibility Toggle */}
+            <TextField
+              sx={{
+                m: 1,
+                width: "30ch",
+                "& .MuiOutlinedInput-root": {
+                  borderRadius: "8px",
+                  height: "50px",
+                },
+              }}
+              label="Password"
+              type={showPassword ? "text" : "password"}
+              variant="outlined"
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton
+                      onClick={handleTogglePasswordVisibility}
+                      edge="end"
+                      aria-label={showPassword ? "Hide password" : "Show password"}
+                    >
+                      {showPassword ? <VisibilityOff /> : <Visibility />}
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              }}
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className='signup-input'
+            />
+
+            {/* Confirm Password Field */}
+            <TextField
+              sx={{
+                m: 1,
+                width: "30ch",
+                "& .MuiOutlinedInput-root": {
+                  borderRadius: "8px",
+                  height: "50px",
+                },
+              }}
+              label="Confirm Password"
+              type={showConfirmPassword ? "text" : "password"}
+              variant="outlined"
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton
+                      onClick={handleToggleConfirmPasswordVisibility} // Use separate function
+                      edge="end"
+                      aria-label={showConfirmPassword ? "Hide password" : "Show password"}
+                    >
+                      {showConfirmPassword ? <VisibilityOff /> : <Visibility />}
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              }}
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              className='signup-input'
+            />
+          </div>
         </div>
+        <button onClick={handleSignUpWithEmail} className="new-signup-button">
+          Sign up an Account
+        </button>
 
         <p className="signup-tagline">
           Already have an account? <span onClick={() => toggleSignIn()}>Sign in</span>
