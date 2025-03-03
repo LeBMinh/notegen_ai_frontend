@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { useNavigate } from "react-router-dom";
+import { signIn } from '../../../server/api';
 import { auth, googleProvider, signInWithPopup } from '../../../auth/Firebase';
 import { TextField, IconButton, InputAdornment } from "@mui/material";
 import Visibility from '@mui/icons-material/Visibility';
@@ -13,22 +15,56 @@ export default function SignIn({ setAuthenticated, setUser, toggleSignUp  }) {
   const [loginInfo, setLoginInfo] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+  const navigate = useNavigate(); 
 
   const handleTogglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
 
-  const handleSignInWithEmail = async () => {
+  const handleSignIn = async () => {
+    if (!loginInfo || !password) {
+      alert("Please enter your email/username and password.");
+      return;
+    }
+  
     try {
-      // Handle sign-in logic here (e.g., Firebase auth)
-      console.log("User signed in with:", loginInfo);
+      const credentials = {
+        identifier: loginInfo, // Accepts either email or username
+        password: password
+      };
+  
+      const response = await signIn(credentials);
+  
+      console.log("Sign-in successful:", response);
+      
       setAuthenticated(true);
-      setUser({ email: loginInfo });
-      localStorage.setItem('user', JSON.stringify({ email: loginInfo }));
+      setUser(response.user);
+      
+      // Store token in localStorage for future API calls
+      localStorage.setItem('access_token', response.accessToken);
+      localStorage.setItem('user', JSON.stringify(response.user));
+  
+      navigate("/dashboard"); // Redirect to MainPage
+
+      alert("Sign-in successful!");
     } catch (error) {
-      console.error("Sign-in failed:", error.message);
+      console.error("Sign-in failed:", error);
+      setErrorMessage(error.message); // Display error message
     }
   };
+
+  // const handleSignInWithEmail = async () => {
+  //   try {
+  //     // Handle sign-in logic here (e.g., Firebase auth)
+  //     console.log("User signed in with:", loginInfo);
+  //     setAuthenticated(true);
+  //     setUser({ email: loginInfo });
+  //     localStorage.setItem('user', JSON.stringify({ email: loginInfo }));
+  //   } catch (error) {
+  //     console.error("Sign-in failed:", error.message);
+  //   }
+  // };
 
   const handleGoogleSignIn = async () => {
     try {
@@ -67,7 +103,7 @@ export default function SignIn({ setAuthenticated, setUser, toggleSignUp  }) {
               width: '35ch',
               "& .MuiOutlinedInput-root": {
                 borderRadius: "8px", // Set your desired border radius
-                height: "52px", // Set desired height for the entire input
+                height: "50px", // Set desired height for the entire input
               },
             }}
             label="Full Name or Email"
@@ -82,7 +118,7 @@ export default function SignIn({ setAuthenticated, setUser, toggleSignUp  }) {
               width: '35ch',
               "& .MuiOutlinedInput-root": {
                 borderRadius: "8px", 
-                height: "52px",
+                height: "50px",
               },
             }}
             label="Password"
@@ -104,7 +140,9 @@ export default function SignIn({ setAuthenticated, setUser, toggleSignUp  }) {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
-          <button onClick={handleSignInWithEmail} className="new-signin-button">
+          
+          {errorMessage && <p className="error-text">{errorMessage}</p>}
+          <button onClick={handleSignIn} className="new-signin-button">
             Sign In
           </button>
         </div>

@@ -1,10 +1,13 @@
 import React, { useState } from 'react';
+import { useNavigate } from "react-router-dom";
+import { signUp } from '../../../server/api';
 import { auth, googleProvider, facebookProvider, signInWithPopup } from '../../../auth/Firebase';
 import { TextField, IconButton, InputAdornment } from "@mui/material";
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import Divider from '@mui/material/Divider';
 import './SignUp.css';
+//import Logo and icons
 import NoteGenLogo from '../../../assets/Logo/Full_NG-Logo.svg';
 import GoogleIcon from '../../../assets/Others/GoogleIcon.png';
 import NGgif from '../../../assets/Others/NG_atSignUp.gif';
@@ -18,6 +21,7 @@ export default function SignUp({ setAuthenticated, setUser, toggleSignIn }) {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null);
+  const navigate = useNavigate(); 
 
   const handleImageUpload = (event) => {
     const file = event.target.files[0];
@@ -33,9 +37,52 @@ export default function SignUp({ setAuthenticated, setUser, toggleSignIn }) {
       // Show preview
       const reader = new FileReader();
       reader.onloadend = () => {
-        setSelectedImage(reader.result);
+        setSelectedImage(reader.result); // Base64 string
       };
       reader.readAsDataURL(file);
+    }
+  };
+
+  const handleSignUp = async () => {
+    if (!fullname || !email || !password || !confirmPassword || !selectedImage) {
+      alert("Please fill in all fields.");
+      return;
+    }
+  
+    if (password !== confirmPassword) {
+      alert("Passwords do not match!");
+      return;
+    }
+  
+    // Convert Image to Base64 if selected
+    let base64Image = "";
+    if (selectedImage) {
+      base64Image = selectedImage;
+    }
+  
+    try {
+      const userData = {
+        username: fullname,
+        email: email,
+        password: password,
+        confirm_password: confirmPassword,
+        isAdmin: false,  // Default to false
+        role: "free",    // Default to "free"
+        profile_picture: base64Image
+      };
+  
+      const response = await signUp(userData);
+      
+      console.log("Sign-up successful:", response);
+      setUser(response);
+      // setAuthenticated(true);
+      localStorage.setItem('user', JSON.stringify(response));
+  
+      navigate("/signin"); // Redirect to Sign In
+      alert("Sign-up complete! Please reform your info to get start.");
+    } catch (error) {
+      console.error("Sign-up failed:", error);
+      alert(error);
     }
   };
 
@@ -47,17 +94,17 @@ export default function SignUp({ setAuthenticated, setUser, toggleSignIn }) {
     setShowConfirmPassword(!showConfirmPassword);
   };
 
-  const handleSignUpWithEmail = async () => {
-    try {
-      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-      console.log("User created:", userCredential.user);
-      setUser(userCredential.user);
-      setAuthenticated(true);
-      localStorage.setItem('user', JSON.stringify(userCredential.user));
-    } catch (error) {
-      console.error("Sign-up failed:", error.message);
-    }
-  };
+  // const handleSignUpWithsuccessfulEmail = async () => {
+  //   try {
+  //     const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+  //     console.log("User created:", userCredential.user);
+  //     setUser(userCredential.user);
+  //     setAuthenticated(true);
+  //     localStorage.setItem('user', JSON.stringify(userCredential.user));
+  //   } catch (error) {
+  //     console.error("Sign-up failed:", error.message);
+  //   }
+  // };
 
   const handleGoogleSignIn = async () => {
     try {
@@ -222,7 +269,7 @@ export default function SignUp({ setAuthenticated, setUser, toggleSignIn }) {
             />
           </div>
         </div>
-        <button onClick={handleSignUpWithEmail} className="new-signup-button">
+        <button onClick={handleSignUp} className="new-signup-button">
           Sign up an Account
         </button>
 

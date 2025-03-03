@@ -4,7 +4,7 @@ import viteLogo from '/vite.svg'
 import './App.css'
 import './font.css'
 // import { Route, Routes } from 'react-router-dom';
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, useNavigate } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
 
 import MainPage from './components/pages/MainPage/MainPage';
@@ -28,10 +28,9 @@ function App() {
 
   const [authenticated, setAuthenticated] = useState(false);
   const [user, setUser] = useState(null); // Track user information
-  const [isSigningUp, setIsSigningUp] = useState(true); // Toggle between SignUp and SignIn
+  const [isSigningUp, setIsSigningUp] = useState(false); // Toggle between SignUp and SignIn  // Start with Sign In
 
   return (
-    // <div style={{ fontFamily: 'SF Pro Display, sans-serif' }}>
     <Router>
       <AnimatePresence>
         {!authenticated ? (

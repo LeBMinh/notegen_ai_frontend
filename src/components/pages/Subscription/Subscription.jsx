@@ -79,13 +79,13 @@ const planFeatures = {
       className: 'icon-note-enhance-style',
     },
   ],
-  unlimited: [
-    {
-      icon: Folder,
-      text: 'All features, no limits!',
-      className: 'icon-unlimited-style',
-    },
-  ],
+  // unlimited: [
+  //   {
+  //     icon: Folder,
+  //     text: 'All features, no limits!',
+  //     className: 'icon-unlimited-style',
+  //   },
+  // ],
 };
 
 export default function Subscription() {
@@ -129,7 +129,7 @@ export default function Subscription() {
           <button className="subscription-button">
             {/* css for tryBeta-icon is in Smartlearning.css */}
             <img src={TryBeta} alt="Try Beta Icon" className="tryBeta-icon" />
-            Subscribe
+            Subscribe now
           </button>
         </div>
 
@@ -150,12 +150,12 @@ export default function Subscription() {
           <button className="subscription-button">
             {/* css for tryBeta-icon is in Smartlearning.css */}
             <img src={TryBeta} alt="Try Beta Icon" className="tryBeta-icon" />
-            Subscribe
+            Subscribe now
           </button>
         </div>
 
         {/* Unlimited Plan */}
-        <div className="subscription-card unlimited">
+        {/* <div className="subscription-card unlimited">
           <img src={CrownIcon} alt={'Crown Icon'} className="sUnlimited-crown-icon " />
           <h2 className="subscription-card-title s-unlimited">Unlimited</h2>
           <p className="subscription-price">3,150,000 VND <span className='subscription-time'>/year</span></p>
@@ -170,11 +170,10 @@ export default function Subscription() {
             </div>
           </div>
           <button className="subscription-button">
-            {/* css for tryBeta-icon is in Smartlearning.css */}
             <img src={TryBeta} alt="Try Beta Icon" className="tryBeta-icon" />
             Subscribe
           </button>
-        </div>
+        </div> */}
       </div>
     </div>
   )

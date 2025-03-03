@@ -18,8 +18,17 @@ export default function Information({ user }) {
   const [isHovered, setIsHovered] = useState(false);
 
   // Extract first name from the displayName (e.g. "Le Binh Minh (K20 HCM)" to "Le Binh Minh")
-  const firstName = user?.displayName?.split(" ")[0] || "User";
-  const fullName = user.displayName.replace(/\s*\([^)]*\)\s*/g, "").trim();
+  // const firstName = user?.displayName?.split(" ")[0] || "User";
+  // const fullName = user.displayName.replace(/\s*\([^)]*\)\s*/g, "").trim();
+
+   // Determine user name (Firebase users have `displayName`, normal users may only have `username`)
+   const fullName = user.displayName || user.username || "User";
+   const email = user.email || "No email available";
+   
+   // Handle profile image (Firebase users have `photoURL`, `profile_picture` for normal sign-in users / `profileTempo` as a fallback)
+   const profileImage = 
+   user.profile_picture || 
+   (user.photoURL ? user.photoURL.replace(/=s\d+-c/, "=s380-c") : profileTempo);
 
   return (
     <div className='profileContainer'>
@@ -73,7 +82,7 @@ export default function Information({ user }) {
             className="profile-frame"
           />
           <img
-            src={user.photoURL?.replace(/=s\d+-c/, "=s380-c") || profileTempo}
+            src={profileImage}
             alt="User Profile"
             className="userProfile-pic"
             onError={(e) => (e.target.src = profileTempo)} // Fallback image
@@ -83,14 +92,14 @@ export default function Information({ user }) {
         <div className="profile-form">
           <div className="form-row">
             <div className="floating-label">
-              <input type="text" value={user.displayName} readOnly />
+              <input type="text" value={fullName} readOnly />
               <label>Full Name</label>
             </div>
           </div>
 
           <div className="form-row">
             <div className="floating-label">
-              <input type="text" value={user.email} readOnly />
+              <input type="text" value={email} readOnly />
               <label>Email</label>
             </div>
           </div>
