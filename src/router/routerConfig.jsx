@@ -1,6 +1,7 @@
 import { PATH_NAME } from "./Pathname";
 import SignUp from "../components/pages/SignUp/SignUp";
 import SignIn from "../components/pages/SignIn/SignIn";
+import StartPage from "../components/pages/StartPage/StartPage";
 import Dashboard from "../components/pages/Dashboard/Dashboard";
 import NoteGallery from "../components/pages/NoteGallery/NoteGallery";
 import SmartLearning from "../components/pages/SmartLearning/SmartLearning";
@@ -9,10 +10,13 @@ import Trash from "../components/pages/Trash/Trash";
 import Subscription from "../components/pages/Subscription/Subscription";
 import HelpCenter from "../components/pages/HelpCenter/HelpCenter";
 import NoteCanvas from "../components/pages/NoteCanvas/NoteCanvas";
+import AdminDashboard from "../components/pages/AdminDashboard/AdminDashboard";
+import AdminSubscription from "../components/pages/AdminSubscription/AdminSubscription";
 
 export const publicRoutes = [
     { path: PATH_NAME.SIGNUP, element: <SignUp /> },
     { path: PATH_NAME.SIGNIN, element: <SignIn /> },
+    { path: PATH_NAME.STARTPAGE, element: <StartPage /> },
 ];
 
 export const privateRoutes = [
@@ -26,3 +30,10 @@ export const privateRoutes = [
     { path: PATH_NAME.HELP_CENTER, element: <HelpCenter />},
     { path: PATH_NAME.NOTE_CANVAS, element: <NoteCanvas />},
 ];
+
+export const adminRoutes = [
+    {path: PATH_NAME.ADMIN_DASHBOARD, element: <AdminDashboard /> , isAdmin: true },
+    {path: PATH_NAME.ADMIN_SUBSCRIPTION, element: <AdminSubscription /> , isAdmin: true },
+];
+
+  

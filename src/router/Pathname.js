@@ -1,6 +1,7 @@
 export const PATH_NAME = {
     SIGNUP: "/signup",
     SIGNIN: "/signin",
+    STARTPAGE: "/",
     DASHBOARD: "/dashboard",
     NOTE_GALLERY: "/noteGallery",
     SMART_LEARNING: "/smartLearning",
@@ -9,6 +10,8 @@ export const PATH_NAME = {
     SUBSCRIPTION_NOW: "/subcription",
     HELP_CENTER: "/helpCenter",
     NOTE_CANVAS: "/notecanvas/:id",
+    ADMIN_DASHBOARD: "/adminDashboard",
+    ADMIN_SUBSCRIPTION: "/adminSubcription",
 };
 
 /**

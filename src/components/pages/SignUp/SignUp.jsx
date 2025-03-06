@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from "react-router-dom";
 import { signUp } from '../../../server/api';
 import { auth, googleProvider, facebookProvider, signInWithPopup } from '../../../auth/Firebase';
-import { TextField, IconButton, InputAdornment } from "@mui/material";
+import { TextField, IconButton, InputAdornment, CircularProgress } from "@mui/material";
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import Divider from '@mui/material/Divider';
@@ -21,7 +21,8 @@ export default function SignUp({ setAuthenticated, setUser, toggleSignIn }) {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null);
-  const navigate = useNavigate(); 
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   const handleImageUpload = (event) => {
     const file = event.target.files[0];
@@ -48,18 +49,20 @@ export default function SignUp({ setAuthenticated, setUser, toggleSignIn }) {
       alert("Please fill in all fields.");
       return;
     }
-  
+
     if (password !== confirmPassword) {
       alert("Passwords do not match!");
       return;
     }
-  
+
     // Convert Image to Base64 if selected
     let base64Image = "";
     if (selectedImage) {
       base64Image = selectedImage;
     }
-  
+
+    setLoading(true);
+
     try {
       const userData = {
         username: fullname,
@@ -70,19 +73,21 @@ export default function SignUp({ setAuthenticated, setUser, toggleSignIn }) {
         role: "free",    // Default to "free"
         profile_picture: base64Image
       };
-  
+
       const response = await signUp(userData);
-      
+
       console.log("Sign-up successful:", response);
       setUser(response);
       // setAuthenticated(true);
       localStorage.setItem('user', JSON.stringify(response));
-  
+
+      alert("Sign-up complete! Please reform your info in Sign In page.");
       navigate("/signin"); // Redirect to Sign In
-      alert("Sign-up complete! Please reform your info to get start.");
     } catch (error) {
       console.error("Sign-up failed:", error);
       alert(error);
+    } finally {
+      setLoading(false); // Stop loading
     }
   };
 
@@ -94,19 +99,8 @@ export default function SignUp({ setAuthenticated, setUser, toggleSignIn }) {
     setShowConfirmPassword(!showConfirmPassword);
   };
 
-  // const handleSignUpWithsuccessfulEmail = async () => {
-  //   try {
-  //     const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-  //     console.log("User created:", userCredential.user);
-  //     setUser(userCredential.user);
-  //     setAuthenticated(true);
-  //     localStorage.setItem('user', JSON.stringify(userCredential.user));
-  //   } catch (error) {
-  //     console.error("Sign-up failed:", error.message);
-  //   }
-  // };
-
   const handleGoogleSignIn = async () => {
+    setLoading(true);
     try {
       const result = await signInWithPopup(auth, googleProvider);
       console.log("User Info:", result.user);
@@ -115,6 +109,8 @@ export default function SignUp({ setAuthenticated, setUser, toggleSignIn }) {
       localStorage.setItem('user', JSON.stringify(result.user));
     } catch (error) {
       console.error("Login failed:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -269,8 +265,8 @@ export default function SignUp({ setAuthenticated, setUser, toggleSignIn }) {
             />
           </div>
         </div>
-        <button onClick={handleSignUp} className="new-signup-button">
-          Sign up an Account
+        <button onClick={handleSignUp} className="new-signup-button" disabled={loading}>
+          {loading ? <CircularProgress size={24} color="inherit" /> : "Sign up an Account"}
         </button>
 
         <p className="signup-tagline">
@@ -280,9 +276,9 @@ export default function SignUp({ setAuthenticated, setUser, toggleSignIn }) {
         <Divider sx={{ width: "50%", color: "rgba(0, 0, 0, 0.6)" }}>or</Divider>
 
         <div className="signup-options">
-          <button onClick={handleGoogleSignIn} className="signup-button">
-            <img src={GoogleIcon} alt="Google Icon" className="signup-google-icon" />
-            Continue with Google
+          <button onClick={handleGoogleSignIn} className="signup-button" disabled={loading}>
+            {loading ? <CircularProgress size={20} color="inherit" /> : <img src={GoogleIcon} alt="Google Icon" className="signup-google-icon" />}
+            {loading ? "Signing in..." : "Continue with Google"}
           </button>
         </div>
         <p className="signup-agreement">
