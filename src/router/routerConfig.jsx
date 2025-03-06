@@ -11,6 +11,7 @@ import Subscription from "../components/pages/Subscription/Subscription";
 import HelpCenter from "../components/pages/HelpCenter/HelpCenter";
 import NoteCanvas from "../components/pages/NoteCanvas/NoteCanvas";
 import AdminDashboard from "../components/pages/AdminDashboard/AdminDashboard";
+import AdminUserManagement from "../components/pages/AdminUserManagement/AdminUserManagement";
 import AdminSubscription from "../components/pages/AdminSubscription/AdminSubscription";
 
 export const publicRoutes = [
@@ -33,6 +34,7 @@ export const privateRoutes = [
 
 export const adminRoutes = [
     {path: PATH_NAME.ADMIN_DASHBOARD, element: <AdminDashboard /> , isAdmin: true },
+    {path: PATH_NAME.ADMIN_USERMANGEMENT, element: <AdminUserManagement /> , isAdmin: true },
     {path: PATH_NAME.ADMIN_SUBSCRIPTION, element: <AdminSubscription /> , isAdmin: true },
 ];
 

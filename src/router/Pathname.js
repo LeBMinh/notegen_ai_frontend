@@ -11,6 +11,7 @@ export const PATH_NAME = {
     HELP_CENTER: "/helpCenter",
     NOTE_CANVAS: "/notecanvas/:id",
     ADMIN_DASHBOARD: "/adminDashboard",
+    ADMIN_USERMANGEMENT: "/adminUserManagement",
     ADMIN_SUBSCRIPTION: "/adminSubcription",
 };
 

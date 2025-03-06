@@ -27,6 +27,7 @@
     "react-quill": "^2.0.0",
     "react-router-dom": "^6.28.0",
     "react-tooltip": "^5.28.0",
+    "recharts": "^2.15.1",
     "slate": "^0.112.0",
     "slate-react": "^0.112.1"
   },

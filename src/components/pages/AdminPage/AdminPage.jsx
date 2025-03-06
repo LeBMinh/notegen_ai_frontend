@@ -12,7 +12,7 @@ export default function AdminPage({ setAuthenticated }) {
             localStorage.removeItem("access_token");
             localStorage.removeItem("user");
             setAuthenticated(false); // Reset authentication state
-            setUser(null);
+            // setUser(null);
             const signinPath = Pathname('SIGNIN'); // Fetch path
             if (signinPath) {
                 navigate(signinPath); // Navigate to signin

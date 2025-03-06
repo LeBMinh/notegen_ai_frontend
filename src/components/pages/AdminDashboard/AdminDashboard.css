@@ -1,0 +1,10 @@
+
+.adminDashboard-header{
+    font-size: 1rem;
+    font-weight: bold;
+    background: linear-gradient(#25C1B3, #3372FF);
+    background-clip: text;  /* Standard property for compatibility */
+    -moz-background-clip: text; /* Firefox */
+    -ms-background-clip: text; /* Internet Explorer */
+    -webkit-text-fill-color: transparent;
+}

@@ -6,12 +6,14 @@ import { Pathname } from '../../../router/Pathname';
 // Importing icons
 import FullLogo from '../../../assets/Logo/Full_NG-Logo.svg';
 import Logo from '../../../assets/Logo/Icon_NG-Logo.svg';
-import UserCountIcon from '../../../assets/Icon_fill/UnlimitedWord.svg';
+import AdminDashboardIcon from '../../../assets/Icon_fill/UnlimitedWord.svg';
+import UsersIcon from '../../../assets/Icon_fill/Information.svg';
 import SubscriptionIcon from '../../../assets/Icon_fill/SubscribeNow.svg';
 import LogoutIcon from '../../../assets/Icon_fill/LogOut.svg';
 
 // Importing active gradient icons
-import ActiveUserCountIcon from '../../../assets/Icon_fill-sidebarGradient/UnlimitedWord.svg';
+import ActiveAdminDashboardIcon from '../../../assets/Icon_fill-sidebarGradient/UnlimitedWord.svg';
+import ActiveUsersIcon from '../../../assets/Icon_fill-sidebarGradient/Information.svg';
 import ActiveSubscribeIcon from '../../../assets/Icon_fill-Gradient/SubscribeNow.svg';
 
 
@@ -24,8 +26,9 @@ export default function AdminSidebar({ onLogout }) {
 
   // Define links for the sidebar
   const topLinks = [
-    { path: Pathname('ADMIN_DASHBOARD'), label: 'Dashboard', defaultIcon: UserCountIcon, activeIcon: ActiveUserCountIcon },
-    { path: Pathname('ADMIN_SUBSCRIPTION'), label: 'Subscription', defaultIcon: SubscriptionIcon, activeIcon: ActiveSubscribeIcon },
+    { path: Pathname('ADMIN_DASHBOARD'), label: 'Dashboard', defaultIcon: AdminDashboardIcon, activeIcon: ActiveAdminDashboardIcon },
+    { path: Pathname('ADMIN_USERMANGEMENT'), label: 'User Management', defaultIcon: UsersIcon, activeIcon: ActiveUsersIcon },
+    { path: Pathname('ADMIN_SUBSCRIPTION'), label: 'Subscriptions', defaultIcon: SubscriptionIcon, activeIcon: ActiveSubscribeIcon },
   ];
 
   const bottomLinks = [
@@ -55,7 +58,6 @@ export default function AdminSidebar({ onLogout }) {
               <NavLink
                 to={link.path}
                 className='sidebar-link'
-                // activeClassName="active"
                 key={link.label}
               >
                 {({ isActive }) => (
