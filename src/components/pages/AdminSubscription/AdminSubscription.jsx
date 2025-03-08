@@ -5,7 +5,7 @@ export default function AdminSubscription() {
   return (
     <div className='adminSubscription-container'>
       <div className='adminSubscription-header'>
-        <h1>Subscriptions History</h1>
+        <h2>Subscriptions History</h2>
 
       </div>
 

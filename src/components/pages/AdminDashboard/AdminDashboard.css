@@ -8,3 +8,26 @@
     -ms-background-clip: text; /* Internet Explorer */
     -webkit-text-fill-color: transparent;
 }
+
+.adminDashboard-charts-container {
+    height: 90vh;
+    overflow-y: auto; 
+  }
+  
+  .chart-container {
+    margin: 20px auto;
+    padding: 20px;
+    border-radius: 10px;
+    background: #f9f9f9;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    width: fit-content;
+  }
+  
+  .adminDashboard-bottom-charts {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+  }
+
+  
+  

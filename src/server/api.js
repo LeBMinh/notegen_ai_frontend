@@ -47,6 +47,29 @@ export const signIn = async (credentials) => {
 
 
 // Get all Users
+export const getAllUsers = async () => {
+  const token = localStorage.getItem('access_token');
+  
+  if (!token) {
+    console.error("No access token found.");
+    return [];
+  }
+
+  try {
+    const response = await axios.get(`${API_BASE_URL}/auth/users`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+    });
+
+    console.log("Full API response:", response.data); // Debugging
+    return response.data.body?.data || [];
+  } catch (error) {
+    console.error("Error fetching users:", error.response?.data || error.message);
+    return [];
+  }
+};
 
 
 // Get user details by ID

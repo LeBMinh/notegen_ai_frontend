@@ -47,10 +47,12 @@ export default function SignIn({ setAuthenticated, setUser, toggleSignUp }) {
 
       // Store token in localStorage for future API calls
       localStorage.setItem('access_token', response.accessToken);
-      localStorage.setItem('user', JSON.stringify({
-        identifier: response.user, // Store username and email
-        isAdmin: response.isAdmin // Store isAdmin flag
-      }));
+      // localStorage.setItem('user', JSON.stringify({
+      //   identifier: response.user, // Store username and email
+      //   isAdmin: response.isAdmin // Store isAdmin flag
+      // }));
+      localStorage.setItem('isAdmin', response.isAdmin ? "true" : "false"); // ✅ Store separately
+      localStorage.setItem('user', JSON.stringify(response.user)); // ✅ Store user object
 
       // Redirect based on user role
       if (response.isAdmin) {
