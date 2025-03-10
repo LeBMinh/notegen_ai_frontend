@@ -252,6 +252,12 @@
   }
 
   /* Collapsed state for 'Grab Your Note' link*/
+  .custom-top-link{
+    width: 100%; /* Matches the full width of other links */
+    border: 1px solid var(--lightBorder);
+    cursor: pointer;
+  }
+
   .sidebar.collapsed .custom-top-link{
     padding: 0.7rem 0.8rem;
   }

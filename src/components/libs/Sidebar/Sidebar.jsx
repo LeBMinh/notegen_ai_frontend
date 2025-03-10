@@ -5,6 +5,7 @@ import { auth } from '../../../auth/Firebase';
 import './Sidebar.css';
 import { PATH_NAME, Pathname } from '../../../router/Pathname';
 import { publicRoutes } from '../../../router/routerConfig';
+import DBoardModals from '../DBoardModals/DBoardModals';
 
 // Importing icons
 import FullLogo from '../../../assets/Logo/Full_NG-Logo.svg';
@@ -29,16 +30,27 @@ import ActiveHelpIcon from '../../../assets/Icon_fill-sidebarGradient/NeedHelp.s
 
 export default function Sidebar({ onLogout }) {
     const [isCollapsed, setIsCollapsed] = useState(false);
+    const [isModalOpen, setIsModalOpen] = useState(false);
     const navigate = useNavigate();
 
     const toggleSidebar = () => {
         setIsCollapsed(!isCollapsed);
     };
 
+    const openModal = () => {
+        console.log("Opening modal...");
+        setIsModalOpen(true);
+    };
+
+    const closeModal = () => {
+        console.log("Closing modal...");
+        setIsModalOpen(false);
+    };
+
     // Define links for the sidebar
     const topLinks = [
         // Official Grab-Your-Note Path here
-        { path: Pathname('NOTE_CANVAS'), label: 'Grab Your Note', defaultIcon: GrabYourNoteIcon },
+        { label: 'Grab Your Note', defaultIcon: GrabYourNoteIcon },
         { path: Pathname('DASHBOARD'), label: 'Dashboard', defaultIcon: DashboardIcon, activeIcon: ActiveDashboardIcon },
         { path: Pathname('NOTE_GALLERY'), label: 'Note Gallery', defaultIcon: NoteGalleryIcon, activeIcon: ActiveNoteGalleryIcon },
         { path: Pathname('SMART_LEARNING'), label: 'Smart Learning', defaultIcon: SmartLearningIcon, activeIcon: ActiveSmartLearningIcon },
@@ -51,6 +63,12 @@ export default function Sidebar({ onLogout }) {
         { path: Pathname('HELP_CENTER'), label: 'Help Center', defaultIcon: HelpIcon, activeIcon: ActiveHelpIcon },
         { label: 'Logout', onClick: onLogout, defaultIcon: LogoutIcon },
     ];
+
+    const handleNavigateToCanvas = () => {
+        console.log("Navigating to NoteCanvas...");
+        navigate("/notecanvas/:note5")
+        setIsModalOpen(false);
+      };
 
     return (
         <div className={`sidebar ${isCollapsed ? 'collapsed' : ''}`}>
@@ -72,18 +90,10 @@ export default function Sidebar({ onLogout }) {
                 <div className="top-links">
                     {/* Grab Your Note link button*/}
                     <div className="GrabYourNote-link">
-                        <NavLink
-                            to={PATH_NAME.GRAB_YOUR_NOTE}
-                            className='sidebar-link custom-top-link'
-                            // activeClassName="active"
-                        >
-                            <img
-                                src={GrabYourNoteIcon}
-                                alt="GrabYourNote Icon"
-                                className="icon"
-                            />
+                        <button onClick={openModal} className="sidebar-link custom-top-link">
+                            <img src={GrabYourNoteIcon} alt="Grab Your Note Icon" className="icon" />
                             {!isCollapsed && <span className="label-style GrabYourNote-text">Grab Your Note</span>}
-                        </NavLink>
+                        </button>
                     </div>
 
                     {/* Other top links */}
@@ -108,6 +118,8 @@ export default function Sidebar({ onLogout }) {
                                 )}
                             </NavLink>
                         ))}
+                    {/* Render the modal */}
+                    {isModalOpen && <DBoardModals openMD={isModalOpen} onClose={closeModal} onNavigateToCanvas={handleNavigateToCanvas}                    />}
                 </div>
 
                 {/* Bottom section */}
@@ -117,10 +129,10 @@ export default function Sidebar({ onLogout }) {
                         <NavLink
                             to={PATH_NAME.SUBSCRIPTION_NOW}
                             className="sidebar-link custom-link"
-                            // activeClassName="active"
+                        // activeClassName="active"
                         >
                             <div className="icon" />
-                            {!isCollapsed && <span className="label-style">Subscription <br/> Now!</span>}
+                            {!isCollapsed && <span className="label-style">Subscription <br /> Now!</span>}
                         </NavLink>
                     </div>
 

@@ -21,14 +21,16 @@ export const signIn = async (credentials) => {
     // Extract access token from the nested structure
     const accessToken = response.data?.body?.data?.access_token;
     const isAdmin = response.data?.body?.data?.is_admin;
+    const userId = response.data?.body?.data?.user_id;
 
-    if (!accessToken) {
+    if (!accessToken || !userId) {
       throw "Sign-in failed. Invalid response from server.";
     }
 
     return {
       accessToken,
       user: credentials.identifier, // Assuming identifier is email or username
+      userId,
       isAdmin, // Include isAdmin flag
 
     };
@@ -73,13 +75,14 @@ export const getAllUsers = async () => {
 
 
 // Get user details by ID
-const getUserDetails = async (token) => {
+export const getUserDetails = async (userId, token) => {
   try {
-    const res = await axios.get(`${API_BASE_URL}/auth/users- by-id/${user_id}`, {
+    const res = await axios.get(`${API_BASE_URL}/auth/users-by-id/${userId}`, {
       headers: { Authorization: `Bearer ${token}` }
     });
 
-    return res.data?.body?.data; // Adjust this based on actual API response
+    console.log("Full API response:", res.data); // Debugging
+    return res.data.body?.data ; // Adjust this based on actual API response
   } catch (error) {
     console.error("Failed to get user details:", error);
     return {}; // Return an empty object if fetching fails

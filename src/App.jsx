@@ -40,8 +40,13 @@ function App() {
     const storedUser = localStorage.getItem("user");
 
     if (storedToken && storedUser) {
-      setAuthenticated(true);
-      setUser(JSON.parse(storedUser));
+      try {
+        setAuthenticated(true);
+        setUser(JSON.parse(storedUser));
+      } catch (error) {
+        console.error("Error parsing user data:", error);
+        setUser(null); // Prevent app crash
+      }
     }
   }, []);
 

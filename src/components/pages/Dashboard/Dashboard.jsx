@@ -1,4 +1,5 @@
 import React, { useState, useMemo } from "react";
+import { useNavigate } from "react-router-dom";
 import './Dashboard.css';
 // import folder and note list
 import folders from "../../libs/FolderList/FolderData";
@@ -16,10 +17,13 @@ import LgGradientNoteNow from '../../../assets/Icon_line-Gradient/GrabYourNote_L
 export default function Dashboard() {
   const [searchTerm, setSearchTerm] = useState("");
   const [pinnedNotes, setPinnedNotes] = useState([]);
-  const [openMd, setOpenMd] = useState(true);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [currentModal, setCurrentModal] = useState(null);
+  const navigate = useNavigate();
+
 
   // Flatten notes from folders
-  const notes = folders.flatMap((folder) => folder.notes);
+  const notes = folders?.flatMap((folder) => folder.notes) || [];
 
   const handlePinNote = (note) => {
     setPinnedNotes((prevPinnedNotes) => {
@@ -71,9 +75,26 @@ export default function Dashboard() {
     return text.replace(regex, (match) => `<span class="highlight">${match}</span>`);
   };
 
+
+  const handleOpenModal = () => {
+    if (isModalOpen) return; // Ngăn việc mở lại modal ngay khi nó đang đóng
+    console.log("Opening Modal...");
+
+    setCurrentModal("select");
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    console.log("Closing Modal...");
+
+    setIsModalOpen(false);
+    // setCurrentModal(null); 
+  };
+
   const handleNavigateToCanvas = () => {
     console.log("Navigating to NoteCanvas...");
-    setOpenMd(false);
+    navigate("/notecanvas/:note5")
+    setIsModalOpen(false);
   };
 
   return (
@@ -109,7 +130,7 @@ export default function Dashboard() {
       </div>
 
       {/* Dashboard Take Note Now board */}
-      <div className="dashboard-takeNote-board">
+      <div className="dashboard-takeNote-board" onClick={handleOpenModal}>
         <div className="dashboard-content-board">
           <img
             src={LgGradientNoteNow}
@@ -122,8 +143,9 @@ export default function Dashboard() {
             Every note is a step toward mastering your goals!"</p>
         </div>
         <DBoardModals
-          openMd={open}
-          onClose={() => setOpenMd(false)}
+          openMD={isModalOpen}
+          // currentModal={currentModal} 
+          onClose={handleCloseModal}
           onNavigateToCanvas={handleNavigateToCanvas}
         />
       </div>
@@ -144,8 +166,8 @@ export default function Dashboard() {
         {/* Note List */}
         <div className="dashboard-note-cards-container">
           {filteredNotes.length > 0 ? (
-            filteredNotes.map((note) => (
-              <div key={note.id} className="dashboard-note-card">
+            filteredNotes.map((note, index) => (
+              <div key={note.id || index} className="dashboard-note-card">
                 <span className="dashboard-note-time">
                   <img src={EditTimeAgo} alt="Time Icon" className="dashboard-note-timeAgo-icon" />
                   2 days ago
