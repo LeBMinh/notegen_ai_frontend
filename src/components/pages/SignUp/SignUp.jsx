@@ -81,7 +81,7 @@ export default function SignUp({ setAuthenticated, setUser, toggleSignIn }) {
       // setAuthenticated(true);
       localStorage.setItem('user', JSON.stringify(response));
 
-      alert("Sign-up complete! Please reform your info in Sign In page.");
+      alert("Kindly check your email and click the verification link to complete your registration.");
       navigate("/signin"); // Redirect to Sign In
     } catch (error) {
       console.error("Sign-up failed:", error);
