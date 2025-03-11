@@ -111,3 +111,6 @@ export const generatePaymentQR = async (amount, note, bankAccount, bankId, token
     return null;
   }
 };
+
+
+//Confirm payment
