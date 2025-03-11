@@ -7,7 +7,10 @@
       height: 42rem;
       /* border: 1px solid var(--light-3); */
       border-radius: 1rem;
-     font-family: -apple-system, BlinkMacSystemFont, "San Francisco Pro", sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, "San Francisco Pro", sans-serif;
+      max-height: 95vh;
+      overflow-y: auto; 
+      scrollbar-width: thin;
   }
   
   @media (max-width: 1200px) {

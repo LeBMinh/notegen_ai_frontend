@@ -1,5 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './Subscription.css';
+import { useNavigate } from "react-router-dom";
+import { generatePaymentQR } from '../../../server/api';
 // Import Icon
 import Folder from '../../../assets/Icon_fill/Folder.svg';
 import CrownIcon from '../../../assets/Icon_fill/SubscribeNow.svg';
@@ -89,6 +91,95 @@ const planFeatures = {
 };
 
 export default function Subscription() {
+  const navigate = useNavigate();
+  const [loading, setLoading] = useState(false); // Loading state
+
+  const handleLearnerCheckOut = async () => {
+    if (loading) return; // Prevent multiple clicks
+    setLoading(true);
+
+    const token = localStorage.getItem("access_token");
+    if (!token) {
+      console.error("No token found, please log in.");
+      setLoading(false);
+      return;
+    }
+
+    try {
+      const qrCode = await generatePaymentQR(
+        20000,
+        "Subscription for Learners",
+        "1015530875", // Bank Account
+        "970436", // Bank ID
+        token
+      );
+
+      console.log("QR Code Response:", qrCode);
+
+      if (qrCode && qrCode.qr_image) {
+        navigate("/checkOut", {
+          state: {
+            plan: "Learner",
+            qrCode: qrCode.qr_image,
+            amount: "20.000",
+            note: "Subscription for Learners",
+            bankAccount: "1015530875",
+            bankId: "970436",
+          },
+        });
+      } else {
+        console.error("QR Code data is missing or invalid.");
+      }
+    } catch (error) {
+      console.error("Failed to generate QR Code:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleProUserCheckOut = async () => {
+    if (loading) return; // Prevent multiple clicks
+    setLoading(true);
+
+    const token = localStorage.getItem("access_token");
+    if (!token) {
+      console.error("No token found, please log in.");
+      setLoading(false);
+      return;
+    }
+
+    try {
+      const qrCode = await generatePaymentQR(
+        59000,
+        "Subscription for Pro Users",
+        "1015530875", // Bank Account
+        "970436", // Bank ID
+        token
+      );
+
+      console.log("QR Code Response:", qrCode);
+
+      if (qrCode && qrCode.qr_image) {
+        navigate("/checkOut", {
+          state: {
+            plan: "Pro",
+            qrCode: qrCode.qr_image,
+            amount: "59.000",
+            note: "Subscription for Pro Users",
+            bankAccount: "1015530875",
+            bankId: "970436",
+          },
+        });
+      } else {
+        console.error("QR Code data is missing or invalid.");
+      }
+    } catch (error) {
+      console.error("Failed to generate QR Code:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div className="subscription-container">
       <h1 className="subscription-title">Choose Your Plan</h1>
@@ -116,7 +207,7 @@ export default function Subscription() {
           </div>
           <img src={GrCrownIcon} alt={'Crown Icon'} className="sLearner-crown-icon" />
           <h2 className="subscription-card-title s-learner">For Learners</h2>
-          <p className="subscription-price">99,000 VND <span className='subscription-time'>/month</span></p>
+          <p className="subscription-price">20,000 VND <span className='subscription-time'>/month</span></p>
           <p className="subscription-duration">Expected price</p>
           <ul className="subscription-features">
             {planFeatures.learners.map((feature, index) => (
@@ -126,10 +217,10 @@ export default function Subscription() {
               </li>
             ))}
           </ul>
-          <button className="subscription-button">
+          <button className="subscription-button" onClick={handleLearnerCheckOut}>
             {/* css for tryBeta-icon is in Smartlearning.css */}
             <img src={TryBeta} alt="Try Beta Icon" className="tryBeta-icon" />
-            Subscribe now
+            {loading ? "Processing..." : "Subscribe now"}
           </button>
         </div>
 
@@ -137,7 +228,7 @@ export default function Subscription() {
         <div className="subscription-card pro">
           <img src={CrownIcon} alt={'Crown Icon'} className="sProUser-crown-icon" />
           <h2 className="subscription-card-title s-proUser">For Pro Users</h2>
-          <p className="subscription-price">189,000 VND <span className='subscription-time'>/month</span></p>
+          <p className="subscription-price">59,000 VND <span className='subscription-time'>/month</span></p>
           <p className="subscription-duration">Expected price</p>
           <ul className="subscription-features">
             {planFeatures.pro.map((feature, index) => (
@@ -147,10 +238,10 @@ export default function Subscription() {
               </li>
             ))}
           </ul>
-          <button className="subscription-button">
+          <button className="subscription-button" onClick={handleProUserCheckOut}>
             {/* css for tryBeta-icon is in Smartlearning.css */}
             <img src={TryBeta} alt="Try Beta Icon" className="tryBeta-icon" />
-            Subscribe now
+            {loading ? "Processing..." : "Subscribe now"}
           </button>
         </div>
 

@@ -8,6 +8,7 @@ import SmartLearning from "../components/pages/SmartLearning/SmartLearning";
 import Information from "../components/pages/Information/Information";
 import Trash from "../components/pages/Trash/Trash";
 import Subscription from "../components/pages/Subscription/Subscription";
+import CheckOut from "../components/pages/CheckOut/CheckOut";
 import HelpCenter from "../components/pages/HelpCenter/HelpCenter";
 import NoteCanvas from "../components/pages/NoteCanvas/NoteCanvas";
 import AdminDashboard from "../components/pages/AdminDashboard/AdminDashboard";
@@ -28,6 +29,7 @@ export const privateRoutes = [
     { path: PATH_NAME.INFORMATION, element: <Information />},
     { path: PATH_NAME.TRASH, element: <Trash />},
     { path: PATH_NAME.SUBSCRIPTION_NOW, element: <Subscription />},
+    { path: PATH_NAME.CHECKOUT, element: <CheckOut />},
     { path: PATH_NAME.HELP_CENTER, element: <HelpCenter />},
     { path: PATH_NAME.NOTE_CANVAS, element: <NoteCanvas />},
 ];

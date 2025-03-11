@@ -16,6 +16,7 @@ export default function HelpCenter() {
   const issues = [
     { text: "Slow performance", icon: IssueDetails },
     { text: "Sync errors", icon: IssueDetails },
+    { text: "Forgot password", icon: IssueDetails },
     { text: "Data loss", icon: IssueDetails },
     { text: "Free feature limitations", icon: IssueDetails },
     { text: "Formatting issues", icon: IssueDetails },

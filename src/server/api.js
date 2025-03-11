@@ -42,7 +42,7 @@ export const signIn = async (credentials) => {
       throw new Error("Invalid credentials.");
     } else {
       const errorMessage = error.response?.data?.message || error.response?.data?.error || "Sign-in failed. Please try again later.";
-      throw new Error(errorMessage);    
+      throw new Error(errorMessage);
     }
   }
 };
@@ -51,7 +51,7 @@ export const signIn = async (credentials) => {
 // Get all Users
 export const getAllUsers = async () => {
   const token = localStorage.getItem('access_token');
-  
+
   if (!token) {
     console.error("No access token found.");
     return [];
@@ -82,9 +82,32 @@ export const getUserDetails = async (userId, token) => {
     });
 
     console.log("Full API response:", res.data); // Debugging
-    return res.data.body?.data ; // Adjust this based on actual API response
+    return res.data.body?.data; // Adjust this based on actual API response
   } catch (error) {
     console.error("Failed to get user details:", error);
     return {}; // Return an empty object if fetching fails
+  }
+};
+
+
+// Generate Payment QR Code
+export const generatePaymentQR = async (amount, note, bankAccount, bankId, token) => {
+  try {
+    const res = await axios.post(`${API_BASE_URL}/api/vietqr/generate`, {
+        amount,
+        note,
+        bank_account: bankAccount,
+        bank_id: bankId
+      },
+      {
+        headers: { Authorization: `Bearer ${token}` }
+      }
+    );
+
+    console.log("QR Code API response:", res.data);
+    return res.data.body?.data?.qr_code || null;
+  } catch (error) {
+    console.error("Failed to generate payment QR:", error);
+    return null;
   }
 };

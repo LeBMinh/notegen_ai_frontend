@@ -8,6 +8,7 @@ export const PATH_NAME = {
     INFORMATION: "/information",
     TRASH: "/trash",
     SUBSCRIPTION_NOW: "/subcription",
+    CHECKOUT: "/checkout",
     HELP_CENTER: "/helpCenter",
     NOTE_CANVAS: "/notecanvas/:id",
     ADMIN_DASHBOARD: "/adminDashboard",
