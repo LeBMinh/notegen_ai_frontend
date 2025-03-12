@@ -35,7 +35,7 @@ const CustomQuill = forwardRef((props, ref) => (
 // Override Quill's default icons
 const icons = ReactQuill.Quill.import("ui/icons");
 // Text Formatting (Already working)
-icons["bold"] = `<img src="/assets/Icon_line/Bold.svg" alt="Bold">`;
+icons["bold"] = `<img src="${Bold}" alt="Bold">`;
 icons["italic"] = `<img src="/src/assets/Icon_line/Italic.svg" alt="Italic">`;
 icons["underline"] = `<img src="/src/assets/Icon_line/Underline.svg" alt="Underline">`;
 
