@@ -36,21 +36,22 @@ const CustomQuill = forwardRef((props, ref) => (
 const icons = ReactQuill.Quill.import("ui/icons");
 // Text Formatting (Already working)
 icons["bold"] = `<img src="${Bold}" alt="Bold">`;
-icons["italic"] = `<img src="/src/assets/Icon_line/Italic.svg" alt="Italic">`;
-icons["underline"] = `<img src="/src/assets/Icon_line/Underline.svg" alt="Underline">`;
+icons["italic"] = `<img src="${Italic}" alt="Italic">`;
+icons["underline"] = `<img src="${Underline}" alt="Underline">`;
 
 // Lists
-icons["list"]["bullet"] = `<img src="/src/assets/Icon_line/BulletedList.svg" alt="BulletedList">`;
-icons["list"]["ordered"] = `<img src="/src/assets/Icon_line/NumberedList.svg" alt="NumberedList">`;
+icons["list"]["bullet"] = `<img src="${BulletedList}" alt="BulletedList">`;
+icons["list"]["ordered"] = `<img src="${NumberedList}" alt="NumberedList">`;
 
 // Alignment
-icons["align"][""] = `<img src="/src/assets/Icon_line/LeftAlign.svg" alt="LeftAlign">`; // Default (Left)
-icons["align"]["center"] = `<img src="/src/assets/Icon_line/CentreAlign.svg" alt="CentreAlign">`;
-icons["align"]["right"] = `<img src="/src/assets/Icon_line/RightAlign.svg" alt="RightAlign">`;
+icons["align"][""] = `<img src="${LeftAlign}" alt="LeftAlign">`; // Default (Left)
+icons["align"]["center"] = `<img src="${CentreAlign}" alt="CentreAlign">`;
+icons["align"]["right"] = `<img src="${RightAlign}" alt="RightAlign">`;
 
 // Media
-icons["link"] = `<img src="/src/assets/Icon_line/Insert_link.svg" alt="InsertLink">`;
-icons["image"] = `<img src="/src/assets/Icon_line/InsertImage-Graph-Mindmap.svg" alt="InsertImage">`;
+icons["link"] = `<img src="${InsertLlink}" alt="InsertLink">`;
+icons["image"] = `<img src="${InsertImage}" alt="InsertImage">`;
+// icons["image"] = `<img src="/src/assets/Icon_line/InsertImage-Graph-Mindmap.svg" alt="InsertImage">`;
 
 const Quill = ReactQuill.Quill;
 const BlockEmbed = Quill.import("blots/block/embed");
