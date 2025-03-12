@@ -90,6 +90,10 @@ export const getUserDetails = async (userId, token) => {
 };
 
 
+//Create a new note file
+
+
+
 // Generate Payment QR Code
 export const generatePaymentQR = async (amount, note, bankAccount, bankId, token) => {
   try {
