@@ -108,7 +108,7 @@ export default function Subscription() {
     try {
       const qrCode = await generatePaymentQR(
         20000,
-        "Subscription for Learners",
+        "Subscription for Learners with confirmation code ",
         "1015530875", // Bank Account
         "970436", // Bank ID
         token
@@ -122,7 +122,7 @@ export default function Subscription() {
             plan: "Learner",
             qrCode: qrCode.qr_image,
             amount: "20.000",
-            note: "Subscription for Learners",
+            note: `Subscription for Learners with confirmation code ${qrCode.confirmation_code}`,
             bankAccount: "1015530875",
             bankId: "970436",
           },
@@ -151,7 +151,7 @@ export default function Subscription() {
     try {
       const qrCode = await generatePaymentQR(
         59000,
-        "Subscription for Pro Users",
+        "Subscription for Pro Users with confirmation code ",
         "1015530875", // Bank Account
         "970436", // Bank ID
         token
@@ -165,7 +165,7 @@ export default function Subscription() {
             plan: "Pro",
             qrCode: qrCode.qr_image,
             amount: "59.000",
-            note: "Subscription for Pro Users",
+            note: `Subscription for Pro Users with confirmation code ${qrCode.confirmation_code}`,
             bankAccount: "1015530875",
             bankId: "970436",
           },

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './Information.css';
-import { getUserDetails } from '../../../server/api';
+import { getUserDetails, retrieveStorage } from '../../../server/api';
 // import frame and replacement profile
 import profileFrame from '../../../assets/Others/profile-Frame.png'
 import profileFrameExpanded from '../../../assets/Others/profileFrame.png'
@@ -115,6 +115,7 @@ export default function Information({ user, userId, token }) {
   // Determine user name (Firebase users have `displayName`, normal users may only have `username`)
   const fullName = user?.displayName || userNomal?.username || "User";
   const email = user?.email || userNomal?.email || "No email available";
+  const role = userNomal?.role || "No role is set here";
 
   // Handle profile image (Firebase users have `photoURL`, `profile_picture` for normal sign-in users / `profileTempo` as a fallback)
   const profileImage =
@@ -192,6 +193,13 @@ export default function Information({ user, userId, token }) {
             <div className="floating-label">
               <input type="text" value={email} readOnly />
               <label>Email</label>
+            </div>
+          </div>
+
+          <div className="form-row">
+            <div className="floating-label">
+              <input type="text" value={role} readOnly />
+              <label>Subscription status</label>
             </div>
           </div>
         </div>

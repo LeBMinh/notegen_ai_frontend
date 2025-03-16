@@ -11,19 +11,117 @@ import {
   IconButton,
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
-import folders from "../../libs/FolderList/FolderData"; // Import folder data
+import { useNavigate } from "react-router-dom";
+import { retrieveStorage, createFolder, createFileWithFolder } from '../../../server/api';
+
+// Import folder data
+// import folders from "../../libs/FolderList/FolderData"; 
 
 export default function DBoardModals({ openMD, onClose, onNavigateToCanvas }) {
   const [currentModal, setCurrentModal] = useState("select"); // State to track which modal is active
   const [newFolderName, setNewFolderName] = useState("");
+  const [folders, setFolders] = useState([]); // Store retrieved folders
+  const [loading, setLoading] = useState(true);
+  
+  const navigate = useNavigate();
+
+  // Fetch folders when modal opens
+  useEffect(() => {
+    if (open) {
+      fetchFolders();
+    }
+  }, [open]);
+
+  // const fetchFolders = async () => {
+  //   try {
+  //     const response = await retrieveStorage();
+  //     if (response && response.data) {
+  //       const folderList = response.data.filter((item) => item.type === "folder");
+  //       setFolders(folderList);
+  //     }
+  //   } catch (error) {
+  //     console.error("Error fetching folders:", error);
+  //   }
+  // };
+
+  const fetchFolders = async () => {
+      setLoading(true);
+      try {
+        const response = await retrieveStorage();
+        console.log("Raw API Response:", response); // Debugging
+  
+        if (!response || !response.body || !Array.isArray(response.body.data)) {
+          console.error("Error: Unexpected API response format", response);
+          return;
+        }
+  
+        const data = response.body.data;
+  
+        if (!Array.isArray(data)) {
+          console.error("Error: API did not return an array. Received:", data);
+          return;
+        }
+  
+        const filteredFolders = data.filter(
+          (item) => item.type === "folder" && !item.is_deleted
+        );
+  
+        // console.log("Filtered Notes:", filteredFolders ); // Debugging
+        setFolders(filteredFolders);
+  
+        // if (filteredFolders.length > 0) {
+        //   setActiveFolder(filteredFolders[0]._id);
+        // }
+  
+      } catch (error) {
+        console.error("Error fetching folders:", error);
+      } finally {
+        setLoading(false); // Stop loading when done
+      }
+    };
+  
+    useEffect(() => {
+      fetchFolders(); // Fetch notes on mount
+    }, []);
 
   const handleAddToFolder = () => setCurrentModal("choose");
   const handleSkip = () => onNavigateToCanvas();
   const handleAddNewFolder = () => setCurrentModal("newFolder");
-  const handleCreateFolder = () => {
-    console.log(`New folder created: ${newFolderName}`);
-    setCurrentModal("choose");
-    // Go back to "Choose a Folder" after creating a folder
+  const handleCreateFolder = async () => {
+    if (!newFolderName.trim()) return;
+
+    try {
+      console.log("Creating folder with name:", newFolderName); // Debugging
+
+      await createFolder(newFolderName);
+      setNewFolderName("");
+      fetchFolders(); // Refresh folder list after creation
+      setCurrentModal("choose");
+    } catch (error) {
+      console.error("Error creating folder:", error);
+    }
+  };
+
+
+  const handleSelectFolder = async (folderId) => {
+    console.log("Selected Folder ID:", folderId); // Debugging
+
+    try {
+      const fileName = "Untitled note";
+      const response = await createFileWithFolder(folderId, fileName);
+
+      // Extract the correct file ID from the API response
+      const fileId = response?.body?.data?._id;
+
+      if (fileId) {
+        console.log("New file created with ID:", fileId);
+        navigate(`/notecanvas/${fileId}`);
+      } else {
+        console.error("File creation failed: No ID returned.");
+      }
+    } catch (error) {
+      console.error("Error creating file:", error);
+    }
   };
 
   const handleClose = () => {
@@ -102,14 +200,20 @@ export default function DBoardModals({ openMD, onClose, onNavigateToCanvas }) {
         <DialogContent dividers>
           <Grid container spacing={2} style={{ maxHeight: "300px", overflowY: "auto" }}>
 
+            {/* use retrieveStorage and filter data "type" ("type": "folder") to show list of folder according to their "name"
+            a click on a folder button will trigger the createFile with folder_id associate to that folder button  */}
             {folders.map((folder) => (
-              <Grid item xs={6} key={folder.id}>
+              <Grid item xs={6} key={folder._id}>
                 <Button
                   variant="outlined"
                   fullWidth
-                  startIcon={<span role="img" aria-label="folder">📂</span>}
+                  onClick={() => {
+                    console.log("Folder selected:", folder); // Debugging
+                    handleSelectFolder(folder._id);
+                  }}
+                  // startIcon={<span role="img" aria-label="folder">📂</span>}
                 >
-                  {folder.title}
+                  📂 {folder.name}
                 </Button>
               </Grid>
             ))}
@@ -126,7 +230,10 @@ export default function DBoardModals({ openMD, onClose, onNavigateToCanvas }) {
             sx={{ marginTop: '10px' }}
             label="Folder Name"
             value={newFolderName}
-            onChange={(e) => setNewFolderName(e.target.value)}
+            onChange={(e) => {
+              console.log("Typing:", e.target.value); // Debugging
+              setNewFolderName(e.target.value);
+            }}
           />
         </DialogContent>
         <DialogActions>

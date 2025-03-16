@@ -2,6 +2,7 @@ import axios from "axios";
 
 const API_BASE_URL = "https://notegenai-backend.onrender.com"; // Replace with your Swagger backend URL
 
+//=======================AUTHENTICATION============================//
 export const signUp = async (userData) => {
   try {
     const response = await axios.post(`${API_BASE_URL}/auth/register`, userData);
@@ -90,10 +91,236 @@ export const getUserDetails = async (userId, token) => {
 };
 
 
-//Create a new note file
+//=======================GEMINI AI============================//
 
 
 
+
+
+
+//=======================STORAGE============================//
+// Function to get token from localStorage 
+const getAuthHeaders = () => {
+  const token = localStorage.getItem("access_token"); 
+  return {
+    headers: { Authorization: `Bearer ${token}` },
+  };
+};
+
+// 📂 Create a New Folder
+export const createFolder = async (name) => {
+  try {
+    console.log("Sending to API:", { name, parent_id: null }); // Debugging
+
+    const response = await axios.post(
+      `${API_BASE_URL}/storage/create-folder?name=${encodeURIComponent(name)}&parent_id=`, 
+      {}, // No request body
+      getAuthHeaders()
+    );
+    
+    console.log("API response:", response.data); // Debugging
+    return response.data;
+  } catch (error) {
+    console.error("Error creating folder:", error);
+    throw error;
+  }
+};
+
+// 📄 Create a New File (Note)
+export const createFile = async (folderId, fileName) => {
+  const token = localStorage.getItem("access_token");
+
+  if (!token) {
+    throw new Error("No access token found. Please log in.");
+  }
+
+  console.log("Sending request with folderId:", folderId); // Debugging
+
+  try {
+    const response = await axios.post(
+      `${API_BASE_URL}/storage/create-file?name=${encodeURIComponent(fileName)}`,
+      {
+        folder_id: folderId ?? null, // Explicitly set null instead of undefined
+        name: fileName ?? "Untitled note", // Ensure name is always provided
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    console.log("Request Payload:", {
+      folder_id: folderId ?? null, 
+      name: fileName ?? "Untitled note",
+    });
+    
+    console.log("Note data:", response.data); // Debugging
+    return response.data;
+  } catch (error) {
+    console.error("Error creating file:", error.response?.data || error.message);
+    throw new Error(error.response?.data?.message || "Failed to create file.");
+  }
+};
+
+// 📄 Create a New File (with assigned Folder)
+export const createFileWithFolder = async (folderId, fileName) => {
+  const token = localStorage.getItem("access_token");
+
+  if (!token) {
+    throw new Error("No access token found. Please log in.");
+  }
+
+  console.log("Sending request with folderId:", folderId); // Debugging
+
+  try {
+    const queryParams = new URLSearchParams({
+      name: fileName,
+      folder_id: folderId ?? "", // Ensure `null` is handled properly
+    }).toString();
+
+    const response = await axios.post(
+      `${API_BASE_URL}/storage/create-file?${queryParams}`,
+      {}, // No need for a request body since all params are in the query
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    console.log("Note data:", response.data); // Debugging
+    return response.data;
+  } catch (error) {
+    console.error("Error creating file:", error.response?.data || error.message);
+    throw new Error(error.response?.data?.message || "Failed to create file.");
+  }
+};
+
+
+// 📑 Retrieve All Files & Folders
+export const retrieveStorage = async () => {
+  try {
+    const response = await axios.get(
+      `${API_BASE_URL}/storage/retrieve`,
+      { params: { in_trash: false }, ...getAuthHeaders() }
+    );
+    console.log("Storage data:", response.data); //Debugging
+    return response.data;
+  } catch (error) {
+    console.error("Error retrieving storage:", error);
+    throw error;
+  }
+};
+
+// 🔍 Retrieve File/Folder by ID
+export const retrieveById = async (obj_id, is_file = true) => {
+  try {
+    const response = await axios.get(
+      `${API_BASE_URL}/storage/retrieve-by-id`,
+      { params: { obj_id, is_file }, ...getAuthHeaders() }
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error retrieving by ID:", error);
+    throw error;
+  }
+};
+
+// 📝 Update File Content 
+export const updateFileContent = async (file_id, new_content) => {
+  try {
+    const token = localStorage.getItem("access_token");
+
+    if (!token) {
+      throw new Error("No access token found. Please log in.");
+    }
+
+    // Encode new_content properly for URL
+    const encodedContent = encodeURIComponent(new_content);
+
+    // Construct query parameters correctly
+    const url = `${API_BASE_URL}/storage/update-file-content?file_id=${file_id}&content_type=original&new_content=${encodedContent}`;
+
+    console.log("Sending update request to:", url);
+
+    const response = await axios.put(url, null, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        // "Content-Type": "text/plain", // Ensure correct content type
+        "Content-Type": "application/json",
+      },
+    });
+
+    console.log("Update response:", response.data);
+    return response.data;
+  } catch (error) {
+    console.error("Error updating file content:", error.response?.data || error.message);
+    throw new Error(error.response?.data?.message || "Failed to update file content.");
+  }
+};
+
+
+//  Move File 
+export const moveFile = async (item_id, new_parent_id) => {
+  try {
+    const response = await fetch(`${API_BASE_URL}/storage/move-item`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        ...getAuthHeaders().headers,
+      },
+      body: JSON.stringify({ item_id, new_parent_id }),
+    });
+
+    if (!response.ok) throw new Error("Failed to move item");
+
+    return await response.json();
+  } catch (error) {
+    console.error("Error moving item:", error);
+    throw error;
+  }
+};
+
+// Rename File or Folder
+export const renameItem = async (item_id, folder_id, new_name) => {
+  console.log("Renaming item:", { item_id, folder_id, new_name });
+
+  try {
+    const response = await axios.put(`${API_BASE_URL}/storage/rename-item`, 
+      { item_id: item_id || null, folder_id: folder_id || null, new_name }, 
+      { headers: { Authorization: `Bearer ${localStorage.getItem("access_token")}` } }
+    );
+
+    console.log("Rename response:", response.data);
+    return response.data;
+  } catch (error) {
+    console.error("Error renaming item:", error.response?.data || error.message);
+    throw error;
+  }
+};
+
+// Delete File or Folder
+export const deleteItem = async (item_id, folder_id) => {
+  console.log("Deleting item:", { item_id, folder_id });
+
+  try {
+    const response = await axios.delete(`${API_BASE_URL}/storage/move-to-trash`, {
+      headers: { Authorization: `Bearer ${localStorage.getItem("access_token")}` },
+      data: { item_id, folder_id } // Axios requires `data` for DELETE requests with a body
+    });
+
+    console.log("Delete response:", response.data);
+    return response.data;
+  } catch (error) {
+    console.error("Error deleting item:", error.response?.data || error.message);
+    throw error;
+  }
+};
+
+
+//=======================VietQR PAYMENTS====================//
 // Generate Payment QR Code
 export const generatePaymentQR = async (amount, note, bankAccount, bankId, token) => {
   try {
@@ -117,4 +344,4 @@ export const generatePaymentQR = async (amount, note, bankAccount, bankId, token
 };
 
 
-//Confirm payment
+//Confirm payment only in admin page

@@ -54,6 +54,7 @@ export default function StartPage({ setAuthenticated }) {
                 You are already logged in to
                 <img src={FullLogo} alt="FullLogo Icon" className="startPage-fullLogo-icon" />
             </div>
+
             <div className='startPage-btn-container'>
                 <button onClick={handleNavigateToDashboard} className='startPage-btn toDashboardBtn'>
                     Go to Dashboard
@@ -63,6 +64,11 @@ export default function StartPage({ setAuthenticated }) {
                     <img src={LogoutIcon} alt="ToDashboard Icon" className="startPage-logout-icon" />
                     Log out
                 </button>
+            </div>
+
+            <div className="startPage-user-warning">
+                <p>⚠️ Your token will expire <strong>24h</strong> after sign in. <br/>
+                If the page isn't working, just sign in again. Thanks! 🤗</p>
             </div>
         </div>
     )

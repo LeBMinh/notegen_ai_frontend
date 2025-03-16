@@ -211,6 +211,12 @@
     background-color: var(--light); /* Background of the scrollbar track */
   }
   
+  .dashboard-note-loading-container{
+    margin: 30px 0 0 30px;
+    display: flex;
+    justify-content: center;
+    /* align-items: center; */
+  }
   
   .dashboard-note-card {
     position: relative;

@@ -1,8 +1,6 @@
 import React from 'react';
 import { useLocation } from "react-router-dom";
 import './CheckOut.css';
-// import icons
-import MagnifyingGlass from '../../../assets/Icon_line/FindNow.svg';
 
 // Function to map bankId to a bank name
 const bankList = {
@@ -53,10 +51,10 @@ export default function CheckOut() {
               <p className='checkout-Dtitle'>Bank: </p>
               <p className='checkout-Dcontent'> <strong>{bankName || "N/A"} </strong></p>
 
-              <p className='checkout-Dtitle'>Account Number: </p>
+              <p className='checkout-Dtitle'>Account number: </p>
               <p className='checkout-Dcontent'><strong>{bankAccount || "N/A"} </strong></p>
 
-              <p className='checkout-Dtitle'>Account Owner: </p>
+              <p className='checkout-Dtitle'>Account holder : </p>
               <p className='checkout-Dcontent'><strong>{"NGUYEN MINH LUAT"} </strong></p>
 
               <p className='checkout-Dtitle'>Amount: </p>
@@ -70,21 +68,6 @@ export default function CheckOut() {
           {/* Caution note */}
           <div className="checkout-user-warning">
             <p>⚠️ Noted: Double check the <strong>amount</strong> and <strong>bank account holder</strong> to avoid mistakes</p>
-          </div>
-
-          {/* Confirm transaction bar */}
-          <div className="checkout-search-bar">
-            <input
-              type="text"
-              placeholder="Enter transaction id here"
-              // value={}
-              // onChange={}
-              className="checkout-input"
-            />
-            <button className="search-btn">
-              <img src={MagnifyingGlass} alt="Search Icon" className="checkout-seach-icon" />
-              Search
-            </button>
           </div>
 
         </div>

@@ -134,6 +134,9 @@
 /* Profile Info Form Section */
 .profile-form{
     flex-grow: 1;
+    display: flex;
+    gap: 15px;
+    flex-direction: column
 }
 
 .floating-label {

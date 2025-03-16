@@ -273,14 +273,14 @@ export default function SignUp({ setAuthenticated, setUser, toggleSignIn }) {
           Already have an account? <span onClick={() => toggleSignIn()}>Sign in</span>
         </p>
 
-        <Divider sx={{ width: "50%", color: "rgba(0, 0, 0, 0.6)" }}>or</Divider>
+        {/* <Divider sx={{ width: "50%", color: "rgba(0, 0, 0, 0.6)" }}>or</Divider>
 
         <div className="signup-options">
           <button onClick={handleGoogleSignIn} className="signup-button" disabled={loading}>
             {loading ? <CircularProgress size={20} color="inherit" /> : <img src={GoogleIcon} alt="Google Icon" className="signup-google-icon" />}
             {loading ? "Signing in..." : "Continue with Google"}
           </button>
-        </div>
+        </div> */}
         <p className="signup-agreement">
           By continuing, you agree to the <span>Terms of Service</span> <br />
           and acknowledge you've read our <span>Privacy Policy</span>.

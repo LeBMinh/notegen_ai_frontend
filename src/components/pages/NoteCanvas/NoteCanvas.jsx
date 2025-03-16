@@ -1,9 +1,13 @@
 import React, { useState, useEffect, useRef, forwardRef } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
-import folders from '../../libs/FolderList/FolderData';
+import Typo from "typo-js";
 import './NoteCanvas.css';
+import { retrieveById, updateFileContent } from '../../../server/api';
+
+// import folders from '../../libs/FolderList/FolderData';
+//import image
 import NoFolder from '../../../assets/Stock3D-png/HomeFolder.png';
 //import icons
 import BackToPrevious from '../../../assets/Icon_line/BackToPrevious.svg';
@@ -65,12 +69,23 @@ Quill.register(DividerBlot);
 
 export default function NoteCanvas() {
   const { id } = useParams(); // Get the note ID from the URL
-  const trimmedId = id.startsWith(":") ? id.substring(1) : id; // Remove colon if present
+  // const trimmedId = id.startsWith(":") ? id.substring(1) : id; // Remove colon if present
 
+  const navigate = useNavigate();
+  const [note, setNote] = useState(null);
+  const [folderName, setFolderName] = useState("");
   const [text, setText] = useState('');
+  const [previousText, setPreviousText] = useState("");
   const [wordCount, setWordCount] = useState(0);
   const [spellingMistakes, setSpellingMistakes] = useState(0);
   const [lastEdit, setLastEdit] = useState(new Date().toLocaleString());
+  const [dictionary, setDictionary] = useState(null);
+
+
+  const handleBacktoDashboard = () => {
+    // auto save file func state before leaving
+    navigate("/dashboard")
+  };
 
   const quillRef = useRef(null);
 
@@ -84,19 +99,73 @@ export default function NoteCanvas() {
     }
   };
 
-  // Find the note based on the ID
-  const note = folders
-    .flatMap((folder) => folder.notes)
-    .find((note) => {
-      // console.log("Checking note ID:", note.id, "against URL ID:", trimmedId);
-      return note.id === trimmedId;
-    });
-
-  useEffect(() => {
-    if (note) {
-      setText(note.content); // Load note content on mount
+  const handleImageUpload = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onloadend = () => {
+            const base64String = reader.result; // Base64 encoded image
+            insertImageIntoEditor(base64String);
+        };
     }
-  }, [note]);
+};
+
+const insertImageIntoEditor = (base64String) => {
+  const quill = quillRef.current.getEditor(); 
+  let range = quill.getSelection() || { index: quill.getLength() }; 
+  
+  // Strip the Data URI prefix (e.g., "data:image/png;base64,")
+  const base64Data = base64String.split(",")[1]; 
+
+  quill.insertEmbed(range.index, "image", `data:image/png;base64,${base64Data}`);
+};
+
+  // Fetch folder/note data from API
+  useEffect(() => {
+    async function fetchNoteAndFolder() {
+      try {
+        // Fetch note details
+        const noteResponse = await retrieveById(id);
+        if (noteResponse?.body?.data) {
+          const noteData = noteResponse.body.data;
+          setNote(noteData);
+          setText(noteData.content.original || "");
+
+          // Fetch folder details using folder_id
+          if (noteData.folder_id) {
+            const folderResponse = await retrieveById(noteData.folder_id, false);
+            if (folderResponse?.body?.data) {
+              setFolderName(folderResponse?.body?.data?.name); // Assuming folderResponse contains name
+            }
+          }
+        }
+      } catch (error) {
+        console.error("Error fetching note or folder:", error);
+      }
+    }
+
+    fetchNoteAndFolder();
+  }, [id]);
+
+
+  // Load Typo.js dictionary once
+  useEffect(() => {
+    const dict = new Typo("en_US", "/dictionaries/en_US.dic", "/dictionaries/en_US.aff");
+    setDictionary(dict);
+  }, []);
+
+  // Update note data from API
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (text !== previousText) {
+        saveContent();
+        setPreviousText(text);
+      }
+    }, 3000); // Every 3 seconds
+
+    return () => clearInterval(interval); // Cleanup on unmount
+  }, [text, previousText]);
 
   const handleTextChange = (content) => {
     setText(content);
@@ -115,8 +184,26 @@ export default function NoteCanvas() {
     };
     setWordCount(countWords(content));
 
-    // Spelling mistake logic can be added here
-    setSpellingMistakes(0); // Placeholder (implement logic below)
+    // Spell checking (only if dictionary is ready)
+    if (dictionary) {
+      const words = content.split(/\s+/);
+      const misspelledWords = words.filter((word) => !dictionary.check(word));
+      setSpellingMistakes(misspelledWords.length);
+    }
+    // setSpellingMistakes(0); 
+  };
+
+  const saveContent = async () => {
+    if (id && text !== previousText) {
+      try {
+        console.log("Saving content...", text);
+        const response = await updateFileContent(id, text);
+        console.log("Save response:", response);
+        setPreviousText(text); // Only update previousText after successful save
+      } catch (error) {
+        console.error("Error saving content:", error);
+      }
+    }
   };
 
   // Toolbar Configuration
@@ -143,7 +230,7 @@ export default function NoteCanvas() {
   };
 
   if (!note) {
-    console.log("Note not found for ID:", id);
+    // console.log("Note not found for ID:", id);
     return <div className="noteCanvas-error">
       <img
         src={NoFolder}
@@ -160,12 +247,12 @@ export default function NoteCanvas() {
       <div className="noteCanvas-main">
         <div className="noteCanvas-header">
           <div className="noteCanvas-header-left">
-            <div className="noteCanvas-back-btn-container">
+            <div className="noteCanvas-back-btn-container" onClick={handleBacktoDashboard}>
               <img src={BackToPrevious} alt="BackToPrevious Icon" className="backToPrevious-icon" />
             </div>
             <div className="noteCanvas-noteTitle-container">
               <img src={UntitledNote} alt="Note Title Icon" className="noteCanvas-noteTitle-icon" />
-              <h2 className="noteCanvas-title">{note.title || 'Untitled Note'}</h2>
+              <h2 className="noteCanvas-title">{note.name || 'Untitled Note'}</h2>
             </div>
           </div>
 
@@ -228,10 +315,9 @@ export default function NoteCanvas() {
               <button className="ql-link">
                 <img src={InsertLlink} alt="Insert Link" />
               </button>
-              <button className="ql-image">
+              {/* <button className="ql-image" onClick={handleImageUpload}>
                 <span><img src={InsertImage} alt="Insert Image" /></span>
-              </button>
-              {/* Video option can be added here */}
+              </button> */}
             </div>
           </div>
         </div>
@@ -277,7 +363,11 @@ export default function NoteCanvas() {
         {/* === Folder Info === */}
         <div className="noteCanvas-folder-info">
           <img src={FolderTitle} alt="FolderTitle Icon" className="folderTitle-icon" />
-          <p style={{ fontWeight: 'bold' }}>{note.folder || 'Not Assigned'}</p>
+          <p style={{ fontWeight: 'bold' }}>
+            {folderName
+              ? folderName === "Main" || folderName === "" ? "NoteGen folder" : folderName
+              : "Not Assigned"}
+          </p>
         </div>
 
         {/* === Last Edit Section === */}

@@ -1,10 +1,11 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import './Dashboard.css';
-// import folder and note list
-import folders from "../../libs/FolderList/FolderData";
+import { createFile, retrieveStorage } from '../../../server/api';
+import CircularProgress from "@mui/material/CircularProgress";
 //import modals for new note
 import DBoardModals from "../../libs/DBoardModals/DBoardModals";
+
 //import icons
 import MagnifyingGlass from '../../../assets/Icon_line/FindNow.svg';
 import RecentlyNote from '../../../assets/Icon_fill/RecentlyNote.svg';
@@ -17,56 +18,102 @@ import LgGradientNoteNow from '../../../assets/Icon_line-Gradient/GrabYourNote_L
 export default function Dashboard() {
   const [searchTerm, setSearchTerm] = useState("");
   const [pinnedNotes, setPinnedNotes] = useState([]);
+  const [notes, setNotes] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentModal, setCurrentModal] = useState(null);
+  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
+  const timeAgo = (timestamp) => {
+    const now = new Date(); // Local time
+    const past = new Date(timestamp); // Convert timestamp from UTC
 
-  // Flatten notes from folders
-  const notes = folders?.flatMap((folder) => folder.notes) || [];
+    // Adjust for local timezone offset
+    const timezoneOffset = now.getTimezoneOffset() * 60000; // Convert minutes to milliseconds
+    const localPast = new Date(past.getTime() - timezoneOffset); // Convert UTC to local time
+
+    const diffMs = now - localPast; // Corrected time difference
+
+    const diffSeconds = Math.floor(diffMs / 1000);
+    const diffMinutes = Math.floor(diffSeconds / 60);
+    const diffHours = Math.floor(diffMinutes / 60);
+    const diffDays = Math.floor(diffHours / 24);
+
+    if (diffSeconds < 60) return `${diffSeconds} seconds ago`;
+    if (diffMinutes < 60) return `${diffMinutes} minutes ago`;
+    if (diffHours < 24) return `${diffHours} hours ago`;
+    return `${diffDays} days ago`;
+  };
+
+  // Fetch notes from API
+  const fetchNotes = async () => {
+    setLoading(true);
+
+    try {
+      const response = await retrieveStorage();
+
+      console.log("Raw API Response:", response); // Debugging log
+
+      // Ensure response has a 'body' and then check if it has 'data'
+      if (!response || !response.body || !Array.isArray(response.body.data)) {
+        console.error("Error: Unexpected API response format", response);
+        return;
+      }
+
+      const data = response.body.data; // Extracting the actual notes array
+
+      // Ensure the data is an array
+      if (!Array.isArray(data)) {
+        console.error("Error: API did not return an array. Received:", data);
+        return;
+      }
+
+      // Filter and sort notes
+      const filteredNotes = data
+        .filter((note) => note.type === "file" && !note.is_deleted)
+        .sort((a, b) =>
+          new Date(b.updated_at || b.created_at) - new Date(a.updated_at || a.created_at)
+        );
+
+      console.log("Filtered Notes:", filteredNotes); // Debugging
+
+      setNotes(filteredNotes);
+    } catch (error) {
+      console.error("Error fetching notes:", error);
+    } finally {
+      setLoading(false); // Stop loading when done
+    }
+  };
+
+  useEffect(() => {
+    console.log("Fetching notes...");
+    fetchNotes();
+  }, []); // Empty dependency array ensures it runs once on mount  
+
 
   const handlePinNote = (note) => {
-    setPinnedNotes((prevPinnedNotes) => {
-      if (prevPinnedNotes.find((pinnedNote) => pinnedNote.id === note.id)) {
-        // If already pinned, unpin it
-        return prevPinnedNotes.filter((pinnedNote) => pinnedNote.id !== note.id);
-      } else {
-        // Pin the note
-        return [...prevPinnedNotes, note];
-      }
+    setPinnedNotes(prevPinnedNotes => {
+      return prevPinnedNotes.find((pinnedNote) => pinnedNote._id === note._id)
+        ? prevPinnedNotes.filter((pinnedNote) => pinnedNote._id !== note._id)
+        : [...prevPinnedNotes, note];
     });
   };
 
-  // const filteredNotes = [
-  //   ...pinnedNotes.filter(
-  //     (note) =>
-  //       note.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-  //       note.content.toLowerCase().includes(searchTerm.toLowerCase())
-  //   ),
-  //   ...notes
-  //     .filter(
-  //       (note) =>
-  //         !pinnedNotes.find((pinnedNote) => pinnedNote.id === note.id) && // Exclude pinned notes
-  //         (note.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-  //           note.content.toLowerCase().includes(searchTerm.toLowerCase()))
-  //     ),
-  // ];
 
   const filteredNotes = useMemo(() => {
     return [
-      ...pinnedNotes.filter(
-        (note) =>
-          note.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          note.content.toLowerCase().includes(searchTerm.toLowerCase())
+      ...pinnedNotes.filter((note) =>
+        note.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        (note.content.original && note.content.original.toLowerCase().includes(searchTerm.toLowerCase()))
       ),
-      ...notes.filter(
-        (note) =>
-          !pinnedNotes.find((pinnedNote) => pinnedNote.id === note.id) &&
-          (note.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            note.content.toLowerCase().includes(searchTerm.toLowerCase()))
+      ...notes.filter((note) =>
+        !pinnedNotes.some((pinnedNote) => pinnedNote._id === note._id) &&
+        (note.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          (note.content.original && note.content.original.toLowerCase().includes(searchTerm.toLowerCase())))
       ),
     ];
-  }, [searchTerm, pinnedNotes, notes]);
+  }, [searchTerm, notes, pinnedNotes]);
+
 
 
   const highlightText = (text, searchTerm) => {
@@ -91,10 +138,36 @@ export default function Dashboard() {
     // setCurrentModal(null); 
   };
 
-  const handleNavigateToCanvas = () => {
-    console.log("Navigating to NoteCanvas...");
-    navigate("/notecanvas/:note5")
-    setIsModalOpen(false);
+  const handleNavigateToCanvas = async () => {
+    try {
+      const fileName = "Untitled note";
+      const folderId = null; // No folder selected (BE will assign a default folder)
+
+      // Create the file using the modified API function
+      const response = await createFile(folderId, fileName);
+
+      // Extract the correct file ID from the API response
+      const fileId = response?.body?.data?._id;
+
+      if (fileId) {
+        console.log("New file created with ID:", fileId);
+        navigate(`/notecanvas/${fileId}`);
+        setIsModalOpen(false);
+      } else {
+        console.error("File creation failed: No ID returned.");
+      }
+    } catch (error) {
+      console.error("Error creating new file:", error);
+    }
+  };
+
+
+  const handleNoteToCanvas = (file_id) => {
+    if (file_id) {
+      navigate(`/notecanvas/${file_id}`);
+    } else {
+      console.error("Invalid file_id:", file_id);
+    }
   };
 
   return (
@@ -165,41 +238,50 @@ export default function Dashboard() {
 
         {/* Note List */}
         <div className="dashboard-note-cards-container">
-          {filteredNotes.length > 0 ? (
-            filteredNotes.map((note, index) => (
-              <div key={note.id || index} className="dashboard-note-card">
-                <span className="dashboard-note-time">
-                  <img src={EditTimeAgo} alt="Time Icon" className="dashboard-note-timeAgo-icon" />
-                  2 days ago
-                </span>
-                {/* <img
+          {loading ? (
+            <div className="dashboard-note-loading-container">
+              <CircularProgress size={40} />
+            </div>
+          ) : filteredNotes.length === 0 ? (
+            <div className="empty-search-found">
+              No note? Go create some 📑
+            </div>
+          ) : (
+            filteredNotes.length > 0 ? (
+              filteredNotes.map((note, index) => (
+                <div key={note._id || index} className="dashboard-note-card" onClick={() => handleNoteToCanvas(note._id)}>
+                  <span className="dashboard-note-time">
+                    <img src={EditTimeAgo} alt="Time Icon" className="dashboard-note-timeAgo-icon" />
+                    {timeAgo(note.updated_at || note.created_at)}
+                  </span>
+                  {/* <img
                   src={Pin}
                   alt="Pin Icon"
                   className="dashboard-note-pin-icon"
                   onClick={() => handlePinNote(note)} // Attach click event
                 /> */}
-                <div className="dashboard-note-TandC">
-                  <h3 className="dashboard-note-title">{note.title}</h3>
-                  <p
-                    className="dashboard-note-content"
-                    dangerouslySetInnerHTML={{
-                      __html: highlightText(
-                        note.content.length > 70
-                          ? `${note.content.slice(0, 70)}...`
-                          : note.content,
-                        searchTerm
-                      ),
-                    }}
-                  />
+                  <div className="dashboard-note-TandC">
+                    <h3 className="dashboard-note-title">{note.name}</h3>
+                    <p
+                      className="dashboard-note-content"
+                      dangerouslySetInnerHTML={{
+                        __html: highlightText(
+                          note.content.original.length > 70 || note.content.original.length == 0
+                            ? `${note.content.original.slice(0, 70)}...`
+                            : note.content.original,
+                          searchTerm
+                        ),
+                      }}
+                    />
+                  </div>
                 </div>
+              ))
+            ) : (
+              <div className="empty-search-found">
+                No notes found for "{searchTerm}"
               </div>
-            ))
-          ) : (
-            <div className="empty-search-found">
-              No notes found for "{searchTerm}"
-            </div>
+            )
           )}
-
         </div>
       </div>
 

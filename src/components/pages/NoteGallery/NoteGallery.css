@@ -65,25 +65,29 @@
   grid-template-columns: repeat(auto-fit, minmax(10em, 1fr)); /* Adaptive grid */
   margin-bottom: 1.4rem;
   max-width: 100%; 
-  max-height: 350px; /* Limit the container's height */
+  max-height: 250px; /* Limit the container's height */
   overflow-y: auto; /* Add vertical scrolling when content overflows */
 }
 
 /* Custom scrollbar styling for WebKit browsers (e.g., Chrome, Edge, Safari) */
-.noteGallery-folders-container::-webkit-scrollbar {
+.noteGallery-folders-container::-webkit-scrollbar ,
+.notes-gallery-container::-webkit-scrollbar {
   width: 5px; /* Set scrollbar width */
 }
 
-.noteGallery-folders-container::-webkit-scrollbar-thumb {
+.noteGallery-folders-container::-webkit-scrollbar-thumb ,
+.notes-gallery-container::-webkit-scrollbar-thumb {
   background-color: var(--primary-1); /* Color of the scrollbar thumb */
   border-radius: 4px; /* Rounded scrollbar edges */
 }
 
-.noteGallery-folders-container::-webkit-scrollbar-thumb:hover {
+.noteGallery-folders-container::-webkit-scrollbar-thumb:hover ,
+.notes-gallery-container::-webkit-scrollbar-thumb:hover {
   background: var(--primary-3); /* Darker color on hover */
 }
 
-.noteGallery-folders-container::-webkit-scrollbar-track {
+.noteGallery-folders-container::-webkit-scrollbar-track ,
+.notes-gallery-container::-webkit-scrollbar-track {
   background-color: var(--light);  /* Scrollbar track background color */
 }
 
@@ -181,11 +185,25 @@
 }
   
   /* Notes */
+  .notes-gallery-loading-container{
+    margin-top: 30px;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+  }
+
+  .notes-gallery-no-notes-message{
+    margin-top: 10px;
+    color: var(--primary-6);
+  }
+
   .notes-gallery-container {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     /* grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); */
     gap: 0.9rem;
+    max-height: 55vh; /* Limit the container's height */
+    overflow-y: auto; /* Add vertical scrolling when content overflows */
   }
   
   .noteGallery-note-card {
@@ -237,6 +255,18 @@
   .noteGallery-note-content {
     font-size: 12px;
     color: #666;
+  }
+
+  .noteGallery-context-item{
+    /* display: flex; */
+    align-items: center;
+    gap: 5px;
+    font-size: 16px;
+    padding: 5px;
+  }
+
+  .noteGallery-context-item:hover{
+    background: var(--light-2);
   }
   
   

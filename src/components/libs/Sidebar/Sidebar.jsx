@@ -3,6 +3,7 @@ import { NavLink, useNavigate } from 'react-router-dom';
 import { signOut } from 'firebase/auth';
 import { auth } from '../../../auth/Firebase';
 import './Sidebar.css';
+import { createFile } from '../../../server/api';
 import { PATH_NAME, Pathname } from '../../../router/Pathname';
 import { publicRoutes } from '../../../router/routerConfig';
 import DBoardModals from '../DBoardModals/DBoardModals';
@@ -64,11 +65,28 @@ export default function Sidebar({ onLogout }) {
         { label: 'Logout', onClick: onLogout, defaultIcon: LogoutIcon },
     ];
 
-    const handleNavigateToCanvas = () => {
-        console.log("Navigating to NoteCanvas...");
-        navigate("/notecanvas/:note5")
-        setIsModalOpen(false);
-      };
+    const handleNavigateToCanvas = async () => {
+        try {
+          const fileName = "Untitled note";
+          const folderId = null; // No folder selected (BE will assign a default folder)
+      
+          // Create the file using the modified API function
+          const response = await createFile(folderId, fileName);
+      
+          // Extract the correct file ID from the API response
+          const fileId = response?.body?.data?._id;
+      
+          if (fileId) {
+            console.log("New file created with ID:", fileId);
+            navigate(`/notecanvas/${fileId}`);
+            setIsModalOpen(false);
+          } else {
+            console.error("File creation failed: No ID returned.");
+          }
+        } catch (error) {
+          console.error("Error creating new file:", error);
+        }
+      };   
 
     return (
         <div className={`sidebar ${isCollapsed ? 'collapsed' : ''}`}>
@@ -119,7 +137,7 @@ export default function Sidebar({ onLogout }) {
                             </NavLink>
                         ))}
                     {/* Render the modal */}
-                    {isModalOpen && <DBoardModals openMD={isModalOpen} onClose={closeModal} onNavigateToCanvas={handleNavigateToCanvas}                    />}
+                    {isModalOpen && <DBoardModals openMD={isModalOpen} onClose={closeModal} onNavigateToCanvas={handleNavigateToCanvas} />}
                 </div>
 
                 {/* Bottom section */}
