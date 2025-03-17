@@ -3,12 +3,126 @@
   grid-template-columns: 5fr 1fr;
   height: 95vh;
   gap: 10px;
+  transition: all 0.45s ease-in-out;
 }
 
 .noteCanvas-main {
   display: flex;
   flex-direction: column;
   padding: 8px;
+}
+
+.noteCanvas-container.enhanced-mode {
+  grid-template-columns: 5fr 3.5fr;
+}
+
+/* Enhanced Mode Styles */
+.noteCanvas-original-quill-section{
+  margin-top: 10px;
+}
+
+.noteCanvas-original-header{
+  font-size: 0.8rem;
+  text-align: center;
+  color: var(--dark-2);
+  margin-bottom: 5px;
+}
+
+.noteCanvas-enhanced-container {
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+}
+
+.noteCanvas-enhanced-header {
+  display: flex;
+  gap: 20px;
+  justify-content: flex-end;
+}
+
+.noteCanvas-closeEnhance-btn-container {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 10px;
+  padding: 0.5rem 0.9rem;
+  border-radius: 1rem;
+  font-size: 14px;
+  font-weight: 700;
+  background: var(--light);
+  border: 1px solid var(--light-3);
+  color: var(--dark-2);
+  cursor: pointer;
+  -webkit-user-drag: none; /* Disable drag functionality */
+  user-select: none; /* Disable text selection */
+}
+
+.closeEnhanced-icon {
+  width: 1.4rem;
+  filter: invert(31%) sepia(6%) saturate(21%) hue-rotate(19deg) brightness(98%) contrast(90%);
+}
+
+.noteCanvas-closeEnhance-btn-container:hover {
+  background: var(--light-2);
+  border: 1px solid var(--light-5);
+}
+
+.noteCanvas-enhanced-quill-container {
+  display: flex;
+  /* gap: 20px; */
+  flex-direction: column;
+  padding: 8px;
+  height: 600px;
+  max-height: 600px;
+  border: 1px solid var(--light-3);
+  border-radius: 16px;
+}
+
+.noteCanvas-quill-divider {
+  height: 1px;
+  width: 90%; 
+  align-self: center;
+  background: linear-gradient(90deg, #6EEAD2, #25BBFF);
+  margin: 2px 0; /* Spacing between sections */
+  display: inline-block;
+}
+
+.noteCanvas-quill-section {
+  flex: 1;
+  background: var(--light);
+  padding: 10px;
+  border-radius: 5px;
+}
+
+.noteCanvas-quill-section h3 {
+  margin-bottom: 5px;
+  background: linear-gradient(#25C1B3, #3372FF);
+      background-clip: text;  /* Standard property for compatibility */
+      -moz-background-clip: text; /* Firefox */
+      -ms-background-clip: text; /* Internet Explorer */
+      -webkit-text-fill-color: transparent;
+}
+
+.noteCanvas-quill-section .ql-container.ql-snow {
+  border: 1px solid transparent;
+  border-radius: 8px;
+}
+
+.noteCanvas-quill-section .ql-editor{
+  max-height: 235px;
+  padding: 12px 0px;
+  border-radius: 8px;
+}
+
+/* Scrollbar Styling */
+.noteCanvas-quill-section .ql-editor::-webkit-scrollbar {
+  width: 4px;
+}
+
+.noteCanvas-quill-section .ql-editor::-webkit-scrollbar-thumb {
+  background: #ccc;
+  border-radius: 3px;
 }
 
 /* Back button and Note title */
@@ -68,7 +182,6 @@
   max-height: 600px ;
   /* border-radius: 0  0 8px 8px; */
   border-radius: 8px;
-  
 }
 
 .noteCanvas-main .ql-toolbar.ql-snow {
@@ -242,7 +355,11 @@
   filter: invert(100%) brightness(100%);
 }
 
-/* Word count and Spelling mistakes Cards */
+.noteCanvas-enhance-btn-container:hover {
+  background: linear-gradient( #25BBFF, #6EEAD2);
+}
+
+/* Word count - Spelling mistakes Cards - Save status */
 .noteCanvas-stats {
   display: flex;
   flex-direction: column;
@@ -305,7 +422,35 @@
   color: var(--secondary-6);
 }
 
-/* Folder assigned and Time edited */
+
+.noteCanvas-save-container{
+  background-color: var(--light);
+  padding: 6px;
+  border: 1px solid var(--light-3);
+  border-radius: 16px;
+}
+
+.noteCanvas-save-status{
+  color: var(--dark-2);
+  font-size: 0.9rem;
+  text-align: center;
+  transition: opacity 0.3s ease-in-out;
+}
+
+.noteCanvas-save-status.saving {
+  color: orange;
+}
+
+.noteCanvas-save-status.saved {
+  font-weight: bold;
+  color: green;
+}
+
+.noteCanvas-save-status.failed {
+  color: red;
+}
+
+/* Folder assigned - Time edited - See enhanced file button*/
 .noteCanvas-folder-info {
   margin-top: auto;  /* Do not delete this line */
   display: flex;
@@ -332,6 +477,32 @@
 .lastEditTime-icon{
   width: 1.4rem;
   filter: invert(31%) sepia(6%) saturate(21%) hue-rotate(19deg) brightness(98%) contrast(90%);
+}
+
+.noteCanvas-seeEnhanced-container{
+  margin: 15px 0 5px 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 3px 5px;
+  border-radius: 6px;
+  font-size: 12px;
+  background: var(--light-2);
+  border: 1px solid var(--light-4);
+  color: var(--dark-4);
+  cursor: pointer;
+  -webkit-user-drag: none; /* Disable drag functionality */
+  user-select: none; /* Disable text selection */
+}
+
+.noteCanvas-seeEnhanced-icon{
+  width: 1.2rem;
+  filter: invert(31%) sepia(6%) saturate(21%) hue-rotate(19deg) brightness(98%) contrast(90%);
+}
+
+.noteCanvas-seeEnhanced-container:hover{
+  background: var(--light-3);
 }
 
 .noteCanvas-error{
@@ -370,5 +541,23 @@
   .noteCanvas-main .ql-editor {
     flex: 1;
     max-height: 470px;
+  }
+
+  .noteCanvas-original-quill-section .ql-editor {
+    height: 500px;
+    max-height: 580px;
+  }
+
+  .noteCanvas-original-quill-section .ql-container.ql-snow {
+    height: 500px;
+    max-height: 580px;
+  }
+
+  .noteCanvas-enhanced-quill-container {
+    max-height: 580px ;
+  }
+
+  .noteCanvas-quill-section .ql-editor{
+    max-height: 200px;
   }
 }

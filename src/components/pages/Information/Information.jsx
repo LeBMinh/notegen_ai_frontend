@@ -12,6 +12,46 @@ import UntitledNote from '../../../assets/Icon_fill/UntitledNote.svg'
 import LightGradientFolder from '../../../assets/Icon_fill-Gradient/Folder_LGr.svg'
 import DarkGradientFolder from '../../../assets/Icon_fill-Gradient/Folder_DGr.svg'
 export default function Information({ user, userId, token }) {
+  const [notes, setNotes] = useState([]);
+  const [folders, setFolders] = useState([]);
+  const [loading, setLoading] = useState(false);
+
+  const fetchStorageData = async () => {
+    setLoading(true);
+    try {
+      const response = await retrieveStorage();
+      console.log("Raw API Response:", response); // Debugging
+  
+      if (!response || !response.body || !Array.isArray(response.body.data)) {
+        console.error("Error: Unexpected API response format", response);
+        return;
+      }
+  
+      const data = response.body.data;
+  
+      if (!Array.isArray(data)) {
+        console.error("Error: API did not return an array. Received:", data);
+        return;
+      }
+  
+      // Separate notes and folders
+      const filteredNotes = data.filter(item => item.type === "file" && !item.is_deleted);
+      const filteredFolders = data.filter(item => item.type === "folder" && !item.is_deleted);
+  
+      setNotes(filteredNotes);
+      setFolders(filteredFolders);
+  
+    } catch (error) {
+      console.error("Error fetching storage data:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+  
+  // Fetch storage data on mount
+  useEffect(() => {
+    fetchStorageData();
+  }, []);
 
   const resizeAndCropImage = (base64Image, maxWidth = 380, maxHeight = 380) => {
     return new Promise((resolve) => {
@@ -20,11 +60,11 @@ export default function Information({ user, userId, token }) {
       img.onload = () => {
         const canvas = document.createElement("canvas");
         const ctx = canvas.getContext("2d");
-  
+
         // Calculate aspect ratio
         let { width, height } = img;
         const aspectRatio = width / height;
-  
+
         if (width > height) {
           // Landscape
           height = maxHeight;
@@ -34,19 +74,19 @@ export default function Information({ user, userId, token }) {
           width = maxWidth;
           height = maxWidth / aspectRatio;
         }
-  
+
         // Set canvas size
         canvas.width = maxWidth;
         canvas.height = maxHeight;
-  
+
         // Center crop and draw image
         ctx.drawImage(img, (width - maxWidth) / -2, (height - maxHeight) / -2, width, height);
-  
+
         resolve(canvas.toDataURL()); // Return new base64 image
       };
     });
   };
-  
+
   if (!user) {
     return <div>No user information available.</div>;
   }
@@ -72,7 +112,7 @@ export default function Information({ user, userId, token }) {
     const finalUserId = userId || storedUser.userId;
     const finalToken = token || storedToken;
 
-      if (!finalUserId || !finalToken) {
+    if (!finalUserId || !finalToken) {
       console.error("Missing userId or token before fetching user details");
       return;
     }
@@ -106,7 +146,7 @@ export default function Information({ user, userId, token }) {
       });
     }
   }, [userNomal?.profile_picture]);
-  
+
 
   if (!userNomal) {
     return <div>Loading user information...</div>;
@@ -134,7 +174,7 @@ export default function Information({ user, userId, token }) {
           />
           <p style={{ fontSize: '16px', marginLeft: '2px', fontWeight: '700' }}>Number of folders</p>
           <div className="statsNum-container">
-            <div className="stats-number">12</div>
+            <div className="stats-number">{folders.length}</div>
           </div>
         </div>
 
@@ -146,7 +186,7 @@ export default function Information({ user, userId, token }) {
           />
           <p style={{ fontSize: '16px', marginLeft: '2px', fontWeight: '700' }}>Number of notes</p>
           <div className="statsNum-container">
-            <div className="stats-number">42</div>
+            <div className="stats-number">{notes.length}</div>
           </div>
         </div>
       </div>

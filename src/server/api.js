@@ -92,11 +92,27 @@ export const getUserDetails = async (userId, token) => {
 
 
 //=======================GEMINI AI============================//
+export const processTextWithGemini = async (text, fileId) => {
+  try {
+    const accessToken = localStorage.getItem("access_token");
 
+      const response = await axios.post(`${API_BASE_URL}/ai/gemini`, null, {
+          params: {
+            text: encodeURIComponent(text),
+            file_id: encodeURIComponent(fileId),
+          },
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+            "Content-Type": "application/json",
+        },
+      });
 
-
-
-
+      return response.data;
+  } catch (error) {
+      console.error("Error processing text with Gemini:", error);
+      throw error;
+  }
+};
 
 //=======================STORAGE============================//
 // Function to get token from localStorage 

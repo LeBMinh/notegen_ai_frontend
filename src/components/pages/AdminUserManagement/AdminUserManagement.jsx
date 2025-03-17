@@ -40,11 +40,11 @@ export default function AdminUserManagement() {
 
     // Filter users based on search & role
     const filteredUsers = users.filter((user) =>
-        (user.username.toLowerCase().includes(search.toLowerCase()) || 
-        user.email.toLowerCase().includes(search.toLowerCase())) &&
+        (user.username.toLowerCase().includes(search.toLowerCase()) ||
+            user.email.toLowerCase().includes(search.toLowerCase())) &&
         (roleFilter === "" || user.role === roleFilter) &&
         (dateFilter ? (user.created_at && user.created_at.startsWith(dateFilter)) : true)
-    );    
+    );
 
     // Pagination logic
     const indexOfLastUser = currentPage * usersPerPage;
@@ -130,7 +130,7 @@ export default function AdminUserManagement() {
                 />
             </div>
 
-            {/* User Table */}
+            {/* Users Table */}
             <TableContainer component={Paper}>
                 <Table>
                     <TableHead>
@@ -154,7 +154,17 @@ export default function AdminUserManagement() {
                                     <TableCell>{user.username}</TableCell>
                                     <TableCell>{user.email}</TableCell>
                                     <TableCell>{user.role}</TableCell>
-                                    <TableCell>{user.created_at}</TableCell>
+                                    <TableCell>
+                                        {new Date(user.created_at).toLocaleString("en-US", {
+                                            year: "numeric",
+                                            month: "long",
+                                            day: "numeric",
+                                            hour: "2-digit",
+                                            minute: "2-digit",
+                                            second: "2-digit",
+                                            hour12: true, // Toggle 12-hour or 24-hour format
+                                        })}
+                                    </TableCell>
                                     <TableCell>{user.isAdmin ? "✅" : "⬜"}</TableCell>
                                     <TableCell
                                         sx={{

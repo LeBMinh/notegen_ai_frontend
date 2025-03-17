@@ -67,26 +67,6 @@ export default function NoteGallery() {
   }, []);
 
   // Fetch folders separately (not part of fetchNotes)
-  // useEffect(() => {
-  //   const fetchFolders = async () => {
-  //     try {
-  //       const response = await retrieveStorage();
-  //       const data = response.body.data;
-
-  //       const retrievedFolders = data.filter((item) => item.type === "folder");
-  //       setFolders(retrievedFolders);
-
-  //       if (retrievedFolders.length > 0) {
-  //         setActiveFolder(retrievedFolders[0]._id);
-  //       }
-  //     } catch (error) {
-  //       console.error("Error fetching folders:", error);
-  //     }
-  //   };
-
-  //   fetchFolders();
-  // }, []);
-
   const fetchFolders = async () => {
     setLoading(true);
     try {
