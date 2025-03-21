@@ -1,17 +1,17 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import "./NoteGallery.css";
-import { retrieveStorage, moveFile, renameItem, deleteItem } from '../../../server/api';
+import { retrieveStorage, moveFile, renameStorageItem, deleteStorageItem } from '../../../server/api';
 import CircularProgress from "@mui/material/CircularProgress";
-import { Dialog, DialogTitle, DialogContent, TextField, DialogActions, Button } from "@mui/material";
+import { Dialog, DialogTitle, DialogContent, TextField, DialogActions, Button, Menu, MenuItem, ListItemIcon, ListItemText } from "@mui/material";
 
 //import icons
 import MagnifyingGlass from '../../../assets/Icon_line/FindNow.svg';
 import Folder from '../../../assets/Icon_fill/Folder.svg';
 import NoteCard from '../../../assets/Icon_fill/UntitledNote.svg';
 import FolderTitle from '../../../assets/Icon_line/AddNewFolder.svg';
-//import Gradient icons
-import LightGradientFolder from '../../../assets/Icon_fill-Gradient/Folder_LGr.svg'
+import RenameFile from '../../../assets/Icon_line/WordsCount.svg';
+import TrashBin from '../../../assets/Icon_line/TrashBin.svg';
 
 export default function NoteGallery() {
   const [folders, setFolders] = useState([]);
@@ -24,9 +24,8 @@ export default function NoteGallery() {
   const [contextMenu, setContextMenu] = useState(null);
   const [selectedItem, setSelectedItem] = useState(null);
   const [renameDialogOpen, setRenameDialogOpen] = useState(false);
-  const [renameInput, setRenameInput] = useState("");
+  const [newName, setNewName] = useState("");
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
-  const menuRef = useRef(null);
 
   const navigate = useNavigate();
 
@@ -124,133 +123,71 @@ export default function NoteGallery() {
   const filteredNotes = notes.filter((note) => note.folder_id === activeFolder &&
     note.name.toLowerCase().includes(searchTerm.toLowerCase()));
 
+  // Customize "Main" folder from BE to "NoteGen Folder"
   const getFolderDisplayName = (folderName) => {
     return folderName === "Main" ? "NoteGen Folder" : folderName;
   };
 
+  // Handle right-click to open context menu
   const handleRightClick = (event, item, type) => {
-    event.preventDefault(); // Prevent default right-click behavior
-
-    console.log("Right-click detected on:", item);
-    console.log("Item type:", type);
-
-    setContextMenu({ x: event.clientX, y: event.clientY, type });
-
-    // Ensure correct ID mapping for notes and folders
-    const selectedData = {
-      ...item,
-      item_id: type === "file" ? item._id : null,
-      folder_id: type === "folder" ? item._id : null,
-      name: item.name,
-    };
-
-    console.log("Selected Item Data:", selectedData);
-    console.log("Selected Item Data:", selectedData._id);
-    console.log("Selected Item Data:", selectedData.name);
-    console.log("Selected Item Data:", selectedData.item_id);
-    console.log("Selected Item Data:", selectedData.folder_id);
-
-    setSelectedItem(selectedData);
+    event.preventDefault();
+    setSelectedItem({ ...item, type });
+    setContextMenu({
+      mouseX: event.clientX - 2,
+      mouseY: event.clientY - 4,
+    });
   };
 
-
-  const closeMenu = () => {
+  // Handle closing the context menu
+  const handleCloseContextMenu = () => {
     setContextMenu(null);
-    setSelectedItem(null);
   };
 
-  // Detect outside clicks
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (menuRef.current && !menuRef.current.contains(event.target)) {
-        closeMenu();
-      }
-    };
-
-    if (contextMenu) {
-      document.addEventListener("mousedown", handleClickOutside);
-    } else {
-      document.removeEventListener("mousedown", handleClickOutside);
-    }
-
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, [contextMenu]);
-
-  // Open rename dialog
-  const openRenameDialog = (item) => {
-    if (!item) return; // Prevent opening dialog with null item
-
-    console.log("Renaming item:", item);
-    setSelectedItem(item);
-    setRenameInput(item.name);
+  // Handle opening rename dialog
+  const handleRenameClick = () => {
     setRenameDialogOpen(true);
+    handleCloseContextMenu();
   };
 
-  // Handle renaming
-  const handleRenameConfirm = async () => {
-    if (!selectedItem || !renameInput.trim()) return;
-
-    console.log("Renaming item:", selectedItem);
-    console.log("New name:", renameInput);
-
-    setLoadingRename(true);
-    try {
-      await renameItem(
-        selectedItem.item_id || null,
-        selectedItem.folder_id || null,
-        renameInput
-      );
-      console.log("Rename successful");
-
-      setRenameDialogOpen(false);
-      closeMenu();
-
-      if (selectedItem.item_id) {
-        await fetchNotes(); // If it's a note, fetch updated notes
-      } else if (selectedItem.folder_id) {
-        await fetchFolders(); // If it's a folder, fetch updated folders
-      }
-    } catch (error) {
-      console.error("Rename failed:", error);
-    } finally {
-      setLoadingRename(false);
-    }
-  };
-
-
-  // Open delete dialog
-  const openDeleteDialog = (item) => {
-    setSelectedItem(item);
-    setDeleteDialogOpen(true);
-  };
-
-  // Handle delete confirmation
-  const handleDeleteConfirm = async () => {
+  // Handle renaming a file or folder
+  const handleRename = async () => {
     if (!selectedItem) return;
 
-    console.log("Deleting item:", selectedItem);
-    setLoadingDelete(true);
+    try {
+      await renameStorageItem(
+        selectedItem.type === "file" ? selectedItem._id : null, // item_id
+        selectedItem.type === "folder" ? selectedItem._id : null, // folder_id
+        newName
+      );
+      setRenameDialogOpen(false);
+      setNewName("");
+      fetchNotes();
+      fetchFolders();
+    } catch (error) {
+      console.error("Error renaming item:", error);
+    }
+  };
+
+  // Handle opening delete confirmation dialog
+  const handleDeleteClick = () => {
+    setDeleteDialogOpen(true);
+    handleCloseContextMenu();
+  };
+
+  // Handle deleting a file or folder
+  const handleDelete = async () => {
+    if (!selectedItem) return;
 
     try {
-      await deleteItem(
-        selectedItem.item_id || null,
-        selectedItem.folder_id || null
+      await deleteStorageItem(
+        selectedItem.type === "file" ? selectedItem._id : null, // item_id
+        selectedItem.type === "folder" ? selectedItem._id : null // folder_id
       );
-      console.log("Delete successful");
-
       setDeleteDialogOpen(false);
-      closeMenu();
-      if (selectedItem.item_id) {
-        await fetchNotes(); // If deleting a note, refresh notes
-      } else if (selectedItem.folder_id) {
-        await fetchFolders(); // If deleting a folder, refresh folders
-      }
+      fetchNotes();
+      fetchFolders();
     } catch (error) {
-      console.error("Delete failed:", error);
-    } finally {
-      setLoadingDelete(false);
+      console.error("Error deleting item:", error);
     }
   };
 
@@ -281,39 +218,46 @@ export default function NoteGallery() {
       <div className="main-gallery-container">
         {/* NoteGallery Folder Cards */}
         <div className="noteGallery-folders-container">
-          {folders.map((folder) => (
-            <div
-              key={folder._id}
-              className={`noteGallery-folder-card ${activeFolder === folder._id ? "active" : ""}`}
-              onClick={() => handleFolderClick(folder._id)}
-              onContextMenu={(event) => handleRightClick(event, folder, "folder")}
-            >
-              <img
-                src={Folder}
-                alt="Folder Icon"
-                className="noteGallery-folder-icon"
-              />
-              <div>
-                <div
-                  className="noteGallery-folder-title"
-                  dangerouslySetInnerHTML={{
-                    __html: highlightText(
-                      getFolderDisplayName(folder.name).length > 30
-                        ? `${getFolderDisplayName(folder.name).slice(0, 30)}...`
-                        : getFolderDisplayName(folder.name),
-                      searchTerm
-                    ),
-                  }}
+          {loading ? (
+            <div className="notes-gallery-Folderloading-container">
+              <CircularProgress size={40} />
+            </div>
+          ) : folders.length === 0 ? (
+            <div className="notes-gallery-no-folder-message">Nothing here?? Go 🗂️Grab Your Note🗂️ now!!</div>
+          ) : (
+            folders.map((folder) => (
+              <div
+                key={folder._id}
+                className={`noteGallery-folder-card ${activeFolder === folder._id ? "active" : ""}`}
+                onClick={() => handleFolderClick(folder._id)}
+                onContextMenu={(event) => handleRightClick(event, folder, "folder")}
+              >
+                <img
+                  src={Folder}
+                  alt="Folder Icon"
+                  className="noteGallery-folder-icon"
                 />
-                {/* 'statsNum-container' from Infomation className*/}
-                <div className="statsNum-container">
-                  <div className="noteGallery-folder-tag">
-                    {notes.filter(note => note.folder_id === folder._id).length}
+                <div>
+                  <div
+                    className="noteGallery-folder-title"
+                    dangerouslySetInnerHTML={{
+                      __html: highlightText(
+                        getFolderDisplayName(folder.name).length > 30
+                          ? `${getFolderDisplayName(folder.name).slice(0, 30)}...`
+                          : getFolderDisplayName(folder.name),
+                        searchTerm
+                      ),
+                    }}
+                  />
+                  {/* 'statsNum-container' from Infomation className*/}
+                  <div className="statsNum-container">
+                    <div className="noteGallery-folder-tag">
+                      {notes.filter(note => note.folder_id === folder._id).length}
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-          ))}
+            )))}
         </div>
 
         {/* Active Folder Title */}
@@ -372,62 +316,64 @@ export default function NoteGallery() {
           )}
         </div>
 
-        {/* Right Click Context Menu */}
-        {contextMenu && (
-          <ul ref={menuRef} className="noteGallery-context-menu"
-            style={{
-              position: "absolute",
-              top: contextMenu.y,
-              left: contextMenu.x,
-              background: "#fff",
-              border: "1px solid #F4F4F4",
-              borderRadius: "5px",
-              padding: "4px",
-              listStyle: "none",
-              boxShadow: "2px 2px 10px rgba(0,0,0,0.2)",
-              cursor: "pointer",
-            }}>
-            <li onClick={() => openRenameDialog(selectedItem)} style={{ color: "#3372ff" }} className="noteGallery-context-item">
-              Rename
-            </li>
-            <li onClick={() => openDeleteDialog(selectedItem)} style={{ color: "red" }} className="noteGallery-context-item">
-              Delete
-            </li>
-          </ul>
-        )}
+        <div className="noteGallery-rightClick-container">
+          {/* Right Click Context Menu */}
+          <Menu
+            open={contextMenu !== null}
+            onClose={handleCloseContextMenu}
+            anchorReference="anchorPosition"
+            anchorPosition={
+              contextMenu !== null
+                ? { top: contextMenu.mouseY, left: contextMenu.mouseX }
+                : undefined
+            }
+          >
+            <MenuItem onClick={handleRenameClick}>
+            <ListItemIcon>
+                <img src={RenameFile} alt="Rename Icon" className="noteGallery-menu-icon" />
+              </ListItemIcon>
+              <ListItemText>Rename</ListItemText>
+            </MenuItem>
+            <MenuItem onClick={handleDeleteClick}>
+              <ListItemIcon>
+                <img src={TrashBin} alt="Trash Icon" className="noteGallery-menu-icon" />
+              </ListItemIcon>
+              <ListItemText>Delete</ListItemText>
+            </MenuItem>
+          </Menu>
 
-        {/* // Rename Dialog Component */}
-        <Dialog open={renameDialogOpen} onClose={() => setRenameDialogOpen(false)}>
-          <DialogTitle>Rename Item</DialogTitle>
-          <DialogContent>
-            <TextField
-              fullWidth
-              label="New Name"
-              variant="outlined"
-              value={renameInput}
-              sx={{ marginTop: "10px" }}
-              onChange={(e) => setRenameInput(e.target.value)}
-            />
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={() => setRenameDialogOpen(false)}>Cancel</Button>
-            <Button onClick={handleRenameConfirm} disabled={loadingRename} variant="contained" color="primary">
-              {loadingRename ? "Renaming..." : "Rename"}
-            </Button>
-          </DialogActions>
-        </Dialog>
+          {/* Rename Dialog */}
+          <Dialog open={renameDialogOpen} onClose={() => setRenameDialogOpen(false)}>
+            <DialogTitle>Rename {selectedItem?.type === "file" ? "File" : "Folder"}</DialogTitle>
+            <DialogContent>
+              <TextField
+                autoFocus
+                margin="dense"
+                label="New Name"
+                fullWidth
+                value={newName}
+                onChange={(e) => setNewName(e.target.value)}
+              />
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={() => setRenameDialogOpen(false)}>Cancel</Button>
+              <Button onClick={handleRename} color="primary" variant="contained">Rename</Button>
+            </DialogActions>
+          </Dialog>
 
-        {/* // Delete Dialog Component */}
-        <Dialog open={deleteDialogOpen} onClose={() => setDeleteDialogOpen(false)}>
-          <DialogTitle>Confirm Delete</DialogTitle>
-          <DialogContent>Are you sure you want to delete this item?</DialogContent>
-          <DialogActions>
-            <Button onClick={() => setDeleteDialogOpen(false)}>Cancel</Button>
-            <Button onClick={handleDeleteConfirm} disabled={loadingDelete} variant="contained" color="error">
-              {loadingRename ? "Deleting..." : "Delete"}
-            </Button>
-          </DialogActions>
-        </Dialog>
+          {/* Delete Confirmation Dialog */}
+          <Dialog open={deleteDialogOpen} onClose={() => setDeleteDialogOpen(false)}>
+            <DialogTitle>Confirm Deletion</DialogTitle>
+            <DialogContent>
+              Are you sure you want to delete this {selectedItem?.type === "file" ? "file" : "folder"}?
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={() => setDeleteDialogOpen(false)}>Cancel</Button>
+              <Button onClick={handleDelete} color="error" variant="contained">Delete</Button>
+            </DialogActions>
+          </Dialog>
+        </div>
+
       </div>
     </div>
   )

@@ -248,7 +248,7 @@ export default function NoteCanvas() {
       }
 
       setLoadingEnhance(false);
-      setIsEnhancedMode(isEnhancedMode);
+      setIsEnhancedMode(true);
     } catch (error) {
       console.error("Error enhancing note:", error);
       setLoadingEnhance(false);
@@ -483,9 +483,9 @@ export default function NoteCanvas() {
           <div className="noteCanvas-enhanced-container">
             {/* Two Top Buttons */}
             <div className="noteCanvas-enhanced-header">
-              <div className="noteCanvas-enhance-btn-container">
+              <div className="noteCanvas-enhance-btn-container" onClick={handleEnhanceNote}>
                 <img src={EnhanceNote} alt="EnhanceNote Icon" className="enhanceNote-icon" />
-                Re-generate
+                {loadingEnhance ? "Re-generating..." : "Re-generate"}
               </div>
               <div className="noteCanvas-closeEnhance-btn-container" onClick={toggleEnhancedMode}>
                 <img src={CloseEnhanced} alt="CloseEnhanced Icon" className="closeEnhanced-icon" />

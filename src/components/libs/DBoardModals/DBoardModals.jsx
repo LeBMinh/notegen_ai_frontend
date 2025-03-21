@@ -22,7 +22,7 @@ export default function DBoardModals({ openMD, onClose, onNavigateToCanvas }) {
   const [newFolderName, setNewFolderName] = useState("");
   const [folders, setFolders] = useState([]); // Store retrieved folders
   const [loading, setLoading] = useState(true);
-  
+
   const navigate = useNavigate();
 
   // Fetch folders when modal opens
@@ -32,57 +32,45 @@ export default function DBoardModals({ openMD, onClose, onNavigateToCanvas }) {
     }
   }, [open]);
 
-  // const fetchFolders = async () => {
-  //   try {
-  //     const response = await retrieveStorage();
-  //     if (response && response.data) {
-  //       const folderList = response.data.filter((item) => item.type === "folder");
-  //       setFolders(folderList);
-  //     }
-  //   } catch (error) {
-  //     console.error("Error fetching folders:", error);
-  //   }
-  // };
-
   const fetchFolders = async () => {
-      setLoading(true);
-      try {
-        const response = await retrieveStorage();
-        console.log("Raw API Response:", response); // Debugging
-  
-        if (!response || !response.body || !Array.isArray(response.body.data)) {
-          console.error("Error: Unexpected API response format", response);
-          return;
-        }
-  
-        const data = response.body.data;
-  
-        if (!Array.isArray(data)) {
-          console.error("Error: API did not return an array. Received:", data);
-          return;
-        }
-  
-        const filteredFolders = data.filter(
-          (item) => item.type === "folder" && !item.is_deleted
-        );
-  
-        // console.log("Filtered Notes:", filteredFolders ); // Debugging
-        setFolders(filteredFolders);
-  
-        // if (filteredFolders.length > 0) {
-        //   setActiveFolder(filteredFolders[0]._id);
-        // }
-  
-      } catch (error) {
-        console.error("Error fetching folders:", error);
-      } finally {
-        setLoading(false); // Stop loading when done
+    setLoading(true);
+    try {
+      const response = await retrieveStorage();
+      console.log("Raw API Response:", response); // Debugging
+
+      if (!response || !response.body || !Array.isArray(response.body.data)) {
+        console.error("Error: Unexpected API response format", response);
+        return;
       }
-    };
-  
-    useEffect(() => {
-      fetchFolders(); // Fetch notes on mount
-    }, []);
+
+      const data = response.body.data;
+
+      if (!Array.isArray(data)) {
+        console.error("Error: API did not return an array. Received:", data);
+        return;
+      }
+
+      const filteredFolders = data.filter(
+        (item) => item.type === "folder" && !item.is_deleted
+      );
+
+      // console.log("Filtered Notes:", filteredFolders ); // Debugging
+      setFolders(filteredFolders);
+
+      // if (filteredFolders.length > 0) {
+      //   setActiveFolder(filteredFolders[0]._id);
+      // }
+
+    } catch (error) {
+      console.error("Error fetching folders:", error);
+    } finally {
+      setLoading(false); // Stop loading when done
+    }
+  };
+
+  useEffect(() => {
+    fetchFolders(); // Fetch notes on mount
+  }, []);
 
   const handleAddToFolder = () => setCurrentModal("choose");
   const handleSkip = () => onNavigateToCanvas();
@@ -116,6 +104,8 @@ export default function DBoardModals({ openMD, onClose, onNavigateToCanvas }) {
       if (fileId) {
         console.log("New file created with ID:", fileId);
         navigate(`/notecanvas/${fileId}`);
+        setCurrentModal("select");  // Đặt lại trạng thái nhưng không mở lại modal
+        setTimeout(() => onClose(), 0); // Đảm bảo setState trước khi gọi onClose
       } else {
         console.error("File creation failed: No ID returned.");
       }
@@ -211,7 +201,7 @@ export default function DBoardModals({ openMD, onClose, onNavigateToCanvas }) {
                     console.log("Folder selected:", folder); // Debugging
                     handleSelectFolder(folder._id);
                   }}
-                  // startIcon={<span role="img" aria-label="folder">📂</span>}
+                // startIcon={<span role="img" aria-label="folder">📂</span>}
                 >
                   📂 {folder.name}
                 </Button>

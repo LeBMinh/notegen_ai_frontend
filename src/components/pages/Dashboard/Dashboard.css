@@ -230,11 +230,27 @@
     min-width: 250px;
     width: calc(25% - 1rem); /* 4 cards per row */
     height: 155px; 
+    max-height: 155px; 
+    overflow-y: auto; 
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
     display: 'inline-block'; 
     cursor: pointer;
+  }
+
+  /* Styling for smooth scrolling */
+  .dashboard-note-card::-webkit-scrollbar {
+    width: 1px; /* Height of the horizontal scrollbar */
+  }
+  
+  .dashboard-note-card::-webkit-scrollbar-thumb {
+    background-color: var(--primary-1); /* Color of the scrollbar thumb */
+    border-radius: 4px;
+  }
+  
+  .dashboard-note-card::-webkit-scrollbar-track {
+    background-color: var(--light); /* Background of the scrollbar track */
   }
 
   .dashboard-note-card .dashboard-note-TandC{

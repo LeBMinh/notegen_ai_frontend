@@ -230,6 +230,21 @@ export const retrieveStorage = async () => {
   }
 };
 
+// 📑 Retrieve All Files & Folders for Trash page
+export const retrieveTrashStorage = async () => {
+  try {
+    const response = await axios.get(
+      `${API_BASE_URL}/storage/retrieve`,
+      { params: { in_trash: true }, ...getAuthHeaders() }
+    );
+    console.log("Storage data:", response.data); //Debugging
+    return response.data;
+  } catch (error) {
+    console.error("Error retrieving storage:", error);
+    throw error;
+  }
+};
+
 // 🔍 Retrieve File/Folder by ID
 export const retrieveById = async (obj_id, is_file = true) => {
   try {
@@ -278,59 +293,74 @@ export const updateFileContent = async (file_id, new_content) => {
 };
 
 
-//  Move File 
-export const moveFile = async (item_id, new_parent_id) => {
+//  Move File not Folder
+export const moveFile = async (itemId, newParentId, folderId = null) => {
   try {
-    const response = await fetch(`${API_BASE_URL}/storage/move-item`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-        ...getAuthHeaders().headers,
+    const response = await axios.put(`${API_BASE_URL}/storage/move-item`, null, {
+      params: {
+        item_id: itemId,
+        folder_id: folderId,
+        new_parent_id: newParentId,
       },
-      body: JSON.stringify({ item_id, new_parent_id }),
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+      },
     });
 
-    if (!response.ok) throw new Error("Failed to move item");
-
-    return await response.json();
+    return response.data;
   } catch (error) {
-    console.error("Error moving item:", error);
+    console.error("Error moving file:", error);
     throw error;
   }
 };
 
 // Rename File or Folder
-export const renameItem = async (item_id, folder_id, new_name) => {
-  console.log("Renaming item:", { item_id, folder_id, new_name });
-
+export const renameStorageItem = async (itemId, folderId, newName) => {
   try {
-    const response = await axios.put(`${API_BASE_URL}/storage/rename-item`, 
-      { item_id: item_id || null, folder_id: folder_id || null, new_name }, 
-      { headers: { Authorization: `Bearer ${localStorage.getItem("access_token")}` } }
+    const accessToken = localStorage.getItem("access_token");
+
+    const response = await axios.put(
+      `${API_BASE_URL}/storage/rename-item`,
+      null,
+      {
+        params: {
+          item_id: itemId,
+          folder_id: folderId,
+          new_name: newName,
+        },
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      }
     );
 
     console.log("Rename response:", response.data);
     return response.data;
   } catch (error) {
-    console.error("Error renaming item:", error.response?.data || error.message);
+    console.error("Error renaming storage item:", error);
     throw error;
   }
 };
 
-// Delete File or Folder
-export const deleteItem = async (item_id, folder_id) => {
-  console.log("Deleting item:", { item_id, folder_id });
 
+// Delete File or Folder
+export const deleteStorageItem = async (itemId, folderId) => {
   try {
+    const accessToken = localStorage.getItem("access_token");
+
     const response = await axios.delete(`${API_BASE_URL}/storage/move-to-trash`, {
-      headers: { Authorization: `Bearer ${localStorage.getItem("access_token")}` },
-      data: { item_id, folder_id } // Axios requires `data` for DELETE requests with a body
+      params: {
+        item_id: itemId,
+        folder_id: folderId,
+      },
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
     });
 
-    console.log("Delete response:", response.data);
     return response.data;
   } catch (error) {
-    console.error("Error deleting item:", error.response?.data || error.message);
+    console.error("Error deleting storage item:", error);
     throw error;
   }
 };

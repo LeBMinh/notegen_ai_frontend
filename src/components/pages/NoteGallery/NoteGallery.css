@@ -1,6 +1,6 @@
   .note-gallery-container {
     font-family: -apple-system, BlinkMacSystemFont, "San Francisco Pro", sans-serif;
-    margin-top: 0.9rem;
+    margin-top: 0.6rem;
   }
   
   /* Search Bar */
@@ -60,12 +60,24 @@
   
   
   /* NoteGallery Folder Cards */
+  .notes-gallery-Folderloading-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .notes-gallery-no-folder-message{
+    text-align: center;
+    margin-top: 10px;
+    color: var(--primary-6);
+  }
+  
 .noteGallery-folders-container {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(10em, 1fr)); /* Adaptive grid */
-  margin-bottom: 1.4rem;
+  margin-bottom: 0.8rem;
   max-width: 100%; 
-  max-height: 250px; /* Limit the container's height */
+  max-height: 240px; /* Limit the container's height */
   overflow-y: auto; /* Add vertical scrolling when content overflows */
 }
 
@@ -95,7 +107,8 @@
   background-color: #ffffff;
   border-radius: 26px;
   padding: calc(5px - 1px) calc(14px - 2px); /* Matches Information padding */
-  margin-bottom: 1.1rem;
+  /* margin-bottom: 1.1rem; */
+  margin: 0 0.2rem 1.1rem 0.2rem;
   border: 1px solid var(--lightBorder);
   width: 10em;
   height: 6.2em;
@@ -136,7 +149,7 @@
 
 .noteGallery-folder-card.active .noteGallery-folder-icon {
   filter: none;
-  content: url('../../../assets/Icon_fill-Gradient/Folder_LGr.svg'); /* Replace icon on hover */
+  content: url('../../../assets/Icon_fill-Gradient/Folder_LGr.svg'); /* Replace icon on active */
 }
 
 .noteGallery-folder-title {
@@ -170,7 +183,7 @@
   flex-direction: row;
   gap: 8px;
   align-items: center;
-  margin-bottom: 1rem;
+  margin-bottom: 0.8rem;
 }
 
 .noteGallery-folder-title-icon{
@@ -193,6 +206,7 @@
   }
 
   .notes-gallery-no-notes-message{
+    text-align: start;
     margin-top: 10px;
     color: var(--primary-6);
   }
@@ -200,9 +214,9 @@
   .notes-gallery-container {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    /* grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); */
+    /* grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); */
     gap: 0.9rem;
-    max-height: 55vh; /* Limit the container's height */
+    max-height: 45vh; /* Limit the container's height */
     overflow-y: auto; /* Add vertical scrolling when content overflows */
   }
   
@@ -270,14 +284,10 @@
   }
   
   
-  /* Note Preview */
-  .noteGallery-note-preview {
-    margin-top: 10px;
-    padding: 10px;
-    background-color: #f9fafe;
-    border-top: 1px solid #d3dce6;
-    font-size: 14px;
-    color: #333;
+  /* Context Menu */
+  .noteGallery-menu-icon {
+    width: 1.4rem;
+    height: 1.4rem;
   }
   
 
@@ -290,3 +300,9 @@
     user-select: none; /* Disable text selection */
     -webkit-touch-callout: none; /* Prevent text selection on iOS */
   }
+
+@media (max-width: 768px) {
+  .notes-gallery-container {
+    max-height: 44vh; /* Limit the container's height */
+  }
+}
