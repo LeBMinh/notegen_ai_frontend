@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "./NoteGallery.css";
 import { retrieveStorage, moveFile, renameStorageItem, deleteStorageItem } from '../../../server/api';
@@ -252,8 +252,8 @@ export default function NoteGallery() {
                     className="noteGallery-folder-title"
                     dangerouslySetInnerHTML={{
                       __html: highlightText(
-                        getFolderDisplayName(folder.name).length > 30
-                          ? `${getFolderDisplayName(folder.name).slice(0, 30)}...`
+                        getFolderDisplayName(folder.name).length > 20
+                          ? `${getFolderDisplayName(folder.name).slice(0, 20)}...`
                           : getFolderDisplayName(folder.name),
                         searchTerm
                       ),

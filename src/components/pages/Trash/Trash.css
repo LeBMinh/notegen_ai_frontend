@@ -2,6 +2,7 @@
   margin-top: 0.9rem;
 } */
 
+/* Default coy for no data show */
 .noFile-content{
     display: flex;
     flex-direction: column;
@@ -34,8 +35,256 @@
     color: var(--dark-4);
 }
 
+/* Trash page with data */
+.trash-loading-container{
+    margin-top: 5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.trash-header{
+    margin: 0.5rem 0 0.5rem 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.trash-header-left{
+    display: flex;
+    gap: 5px;
+    align-items: baseline;
+    color: var(--dark-2);
+}
+
+.trash-header-note{
+    font-size: 0.8rem;
+}
+
+/* Empty trash button */
+.emptyTrash-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    background: var(--light-2);
+    border-radius: 16px;
+    padding: 8px 10px;
+    cursor: pointer;
+}
+
+.trash-bin-icon{
+    width: 25px;
+    height: 25px;
+}
+
+.emptyTrash-container:hover{
+    background: #F5222D;
+    border-radius: 24px;
+    color: white;
+}
+
+.emptyTrash-container:hover .trash-bin-icon {
+    filter: invert(100%) brightness(100%);
+}
+
+/* Trash Folders List*/
+.trash-folder-container{
+    height: 160px;  
+    width: 100%;
+    max-width: 80vw; 
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    overflow-x: auto;
+    flex-wrap: nowrap;  /* Prevent wrapping */
+    white-space: nowrap; /* Prevent text wrapping inside children */
+}
+
+.trash-folder-container::-webkit-scrollbar {
+  height: 5px; /* Set scrollbar width */
+}
+
+.trash-folder-container::-webkit-scrollbar-thumb {
+  background-color: var(--light); /* Color of the scrollbar thumb */
+  border-radius: 4px; /* Rounded scrollbar edges */
+}
+
+.trash-folder-card{
+    border-radius: 14px;
+    border: 1px solid var(--light-4);
+    min-width: 320px;
+    min-height: 130px;
+    position: relative;
+    transition: all 0.3s ease;
+    padding: 1rem;
+}
+
+.trash-folder-card:hover{
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
+    transform: translateY(-2px);
+    transition: all 0.2s ease;
+}
+
+.trash-folder-header-card{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.trash-folder-timestamp{
+    font-size: 12px;
+    color: var(--dark-4);
+}
+
+.trash-folder-putBack-btn{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+    border: 1px solid var(--light-4);
+    background: var(--light-2);
+    font-size: 12px;
+    color: var(--dark-4);    
+    padding: 5px 15px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.trash-folder-putBack-btn:hover{
+    background: var(--light-3);
+    border-radius: 10px;
+}
+
+.trash-putBack-icon{
+    width: 16px;
+    height: 16px;
+}
+
+.trash-folder-content{
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    
+}
+
+.trash-folder-icon{
+    width: 60px;
+    height: 60px;
+    /* filter: invert(87%) sepia(0%) saturate(548%) hue-rotate(143deg) brightness(95%) contrast(81%); */
+    filter: invert(69%) sepia(87%) saturate(3553%) hue-rotate(321deg) brightness(119%) contrast(98%);
+}
+
+.trash-folder-title{
+    color: var(--dark-4);
+    font-size: 16px;
+    font-weight: bold;
+    word-wrap: break-word;  /* Allows long words to break */
+    overflow-wrap: break-word;  /* Ensures wrapping even in flexbox */
+    white-space: normal;  /* Allows multiple lines */
+    max-width: 100%;  /* Prevents overflowing */
+    display: block;  /* Ensures it behaves like a block */
+}
+
+/* Trash Notes List*/
+.trash-note-container {
+    height: 400px; /* Adjust height as needed */
+    width: 100%;
+    overflow-y: auto; /* Enables vertical scrolling */
+    overflow-x: hidden; /* Prevents horizontal scrolling */
+    border: 1px solid var(--light-3);
+    border-radius: 16px;
+}
+
+/* Scrollbar Styling */
+.trash-note-container::-webkit-scrollbar {
+    width: 2px;
+}
+
+.trash-note-container::-webkit-scrollbar-thumb {
+    background-color: var(--secondary-3);
+    border-radius: 10px;
+}
+
+
+.trash-note-card {
+    /* display: flex; */
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 12px;
+}
+
+.trash-note-card:nth-child(odd) {
+    background: var(--light-2); /* White background for odd rows */
+}
+
+.trash-note-card:nth-child(even) {
+    background: var(--light); /* Light gray background for even rows */
+}
+
+
+.trash-note-card-container{
+    display: flex;
+    justify-content: space-between;
+    align-items: center; /* Ensures vertical alignment */
+    width: 100%; /* Make sure it takes full width */
+}
+
+
+.trash-note-card-content {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 10px;
+}
+
+.trash-note-icon {
+    width: 1.5rem;
+    height: 1.5rem;
+    /* filter: invert(87%) sepia(0%) saturate(548%) hue-rotate(143deg) brightness(95%) contrast(81%); */
+    padding: 0.3rem;
+    background-color: #fc7373;
+    border-radius: 10px;
+    box-sizing: content-box; /* Ensure padding does not shrink the icon size */
+    display: inline-block;
+}
+
+.trash-note-title {
+    font-weight: bold;
+    font-size: 16px;
+    color: var(--dark-4);
+}
+
+.trash-note-content {
+    font-size: 14px;
+    color: #777;
+    white-space: normal; /* Allow text wrapping */
+    word-wrap: break-word;
+    max-width: 250px; /* Adjust width to prevent overflowing */
+}
+
+.trash-note-putBack-btn{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+    border: 1px solid var(--light-4);
+    background: var(--light-2);
+    font-size: 12px;
+    color: var(--dark-4);    
+    padding: 8px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.trash-note-putBack-btn:hover{
+    background: var(--light-3);
+    border-radius: 10px;
+}
+
 .trashZero,
-.noFileTrash{
+.noFileTrash,
+.emptyTrash-container p{
     pointer-events: none; /* Disable mouse interactions */
     -webkit-user-drag: none; /* Disable drag functionality */
     user-select: none; /* Disable text selection */

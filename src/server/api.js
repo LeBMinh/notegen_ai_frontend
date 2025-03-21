@@ -230,21 +230,6 @@ export const retrieveStorage = async () => {
   }
 };
 
-// 📑 Retrieve All Files & Folders for Trash page
-export const retrieveTrashStorage = async () => {
-  try {
-    const response = await axios.get(
-      `${API_BASE_URL}/storage/retrieve`,
-      { params: { in_trash: true }, ...getAuthHeaders() }
-    );
-    console.log("Storage data:", response.data); //Debugging
-    return response.data;
-  } catch (error) {
-    console.error("Error retrieving storage:", error);
-    throw error;
-  }
-};
-
 // 🔍 Retrieve File/Folder by ID
 export const retrieveById = async (obj_id, is_file = true) => {
   try {
@@ -364,6 +349,22 @@ export const deleteStorageItem = async (itemId, folderId) => {
     throw error;
   }
 };
+
+// 📑 Retrieve All Files & Folders for Trash page
+export const retrieveTrashStorage = async () => {
+  try {
+    const response = await axios.get(
+      `${API_BASE_URL}/storage/retrieve`,
+      { params: { in_trash: true }, ...getAuthHeaders() }
+    );
+    console.log("Storage data:", response.data); //Debugging
+    return response.data;
+  } catch (error) {
+    console.error("Error retrieving storage:", error);
+    throw error;
+  }
+};
+
 
 
 //=======================VietQR PAYMENTS====================//
