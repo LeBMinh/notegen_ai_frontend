@@ -67,17 +67,17 @@
   }
   
   .notes-gallery-no-folder-message{
-    text-align: center;
+    text-align: start;
     margin-top: 10px;
     color: var(--primary-6);
   }
   
 .noteGallery-folders-container {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(10em, 1fr)); /* Adaptive grid */
-  margin-bottom: 0.8rem;
+  grid-template-columns: repeat(auto-fit, minmax(10em, 1fr)); /* Adaptive grid (that behave like display flex) */
+  /* margin-bottom: 0.8rem; */
   max-width: 100%; 
-  max-height: 240px; /* Limit the container's height */
+  max-height: 210px; /* Limit the container's height */
   overflow-y: auto; /* Add vertical scrolling when content overflows */
 }
 
@@ -216,7 +216,7 @@
     grid-template-columns: repeat(2, 1fr);
     /* grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); */
     gap: 0.9rem;
-    max-height: 45vh; /* Limit the container's height */
+    max-height: 47vh; /* Limit the container's height */
     overflow-y: auto; /* Add vertical scrolling when content overflows */
   }
   
@@ -303,6 +303,6 @@
 
 @media (max-width: 768px) {
   .notes-gallery-container {
-    max-height: 44vh; /* Limit the container's height */
+    max-height: 50vh; /* Limit the container's height */
   }
 }

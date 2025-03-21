@@ -190,23 +190,25 @@ export default function DBoardModals({ openMD, onClose, onNavigateToCanvas }) {
         <DialogContent dividers>
           <Grid container spacing={2} style={{ maxHeight: "300px", overflowY: "auto" }}>
 
-            {/* use retrieveStorage and filter data "type" ("type": "folder") to show list of folder according to their "name"
-            a click on a folder button will trigger the createFile with folder_id associate to that folder button  */}
-            {folders.map((folder) => (
-              <Grid item xs={6} key={folder._id}>
-                <Button
-                  variant="outlined"
-                  fullWidth
-                  onClick={() => {
-                    console.log("Folder selected:", folder); // Debugging
-                    handleSelectFolder(folder._id);
-                  }}
-                // startIcon={<span role="img" aria-label="folder">📂</span>}
-                >
-                  📂 {folder.name}
-                </Button>
-              </Grid>
-            ))}
+            {folders.map((folder) => {
+              // Replace folder name "Main" with "NoteGen Folder"
+              const displayName = folder.name === "Main" ? "NoteGen Folder" : folder.name;
+
+              return (
+                <Grid item xs={6} key={folder._id}>
+                  <Button
+                    variant="outlined"
+                    fullWidth
+                    onClick={() => {
+                      console.log("Folder selected:", folder); // Debugging
+                      handleSelectFolder(folder._id);
+                    }}
+                  >
+                    📂 {displayName}
+                  </Button>
+                </Grid>
+              );
+            })}
           </Grid>
         </DialogContent>
       </Dialog>
