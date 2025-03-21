@@ -7,7 +7,7 @@ import './NoteCanvas.css';
 import { retrieveById, updateFileContent, processTextWithGemini } from '../../../server/api';
 
 //import image
-import NoFolder from '../../../assets/Stock3D-png/HomeFolder.png';
+import NoFolder from '../../../assets/Stock3D-png/NoteCanvas.png';
 //import icons
 import BackToPrevious from '../../../assets/Icon_line/BackToPrevious.svg';
 import WordsCount from '../../../assets/Icon_line/WordsCount.svg';

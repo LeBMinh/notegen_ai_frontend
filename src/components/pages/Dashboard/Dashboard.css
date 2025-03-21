@@ -217,6 +217,29 @@
     justify-content: center;
     /* align-items: center; */
   }
+
+  .dashboard-noRecent-note{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    color: var(--dark);
+    font-size: 1.3rem;
+    font-weight: 700;
+    text-align: center;
+    background-color: var(--light-3);
+    border-radius: 10px;
+    padding: 10px;
+    margin: 2rem 0 0 1.5rem;
+    box-shadow: inset -20px -20px 87px #bebebe,
+    inset 20px 20px 87px #ffffff;
+    transition: all 0.1s ease;
+  }
+
+  .dashboard-noNote-icon{
+    width: 60px;
+    height: 60px;
+  }
   
   .dashboard-note-card {
     position: relative;
@@ -343,6 +366,7 @@
 .takeNote-des-board,
 .dashboard-header h1,
 .dashboard-recent-note-title,
+.dashboard-noRecent-note,
 .empty-search-found{
     -webkit-user-drag: none; /* Disable drag functionality */
     user-select: none; /* Disable text selection */

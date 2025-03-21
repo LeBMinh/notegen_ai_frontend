@@ -67,9 +67,23 @@
   }
   
   .notes-gallery-no-folder-message{
-    text-align: start;
+    display: flex;
+    gap: 6px;
+    align-items: center;
+    justify-content: center;
     margin-top: 10px;
     color: var(--primary-6);
+    font-size: 1.3rem;
+    font-weight: 700;
+    text-align: center;
+    background-color: var(--light-2);
+    border-radius: 6px;
+    padding: 6px; 
+  }
+
+  .notes-gallery-noFolder-icon{
+    width: 70px;
+    height: 70px;
   }
   
 .noteGallery-folders-container {
@@ -205,10 +219,22 @@
     align-items: center;
   }
 
-  .notes-gallery-no-notes-message{
+  .notes-gallery-no-note-message{
+    display: flex;
+    gap: 6px;
+    align-items: center;
+    justify-content: flex-start;
     text-align: start;
     margin-top: 10px;
     color: var(--primary-6);
+    font-size: 1.1rem;
+    font-weight: 700;
+    padding: 6px; 
+  }
+
+  .notes-gallery-noNote-icon{
+    width: 70px;
+    height: 70px;
   }
 
   .notes-gallery-container {
@@ -305,4 +331,14 @@
   .notes-gallery-container {
     max-height: 50vh; /* Limit the container's height */
   }
+
+  .notes-gallery-no-folder-message{
+    font-size: 1rem;
+  }
+  
+  .notes-gallery-noFolder-icon{
+    width: 50px;
+    height: 50px;
+  }
+
 }

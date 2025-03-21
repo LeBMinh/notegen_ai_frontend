@@ -5,6 +5,9 @@ import { retrieveStorage, moveFile, renameStorageItem, deleteStorageItem } from 
 import CircularProgress from "@mui/material/CircularProgress";
 import { Dialog, DialogTitle, DialogContent, TextField, DialogActions, Button, Menu, MenuItem, ListItemIcon, ListItemText } from "@mui/material";
 
+// import image
+import NoFolder from '../../../assets/Stock3D-png/NoteGallery.png';
+import NoNote from '../../../assets/Stock3D-png/NoteCanvas.png';
 //import icons
 import MagnifyingGlass from '../../../assets/Icon_line/FindNow.svg';
 import Folder from '../../../assets/Icon_fill/Folder.svg';
@@ -223,7 +226,14 @@ export default function NoteGallery() {
               <CircularProgress size={40} />
             </div>
           ) : folders.length === 0 ? (
-            <div className="notes-gallery-no-folder-message">Nothing here?? Go 🗂️Grab Your Note🗂️ now!!</div>
+            <div className="notes-gallery-no-folder-message">
+              <img
+                src={NoFolder}
+                alt={'NoFolder Icon'}
+                className="notes-gallery-noFolder-icon"
+              />
+              Nothing here?! <i> Grab Your Note </i> now!!
+            </div>
           ) : (
             folders.map((folder) => (
               <div
@@ -285,7 +295,14 @@ export default function NoteGallery() {
               <CircularProgress size={40} />
             </div>
           ) : filteredNotes.length === 0 ? (
-            <div className="notes-gallery-no-notes-message">No note? Go create some 📑</div>
+            <div className="notes-gallery-no-note-message">
+              <img
+                src={NoNote}
+                alt={'NoNote Icon'}
+                className="notes-gallery-noNote-icon"
+              />
+              No note? Go create some 📑
+            </div>
           ) : (
             filteredNotes.map(note => (
               <div
@@ -329,7 +346,7 @@ export default function NoteGallery() {
             }
           >
             <MenuItem onClick={handleRenameClick}>
-            <ListItemIcon>
+              <ListItemIcon>
                 <img src={RenameFile} alt="Rename Icon" className="noteGallery-menu-icon" />
               </ListItemIcon>
               <ListItemText>Rename</ListItemText>

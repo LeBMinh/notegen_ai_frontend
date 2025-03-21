@@ -6,6 +6,8 @@ import CircularProgress from "@mui/material/CircularProgress";
 //import modals for new note
 import DBoardModals from "../../libs/DBoardModals/DBoardModals";
 
+// import image
+import NoNote from '../../../assets/Stock3D-png/HomeFolder.png';
 //import icons
 import MagnifyingGlass from '../../../assets/Icon_line/FindNow.svg';
 import RecentlyNote from '../../../assets/Icon_fill/RecentlyNote.svg';
@@ -243,8 +245,13 @@ export default function Dashboard() {
               <CircularProgress size={40} />
             </div>
           ) : filteredNotes.length === 0 ? (
-            <div className="empty-search-found">
-              No note? Go create some 📑
+            <div className="dashboard-noRecent-note">
+              <img
+                src={NoNote}
+                alt={'NoNote Icon'}
+                className="dashboard-noNote-icon"
+              />
+              No note? Let's get start by click on "Take note now" or "Grab your note" on the sidebar 📑
             </div>
           ) : (
             filteredNotes.length > 0 ? (
