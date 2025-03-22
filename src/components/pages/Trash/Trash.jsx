@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import './Trash.css';
-import { retrieveTrashStorage } from '../../../server/api';
-import CircularProgress from "@mui/material/CircularProgress";
+import { retrieveTrashStorage, recoverFromTrash, clearTrash } from '../../../server/api';
+import { Button, CircularProgress, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from "@mui/material";
 
 // import images & icons
 import Trash_3D from '../../../assets/Stock3D-png/Trash.png';
@@ -15,6 +15,9 @@ export default function Trash() {
   const [folders, setFolders] = useState([]);
   const [notes, setNotes] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [recovering, setRecovering] = useState(null);
+  const [openDialog, setOpenDialog] = useState(false); // State for MUI Dialog
+  const [modalLoading, setModalLoading] = useState(false);
 
   // Fetch all trash data
   const fetchTrashData = async () => {
@@ -73,6 +76,39 @@ export default function Trash() {
     fetchTrashData(); // Fetch all trash data on mount
   }, []);
 
+
+  // Recover file or folder from trash
+  const handleRecover = async (itemId, folderId) => {
+    setRecovering(itemId || folderId); // Show loading only for the recovering item
+    try {
+      await recoverFromTrash({ itemId, folderId });
+      if (itemId) {
+        setNotes((prevNotes) => prevNotes.filter((note) => note._id !== itemId));
+      } else {
+        setFolders((prevFolders) => prevFolders.filter((folder) => folder._id !== folderId));
+      }
+    } catch (error) {
+      console.error("Error recovering item:", error);
+    } finally {
+      setRecovering(null);
+    }
+  };
+
+  const handleClearTrash = async () => {
+    setModalLoading(true); // Start loading
+    try {
+      await clearTrash();
+      setNotes([]);
+      setFolders([]);
+      handleClose(); // Close modal after success
+    } catch (error) {
+      console.error("Failed to clear trash:", error);
+    } finally {
+      setModalLoading(false); // Stop loading
+      setOpenDialog(false); // Close dialog after clearing
+    }
+  };
+
   return (
     <div className='trashContainer'>
       {loading ? (
@@ -97,9 +133,18 @@ export default function Trash() {
               <p className='trashZero'>Trash ({folders.length + notes.length})</p>
               <p className="trash-header-note">Notes and Folders in Trash will be permanently deleted after 30 days</p>
             </div>
-            <div className="emptyTrash-container">
+            <div className="emptyTrash-container" onClick={() => setOpenDialog(true)} disabled={loading}>
               <img src={TrashBin} alt="TrashBin Icon" className="trash-bin-icon" />
               <p>Empty trash</p>
+
+              {/* {loading ? (
+                <CircularProgress size={18} color="inherit" />
+              ) : (
+                <>
+                  <img src={TrashBin} alt="TrashBin Icon" className="trash-bin-icon" />
+                  <p>Empty trash</p>
+                </>
+              )} */}
             </div>
           </div>
 
@@ -133,10 +178,20 @@ export default function Trash() {
                         hour12: true,
                       })}
                     </div>
-                    <div className="trash-folder-putBack-btn">
-                      <img src={PutBack} alt="putBack Icon" className="trash-putBack-icon" />
-                      Put back
-                    </div>
+                    <button
+                      className="trash-folder-putBack-btn"
+                      onClick={() => handleRecover(null, folder._id)}
+                      disabled={recovering === folder._id}
+                    >
+                      {recovering === folder._id ? (
+                        <CircularProgress size={18} color="inherit" />
+                      ) : (
+                        <>
+                          <img src={PutBack} alt="putBack Icon" className="trash-putBack-icon" />
+                          Put back
+                        </>
+                      )}
+                    </button>
                   </div>
 
                   <div className="trash-folder-content">
@@ -186,14 +241,42 @@ export default function Trash() {
                     </div>
                   </div>
 
-                  <div className="trash-note-putBack-btn">
-                    <img src={PutBack} alt="putBack Icon" className="trash-putBack-icon" />
-                    Put back
-                  </div>
+                  <button
+                    className="trash-note-putBack-btn"
+                    onClick={() => handleRecover(note._id, null)}
+                    disabled={recovering === note._id}
+                  >
+                    {recovering === note._id ? (
+                      <CircularProgress size={18} color="inherit" />
+                    ) : (
+                      <>
+                        <img src={PutBack} alt="putBack Icon" className="trash-putBack-icon" />
+                        Put back
+                      </>
+                    )}
+                  </button>
                 </div>
               </div>
             ))}
           </div>
+
+          {/* MUI Confirmation Dialog */}
+          <Dialog open={openDialog} onClose={() => setOpenDialog(false)}>
+            <DialogTitle>Confirm Deletion</DialogTitle>
+            <DialogContent>
+              <DialogContentText>
+                Are you sure you want to permanently delete <strong>{folders.length + notes.length}</strong> items in the trash? This action cannot be undone.
+              </DialogContentText>
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={() => setOpenDialog(false)} color="primary">
+                Cancel
+              </Button>
+              <Button onClick={handleClearTrash} color="error" variant="contained" disabled={modalLoading}>
+                {modalLoading ? <CircularProgress size={24} color="inherit" /> : "Yes, Empty Trash"}
+              </Button>
+            </DialogActions>
+          </Dialog>
 
         </>
       )}

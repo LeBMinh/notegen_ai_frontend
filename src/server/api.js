@@ -365,7 +365,46 @@ export const retrieveTrashStorage = async () => {
   }
 };
 
+// Recover either a file or a folder from the trash
+export const recoverFromTrash = async ({ itemId = null, folderId = null }) => {
+  try {
+    if (!itemId && !folderId) {
+      throw new Error("Either itemId or folderId must be provided.");
+    }
 
+    const params = itemId ? { item_id: itemId } : { folder_id: folderId };
+
+    const response = await axios.put(`${API_BASE_URL}/storage/recover-from-trash`, null, {
+      params,
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+      },
+    });
+
+    return response.data;
+  } catch (error) {
+    console.error("Error recovering from trash:", error);
+    throw error;
+  }
+};
+
+// Clear all file and folder in trash
+export const clearTrash = async () => {
+  try {
+    const token = localStorage.getItem("access_token"); // Get the token
+
+    const response = await axios.delete(`${API_BASE_URL}/storage/empty-trash`, {
+      headers: {
+        Authorization: `Bearer ${token}`, // Attach token in Authorization header
+      },
+    });
+
+    return response.data;
+  } catch (error) {
+    console.error("Error clearing trash:", error);
+    throw error;
+  }
+};
 
 //=======================VietQR PAYMENTS====================//
 // Generate Payment QR Code

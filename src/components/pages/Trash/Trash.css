@@ -70,12 +70,13 @@
     background: var(--light-2);
     border-radius: 16px;
     padding: 8px 10px;
+    font-size: 14px;
     cursor: pointer;
 }
 
 .trash-bin-icon{
-    width: 25px;
-    height: 25px;
+    width: 20px;
+    height: 20px;
 }
 
 .emptyTrash-container:hover{
@@ -241,9 +242,11 @@
 .trash-note-icon {
     width: 1.5rem;
     height: 1.5rem;
-    /* filter: invert(87%) sepia(0%) saturate(548%) hue-rotate(143deg) brightness(95%) contrast(81%); */
+    /* filter: invert(87%) sepia(0%) saturate(548%) hue-rotate(143deg) brightness(95%) contrast(81%); GREY*/
+    filter: invert(100%) brightness(100%);
     padding: 0.3rem;
-    background-color: #fc7373;
+    /* background-color: #fc7373; */
+    background-color: #08a195;
     border-radius: 10px;
     box-sizing: content-box; /* Ensure padding does not shrink the icon size */
     display: inline-block;

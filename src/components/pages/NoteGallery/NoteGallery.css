@@ -197,7 +197,7 @@
   flex-direction: row;
   gap: 8px;
   align-items: center;
-  margin-bottom: 0.8rem;
+  margin: 0.7rem 0 0.6rem 0;
 }
 
 .noteGallery-folder-title-icon{
