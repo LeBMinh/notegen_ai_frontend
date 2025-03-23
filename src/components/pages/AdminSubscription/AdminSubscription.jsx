@@ -79,8 +79,10 @@ export default function AdminSubscription() {
           (a, b) => new Date(b.created_at) - new Date(a.created_at)
         );
 
-        // 🔢 Calculate Total Transaction Sum
-        const total = transactionsWithUsernames.reduce((sum, txn) => sum + txn.amount, 0);
+        // 🔢 Calculate Total Transaction Sum (only "completed" transactions)
+        const total = transactionsWithUsernames
+          .filter((txn) => txn.status === "completed") // 🔁 Filter only completed transactions
+          .reduce((sum, txn) => sum + txn.amount, 0); // 💹 Sum amounts
         setTotalAmount(total);
 
         setTransactions(transactionsWithUsernames);
