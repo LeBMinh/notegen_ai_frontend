@@ -161,6 +161,12 @@ export default function SignIn({ setAuthenticated, setUser, toggleSignUp }) {
           Don't have an account? <span onClick={() => toggleSignUp()}>Sign up</span>
         </p>
 
+        <div className="startPage-user-warning" style={{marginTop: "10px"}}>
+          <p>⚠️ Your token will expire <strong>24h</strong> after sign in. <br />
+            If the page isn't working, just sign in again. Thanks! 🤗</p>
+        </div>
+
+
         {/* <Divider sx={{ width: "50%", color: "rgba(0, 0, 0, 0.6)" }}>or</Divider>
 
         <div className="signin-options">

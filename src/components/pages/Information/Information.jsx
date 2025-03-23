@@ -20,7 +20,7 @@ export default function Information({ user, userId, token }) {
     setLoading(true);
     try {
       const response = await retrieveStorage();
-      console.log("Raw API Response:", response); // Debugging
+      // console.log("Raw API Response:", response); // Debugging
   
       if (!response || !response.body || !Array.isArray(response.body.data)) {
         console.error("Error: Unexpected API response format", response);

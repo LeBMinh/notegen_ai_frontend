@@ -114,7 +114,7 @@ export default function Subscription() {
         token
       );
 
-      console.log("QR Code Response:", qrCode);
+      // console.log("QR Code Response:", qrCode);   // Debugging
 
       if (qrCode && qrCode.qr_image) {
         navigate("/checkOut", {
@@ -157,7 +157,7 @@ export default function Subscription() {
         token
       );
 
-      console.log("QR Code Response:", qrCode);
+      // console.log("QR Code Response:", qrCode);   // Debugging
 
       if (qrCode && qrCode.qr_image) {
         navigate("/checkOut", {

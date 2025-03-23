@@ -216,11 +216,11 @@
 }
 
 .trash-note-card:nth-child(odd) {
-    background: var(--light-2); /* White background for odd rows */
+    background: var(--light-2); /* Light gray background for odd rows */
 }
 
 .trash-note-card:nth-child(even) {
-    background: var(--light); /* Light gray background for even rows */
+    background: var(--light); /* White background for even rows */
 }
 
 

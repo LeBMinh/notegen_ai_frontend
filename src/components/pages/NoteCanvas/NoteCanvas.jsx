@@ -202,10 +202,10 @@ export default function NoteCanvas() {
   const saveContent = async () => {
     if (id && text !== previousText) {
       try {
-        console.log("Saving content...", text);
+        // console.log("Saving content...", text);    // Debugging
 
         const response = await updateFileContent(id, text);
-        console.log("Save response:", response);
+        // console.log("Save response:", response);    // Debugging
         setPreviousText(text); // Only update previousText after successful save
 
         setSaveStatus("Saved ✔️"); //  Move this here after success
@@ -231,12 +231,12 @@ export default function NoteCanvas() {
     const cleanedText = originalContent.replace(/<\/?[^>]+(>|$)/g, "");
 
     try {
-      console.log("Sending text for enhancement:", cleanedText);
+      // console.log("Sending text for enhancement:", cleanedText);    // Debugging
 
       // Call API
       const response = await processTextWithGemini(cleanedText, id);
 
-      console.log("Enhanced response:", response);
+      // console.log("Enhanced response:", response);    // Debugging
 
       // Check if response body contains valid data
       if (response?.body?.data?.content) {

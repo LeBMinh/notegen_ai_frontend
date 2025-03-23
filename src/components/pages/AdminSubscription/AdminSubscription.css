@@ -1,5 +1,6 @@
 
 .adminSubscription-header{
+    padding:  10px 20px;
     font-size: 1rem;
     font-weight: bold;
     background: linear-gradient(#25C1B3, #3372FF);
@@ -61,3 +62,106 @@
   .adminSubscription-search-bar .search-btn:hover {
     background: linear-gradient(90deg, #2c97ff, #25C1B3);
   }
+
+/* Transaction history section */
+  .admin-subscription {
+    padding: 20px;
+  }
+  
+  .admin-subscription-filters {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+
+  .admin-subscription-filter-date{
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .admin-subscription-filters input {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  
+  .admin-subscription-table {
+    margin-top: 20px;
+    max-height: 400px;
+    overflow-y: auto;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 10px;
+  }
+  
+  .transaction-card {
+    display: flex;
+    justify-content: space-between;
+    padding: 15px;
+    border-bottom: 1px solid #eee;
+  }
+  
+  .transaction-left {
+    flex: 1;
+  }
+  
+  .transaction-username {
+    font-weight: bold;
+  }
+  
+  .transaction-note {
+    font-size: 14px;
+    color: #555;
+  }
+  
+  .transaction-date {
+    font-size: 12px;
+    color: #999;
+  }
+  
+  .transaction-right {
+    text-align: right;
+  }
+  
+  .transaction-amount {
+    font-weight: bold;
+    color: green;
+  }
+  
+  .transaction-status {
+    display: inline-block;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 12px;
+    text-transform: capitalize;
+  }
+  
+  .transaction-status.pending {
+    background: orange;
+    color: white;
+  }
+  
+  .transaction-status.success {
+    background: green;
+    color: white;
+  }
+  
+
+  .loader {
+    border: 3px solid #f3f3f3;
+    border-top: 3px solid #3498db;
+    border-radius: 50%;
+    width: 16px;
+    height: 16px;
+    animation: spin 1s linear infinite;
+    display: inline-block;
+  }
+  
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+  

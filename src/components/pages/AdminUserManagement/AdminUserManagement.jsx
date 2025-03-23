@@ -23,7 +23,11 @@ export default function AdminUserManagement() {
                 // console.log("Fetched users in AdminUserManagement:", usersData); // Debugging
 
                 if (Array.isArray(usersData) && usersData.length > 0) {
-                    setUsers(usersData);
+                    // Sort by created_at (newest first)
+                    const sortedUsers = usersData.sort(
+                        (a, b) => new Date(b.created_at) - new Date(a.created_at)
+                    );
+                    setUsers(sortedUsers);
                 } else {
                     console.warn("Users data is empty or undefined.");
                     setUsers([]);
@@ -140,7 +144,7 @@ export default function AdminUserManagement() {
                             <TableCell>Role</TableCell>
                             <TableCell>Created At</TableCell>
                             <TableCell>Admin</TableCell>
-                            <TableCell>Confirmation</TableCell>
+                            <TableCell>Register confirmation</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
@@ -155,15 +159,7 @@ export default function AdminUserManagement() {
                                     <TableCell>{user.email}</TableCell>
                                     <TableCell>{user.role}</TableCell>
                                     <TableCell>
-                                        {new Date(user.created_at).toLocaleString("en-US", {
-                                            year: "numeric",
-                                            month: "long",
-                                            day: "numeric",
-                                            hour: "2-digit",
-                                            minute: "2-digit",
-                                            second: "2-digit",
-                                            hour12: true, // Toggle 12-hour or 24-hour format
-                                        })}
+                                        {new Date(user.created_at + "Z").toLocaleString("en-SG", { timeZone: "Asia/Ho_Chi_Minh" })}
                                     </TableCell>
                                     <TableCell>{user.isAdmin ? "✅" : "⬜"}</TableCell>
                                     <TableCell

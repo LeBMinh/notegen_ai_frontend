@@ -54,7 +54,7 @@ export default function Dashboard() {
     try {
       const response = await retrieveStorage();
 
-      console.log("Raw API Response:", response); // Debugging log
+      // console.log("Raw API Response:", response); // Debugging log
 
       // Ensure response has a 'body' and then check if it has 'data'
       if (!response || !response.body || !Array.isArray(response.body.data)) {
@@ -77,7 +77,7 @@ export default function Dashboard() {
           new Date(b.updated_at || b.created_at) - new Date(a.updated_at || a.created_at)
         );
 
-      console.log("Filtered Notes:", filteredNotes); // Debugging
+      // console.log("Filtered Notes:", filteredNotes); // Debugging
 
       setNotes(filteredNotes);
     } catch (error) {
@@ -88,7 +88,7 @@ export default function Dashboard() {
   };
 
   useEffect(() => {
-    console.log("Fetching notes...");
+    // console.log("Fetching notes...");
     fetchNotes();
   }, []); // Empty dependency array ensures it runs once on mount  
 
@@ -152,7 +152,7 @@ export default function Dashboard() {
       const fileId = response?.body?.data?._id;
 
       if (fileId) {
-        console.log("New file created with ID:", fileId);
+        // console.log("New file created with ID:", fileId);   // Debugging
         navigate(`/notecanvas/${fileId}`);
         setIsModalOpen(false);
       } else {

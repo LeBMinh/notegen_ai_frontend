@@ -38,7 +38,7 @@ export const signIn = async (credentials) => {
   } catch (error) {
     // Handle specific error messages from backend
     if (error.response?.status === 403) {
-      throw new Error("Please confirm your email before logging in.");
+      throw new Error("Please confirm registration in your inbox or spam email before logging in.");
     } else if (error.response?.status === 400) {
       throw new Error("Invalid credentials.");
     } else {
@@ -66,7 +66,7 @@ export const getAllUsers = async () => {
       },
     });
 
-    console.log("Full API response:", response.data); // Debugging
+    // console.log("Full API response:", response.data); // Debugging
     return response.data.body?.data || [];
   } catch (error) {
     console.error("Error fetching users:", error.response?.data || error.message);
@@ -82,7 +82,7 @@ export const getUserDetails = async (userId, token) => {
       headers: { Authorization: `Bearer ${token}` }
     });
 
-    console.log("Full API response:", res.data); // Debugging
+    // console.log("Full API response:", res.data); // Debugging
     return res.data.body?.data; // Adjust this based on actual API response
   } catch (error) {
     console.error("Failed to get user details:", error);
@@ -126,7 +126,7 @@ const getAuthHeaders = () => {
 // 📂 Create a New Folder
 export const createFolder = async (name) => {
   try {
-    console.log("Sending to API:", { name, parent_id: null }); // Debugging
+    // console.log("Sending to API:", { name, parent_id: null }); // Debugging
 
     const response = await axios.post(
       `${API_BASE_URL}/storage/create-folder?name=${encodeURIComponent(name)}&parent_id=`, 
@@ -222,7 +222,7 @@ export const retrieveStorage = async () => {
       `${API_BASE_URL}/storage/retrieve`,
       { params: { in_trash: false }, ...getAuthHeaders() }
     );
-    console.log("Storage data:", response.data); //Debugging
+    // console.log("Storage data:", response.data); //Debugging
     return response.data;
   } catch (error) {
     console.error("Error retrieving storage:", error);
@@ -259,7 +259,7 @@ export const updateFileContent = async (file_id, new_content) => {
     // Construct query parameters correctly
     const url = `${API_BASE_URL}/storage/update-file-content?file_id=${file_id}&content_type=original&new_content=${encodedContent}`;
 
-    console.log("Sending update request to:", url);
+    // console.log("Sending update request to:", url);   //Debugging
 
     const response = await axios.put(url, null, {
       headers: {
@@ -269,7 +269,7 @@ export const updateFileContent = async (file_id, new_content) => {
       },
     });
 
-    console.log("Update response:", response.data);
+    // console.log("Update response:", response.data);   //Debugging
     return response.data;
   } catch (error) {
     console.error("Error updating file content:", error.response?.data || error.message);
@@ -319,7 +319,7 @@ export const renameStorageItem = async (itemId, folderId, newName) => {
       }
     );
 
-    console.log("Rename response:", response.data);
+    // console.log("Rename response:", response.data);  //Debugging
     return response.data;
   } catch (error) {
     console.error("Error renaming storage item:", error);
@@ -357,7 +357,7 @@ export const retrieveTrashStorage = async () => {
       `${API_BASE_URL}/storage/retrieve`,
       { params: { in_trash: true }, ...getAuthHeaders() }
     );
-    console.log("Storage data:", response.data); //Debugging
+    // console.log("Storage data:", response.data); //Debugging
     return response.data;
   } catch (error) {
     console.error("Error retrieving storage:", error);
@@ -421,7 +421,7 @@ export const generatePaymentQR = async (amount, note, bankAccount, bankId, token
       }
     );
 
-    console.log("QR Code API response:", res.data);
+    // console.log("QR Code API response:", res.data);   //Debugging
     return res.data.body?.data?.qr_code || null;
   } catch (error) {
     console.error("Failed to generate payment QR:", error);
@@ -429,5 +429,41 @@ export const generatePaymentQR = async (amount, note, bankAccount, bankId, token
   }
 };
 
+// Get all payment history
+export const getPaymentHistory = async (userId = "all") => {
+  try {
+    const response = await axios.get(`${API_BASE_URL}/api/vietqr/history`, {
+      params: { user_id: userId },
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("access_token")}`, 
+        "Content-Type": "application/json",
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching payment history:", error);
+    throw error;
+  }
+};
 
-//Confirm payment only in admin page
+// Confirm payment only in admin page
+export const confirmPayment = async (confirmationCode) => {
+  try {
+    const response = await axios.post(
+      `${API_BASE_URL}/api/vietqr/confirm-payment`,
+      null, // No body since it's a query parameter
+      {
+        params: { confirmation_code: confirmationCode },
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("access_token")}`, 
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    return response.data;
+  } catch (error) {
+    console.error("Error confirming payment:", error.response?.data || error);
+    throw error;
+  }
+};

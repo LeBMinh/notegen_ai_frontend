@@ -265,7 +265,7 @@ export default function Trash() {
             <DialogTitle>Confirm Deletion</DialogTitle>
             <DialogContent>
               <DialogContentText>
-                Are you sure you want to permanently delete <strong>{folders.length + notes.length}</strong> items in the trash? This action cannot be undone.
+                Are you sure you want to permanently delete <mark><strong>{folders.length + notes.length} item(s)</strong></mark> in the trash? This action cannot be undone.
               </DialogContentText>
             </DialogContent>
             <DialogActions>
