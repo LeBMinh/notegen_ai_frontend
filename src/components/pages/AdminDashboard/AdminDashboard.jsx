@@ -30,8 +30,9 @@ export default function AdminDashboard() {
     async function fetchPayments() {
       try {
         const paymentData = await getPaymentHistory("all"); // Get all transactions
-        setPayments(paymentData.body?.data || []);
-        processPaymentData(paymentData.body?.data || []);
+        const completedPayments = (paymentData.body?.data || []).filter(payment => payment.status === "completed");
+        setPayments(completedPayments);
+        processPaymentData(completedPayments);
       } catch (error) {
         console.error("Error fetching payment history:", error);
       }
@@ -144,6 +145,7 @@ export default function AdminDashboard() {
     </div>
   );
 }
+
 
 
 
