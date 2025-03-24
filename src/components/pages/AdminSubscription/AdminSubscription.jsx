@@ -185,7 +185,7 @@ export default function AdminSubscription() {
               <div key={txn._id} className="transaction-card">
                 {/* Left Side */}
                 <div className="transaction-left">
-                  <div className="transaction-username">{txn.number}. {txn.username} ({txn._id})</div>
+                  <div className="transaction-username">{txn.number}. {txn.username} ({txn.user_id})</div>
                   <div className="transaction-note">
                     {txn.note} <strong>{txn.confirmation_code}</strong>
                   </div>
