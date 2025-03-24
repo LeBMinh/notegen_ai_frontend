@@ -169,7 +169,10 @@ export default function AdminSubscription() {
         </div>
 
         {/* Total Transactions */}
-        <h3>Total Transactions: <span style={{ color: "green" }}>{totalAmount.toLocaleString()} VND</span></h3>
+        <h3>
+          Total Transactions ({transactions.filter(txn => txn.status === "completed").length}):
+          <span style={{ color: "green" }}> {totalAmount.toLocaleString()} VND</span>
+        </h3>
 
         {/* Transaction List */}
         <div className="admin-subscription-table">
@@ -182,7 +185,7 @@ export default function AdminSubscription() {
               <div key={txn._id} className="transaction-card">
                 {/* Left Side */}
                 <div className="transaction-left">
-                  <div className="transaction-username">{txn.number}. {txn.username}</div>
+                  <div className="transaction-username">{txn.number}. {txn.username} ({txn._id})</div>
                   <div className="transaction-note">
                     {txn.note} <strong>{txn.confirmation_code}</strong>
                   </div>
