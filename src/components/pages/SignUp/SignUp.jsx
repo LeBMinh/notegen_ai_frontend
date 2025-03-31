@@ -26,7 +26,7 @@ export default function SignUp({ setAuthenticated, setUser, toggleSignIn }) {
 
   const handleImageUpload = (event) => {
     const file = event.target.files[0];
-
+  
     if (file) {
       // Check file type
       const allowedTypes = ["image/png", "image/jpg", "image/jpeg"];
@@ -34,15 +34,33 @@ export default function SignUp({ setAuthenticated, setUser, toggleSignIn }) {
         alert("Only PNG, JPG, and JPEG files are allowed!");
         return;
       }
-
-      // Show preview
+  
       const reader = new FileReader();
-      reader.onloadend = () => {
-        setSelectedImage(reader.result); // Base64 string
-      };
       reader.readAsDataURL(file);
+      reader.onloadend = () => {
+        const img = new Image();
+        img.src = reader.result;
+        img.onload = () => {
+          // Create an offscreen canvas
+          const canvas = document.createElement("canvas");
+          const ctx = canvas.getContext("2d");
+  
+          // Set canvas size to 500x500
+          canvas.width = 500;
+          canvas.height = 500;
+  
+          // Resize and draw the image onto the canvas
+          ctx.drawImage(img, 0, 0, 500, 500);
+  
+          // Convert the canvas content to Base64
+          const resizedBase64 = canvas.toDataURL("image/jpeg", 0.8); // 80% quality
+  
+          // Show preview
+          setSelectedImage(resizedBase64);
+        };
+      };
     }
-  };
+  };  
 
   const handleSignUp = async () => {
     if (!fullname || !email || !password || !confirmPassword || !selectedImage) {
