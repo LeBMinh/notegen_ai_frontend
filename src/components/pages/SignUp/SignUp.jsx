@@ -26,15 +26,22 @@ export default function SignUp({ setAuthenticated, setUser, toggleSignIn }) {
 
   const handleImageUpload = (event) => {
     const file = event.target.files[0];
-  
+
     if (file) {
-      // Check file type
+      // 🔴 Check file type
       const allowedTypes = ["image/png", "image/jpg", "image/jpeg"];
       if (!allowedTypes.includes(file.type)) {
         alert("Only PNG, JPG, and JPEG files are allowed!");
         return;
       }
-  
+
+      // 🔴 Check file size limit (1MB)
+      const maxSize = 1 * 1024 * 1024; // 1MB
+      if (file.size > maxSize) {
+        alert("File size must be less than 1MB!");
+        return;
+      }
+
       const reader = new FileReader();
       reader.readAsDataURL(file);
       reader.onloadend = () => {
@@ -44,26 +51,26 @@ export default function SignUp({ setAuthenticated, setUser, toggleSignIn }) {
           // Create an offscreen canvas
           const canvas = document.createElement("canvas");
           const ctx = canvas.getContext("2d");
-  
+
           // Set canvas size to 500x500
           canvas.width = 500;
           canvas.height = 500;
-  
+
           // Resize and draw the image onto the canvas
           ctx.drawImage(img, 0, 0, 500, 500);
-  
+
           // Convert the canvas content to Base64
-          const resizedBase64 = canvas.toDataURL("image/jpeg", 0.8); // 80% quality
-  
+          const resizedBase64 = canvas.toDataURL("image/jpeg", 0.6); // 60% quality
+
           // Show preview
           setSelectedImage(resizedBase64);
         };
       };
     }
-  };  
+  };
 
   const handleSignUp = async () => {
-    if (!fullname || !email || !password || !confirmPassword || !selectedImage) {
+    if (!fullname || !email || !password || !confirmPassword) {
       alert("Please fill in all fields.");
       return;
     }
@@ -89,7 +96,7 @@ export default function SignUp({ setAuthenticated, setUser, toggleSignIn }) {
         confirm_password: confirmPassword,
         isAdmin: false,  // Default to false
         role: "free",    // Default to "free"
-        profile_picture: base64Image
+        profile_picture: base64Image || "notSelected"
       };
 
       const response = await signUp(userData);
@@ -99,8 +106,8 @@ export default function SignUp({ setAuthenticated, setUser, toggleSignIn }) {
       // setAuthenticated(true);
       localStorage.setItem('user', JSON.stringify(response));
 
-      navigate("/signin"); // Redirect to Sign In
       alert("Kindly check your inbox or spam email and click the verification link to complete your registration.");
+      toggleSignIn(); // Switch to SignIn after successful sign-up
     } catch (error) {
       console.error("Sign-up failed:", error);
       alert(error);
