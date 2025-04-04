@@ -9,6 +9,7 @@ import {
   Grid,
   Typography,
   IconButton,
+  CircularProgress,
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import { useNavigate } from "react-router-dom";
@@ -22,6 +23,7 @@ export default function DBoardModals({ openMD, onClose, onNavigateToCanvas }) {
   const [newFolderName, setNewFolderName] = useState("");
   const [folders, setFolders] = useState([]); // Store retrieved folders
   const [loading, setLoading] = useState(true);
+  const [loadingCreateFile, setLoadingreateFile] = useState(false);
 
   const navigate = useNavigate();
 
@@ -73,7 +75,13 @@ export default function DBoardModals({ openMD, onClose, onNavigateToCanvas }) {
   }, []);
 
   const handleAddToFolder = () => setCurrentModal("choose");
-  const handleSkip = () => onNavigateToCanvas();
+  const handleSkip = async () => {
+    if (loadingCreateFile) return; // Prevent multiple clicks
+
+    setLoadingreateFile(true); // Start loading
+    await onNavigateToCanvas(); // Trigger the function to create a note
+    setLoadingreateFile(false); // Stop loading after request completes
+  };
   const handleAddNewFolder = () => setCurrentModal("newFolder");
   const handleCreateFolder = async () => {
     if (!newFolderName.trim()) return;
@@ -168,7 +176,7 @@ export default function DBoardModals({ openMD, onClose, onNavigateToCanvas }) {
                 onClick={handleSkip}
                 startIcon={<span role="img" aria-label="skip">⏭️</span>}
               >
-                Skip for now
+                {loadingCreateFile ? <CircularProgress size={20} /> : "Skip for now"}
               </Button>
             </Grid>
           </Grid>

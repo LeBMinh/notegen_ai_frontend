@@ -43,27 +43,84 @@ export default function AdminDashboard() {
   }, []);
 
   // Process users for Subscription Chart & Customer Types
+
+  // function processUserData(userData) {
+  //   const monthlyUsers = {}; 
+  //   const roleCount = { free: 0, learners: 0, pro: 0 };
+
+  //   userData.forEach(user => {
+  //     const createdMonth = new Date(user.created_at || Date.now()).toLocaleString("en-US", { month: "short" });
+  //     monthlyUsers[createdMonth] = (monthlyUsers[createdMonth] || 0) + 1;
+
+  //     if (user.role === "pro") roleCount.pro += 1;
+  //     else if (user.role === "learner") roleCount.learners += 1;
+  //     else roleCount.free += 1;
+  //   });
+
+  //   const userSubscriptionChartData = Object.keys(monthlyUsers).map(month => ({
+  //     month,
+  //     newUsers: monthlyUsers[month],
+  //     subscriptions: Math.floor(monthlyUsers[month] * 0.6), // Example: 60% convert to subscriptions
+  //   }));
+
+  //   setUserSubscriptionData(userSubscriptionChartData);
+
+  //   setCustomerTypes([
+  //     { name: "Freebies", value: roleCount.free },
+  //     { name: "Learners", value: roleCount.learners },
+  //     { name: "Pro Users", value: roleCount.pro },
+  //   ]);
+  // }
   function processUserData(userData) {
-    const monthlyUsers = {}; 
+    const dailyUsers = {};
+    const dailySubscriptions = {};
     const roleCount = { free: 0, learners: 0, pro: 0 };
-
+  
     userData.forEach(user => {
-      const createdMonth = new Date(user.created_at || Date.now()).toLocaleString("en-US", { month: "short" });
-      monthlyUsers[createdMonth] = (monthlyUsers[createdMonth] || 0) + 1;
+      // Try parsing created_at reliably
+      let createdAt = user.created_at ? new Date(user.created_at) : null;
+  
+      if (!createdAt || isNaN(createdAt.getTime())) {
+        console.warn("Invalid created_at:", user.created_at, "Using fallback date.");
+        return; // Skip this user entirely if created_at is truly invalid
+      }
+  
+      const dayKey = createdAt.toISOString().split("T")[0]; // YYYY-MM-DD
+      // Debugging
+      // if (dayKey === "2025-04-02") {
+      //   console.log("👀 User on 2025-04-02:", user.email || user.id, "Role:", user.role);
+      // }
+      
+      // Count all users
+      dailyUsers[dayKey] = (dailyUsers[dayKey] || 0) + 1;
+  
+      // Subscriptions = pro + learner
+      if (!dailySubscriptions[dayKey]) dailySubscriptions[dayKey] = 0;
+  
+      let role = (user.role || "").toLowerCase().trim();
 
-      if (user.role === "pro") roleCount.pro += 1;
-      else if (user.role === "learner") roleCount.learners += 1;
-      else roleCount.free += 1;
+      if (role === "pro") {
+        dailySubscriptions[dayKey] += 1;
+        roleCount.pro += 1;
+      } else if (role === "learner") {
+        dailySubscriptions[dayKey] += 1;
+        roleCount.learners += 1;
+      } else {
+        roleCount.free += 1;
+      }
     });
-
-    const userSubscriptionChartData = Object.keys(monthlyUsers).map(month => ({
-      month,
-      newUsers: monthlyUsers[month],
-      subscriptions: Math.floor(monthlyUsers[month] * 0.6), // Example: 60% convert to subscriptions
+  
+    const sortedDays = Object.keys(dailyUsers).sort();
+    const userSubscriptionChartData = sortedDays.map(date => ({
+      month: date,  // still using "month" as key for chart compatibility
+      newUsers: dailyUsers[date],
+      subscriptions: dailySubscriptions[date] || 0,
     }));
-
+  
+    // console.log("userSubscriptionChartData", userSubscriptionChartData);  // Debugging
+  
     setUserSubscriptionData(userSubscriptionChartData);
-
+  
     setCustomerTypes([
       { name: "Freebies", value: roleCount.free },
       { name: "Learners", value: roleCount.learners },
@@ -72,25 +129,48 @@ export default function AdminDashboard() {
   }
 
   // Process payments for Revenue & Sales Chart
+
+  // function processPaymentData(paymentData) {
+  //   const monthlyRevenue = {};
+  //   const monthlySales = {};
+
+  //   paymentData.forEach(payment => {
+  //     const createdMonth = new Date(payment.created_at).toLocaleString("en-US", { month: "short" });
+
+  //     monthlyRevenue[createdMonth] = (monthlyRevenue[createdMonth] || 0) + payment.amount;
+  //     monthlySales[createdMonth] = (monthlySales[createdMonth] || 0) + 1;
+  //   });
+
+  //   const revenueSalesChartData = Object.keys(monthlyRevenue).map(month => ({
+  //     month,
+  //     revenue: monthlyRevenue[month],
+  //     sales: monthlySales[month],
+  //   }));
+
+  //   setRevenueSalesData(revenueSalesChartData);
+  // }
   function processPaymentData(paymentData) {
-    const monthlyRevenue = {};
-    const monthlySales = {};
+    const dailyRevenue = {};
+    const dailySales = {};
 
     paymentData.forEach(payment => {
-      const createdMonth = new Date(payment.created_at).toLocaleString("en-US", { month: "short" });
+      const createdAt = new Date(payment.created_at);
+      const dayKey = createdAt.toISOString().split("T")[0]; // e.g. "2025-04-04"
 
-      monthlyRevenue[createdMonth] = (monthlyRevenue[createdMonth] || 0) + payment.amount;
-      monthlySales[createdMonth] = (monthlySales[createdMonth] || 0) + 1;
+      dailyRevenue[dayKey] = (dailyRevenue[dayKey] || 0) + payment.amount;
+      dailySales[dayKey] = (dailySales[dayKey] || 0) + 1;
     });
 
-    const revenueSalesChartData = Object.keys(monthlyRevenue).map(month => ({
-      month,
-      revenue: monthlyRevenue[month],
-      sales: monthlySales[month],
+    const sortedDays = Object.keys(dailyRevenue).sort();
+    const revenueSalesChartData = sortedDays.map(date => ({
+      month: date, // keep field name "month" so chart still works
+      revenue: dailyRevenue[date],
+      sales: dailySales[date],
     }));
 
     setRevenueSalesData(revenueSalesChartData);
   }
+
 
   return (
     <div className="adminDashboard-container">
@@ -114,9 +194,9 @@ export default function AdminDashboard() {
         </div>
 
         <div className="adminDashboard-bottom-charts">
-          {/* Monthly Revenue & Total Sales */}
+          {/* Daily Revenue & Total Sales */}
           <div className="chart-container">
-            <h2>Monthly Revenue & Total Sales</h2>
+            <h2>Daily Revenue & Total Sales</h2>
             <AreaChart width={500} height={300} data={revenueSalesData}>
               <CartesianGrid strokeDasharray="3 3" />
               <XAxis dataKey="month" />
@@ -132,7 +212,7 @@ export default function AdminDashboard() {
           <div className="chart-container">
             <h2>Customer Types</h2>
             <PieChart width={500} height={300}>
-              <Pie data={customerTypes} cx="50%" cy="50%" outerRadius={100} label>
+              <Pie data={customerTypes} cx="50%" cy="50%" outerRadius={100} label dataKey="value">
                 {customerTypes.map((entry, index) => (
                   <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                 ))}

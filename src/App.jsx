@@ -30,6 +30,13 @@ function App() {
     }
   };
 
+  const originalWarn = console.warn;
+  console.warn = function (message, ...args) {
+    if (message.includes('Invalid created_at')) return; // Ignore specific warnings
+    originalWarn.apply(console, [message, ...args]); // Log other warnings
+  };
+
+
   const [authenticated, setAuthenticated] = useState(false);
   const [user, setUser] = useState(null); // Track user information
   const [isSigningUp, setIsSigningUp] = useState(false); // Toggle between SignUp and SignIn  // Start with Sign In
@@ -117,7 +124,7 @@ function App() {
               {/* <Route element={
                 user?.isAdmin ? <AdminPage setAuthenticated={setAuthenticated} /> : <Navigate to="/" />
               }> */}
-              <Route element={ <AdminPage user={user.isAdmin} setAuthenticated={setAuthenticated} /> 
+              <Route element={<AdminPage user={user.isAdmin} setAuthenticated={setAuthenticated} />
               }>
                 {adminRoutes.map(route => (
                   <Route key={route.path} path={route.path} element={route.element} />

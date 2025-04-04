@@ -24,6 +24,7 @@ export default function Dashboard() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentModal, setCurrentModal] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [creatingFile, setCreatingFile] = useState(false);
   const navigate = useNavigate();
 
   const timeAgo = (timestamp) => {
@@ -141,6 +142,9 @@ export default function Dashboard() {
   };
 
   const handleNavigateToCanvas = async () => {
+    if (creatingFile) return; // Prevent multiple clicks
+    setCreatingFile(true); // Start loading
+    
     try {
       const fileName = "Untitled note";
       const folderId = null; // No folder selected (BE will assign a default folder)
@@ -160,6 +164,8 @@ export default function Dashboard() {
       }
     } catch (error) {
       console.error("Error creating new file:", error);
+    } finally {
+      setCreatingFile(false); // Stop loading
     }
   };
 

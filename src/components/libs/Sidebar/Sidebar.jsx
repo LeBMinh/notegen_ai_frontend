@@ -32,6 +32,7 @@ import ActiveHelpIcon from '../../../assets/Icon_fill-sidebarGradient/NeedHelp.s
 export default function Sidebar({ onLogout }) {
     const [isCollapsed, setIsCollapsed] = useState(false);
     const [isModalOpen, setIsModalOpen] = useState(false);
+      const [creatingFile, setCreatingFile] = useState(false);
     const navigate = useNavigate();
 
     const toggleSidebar = () => {
@@ -66,18 +67,21 @@ export default function Sidebar({ onLogout }) {
     ];
 
     const handleNavigateToCanvas = async () => {
+        if (creatingFile) return; // Prevent multiple clicks
+        setCreatingFile(true); // Start loading
+        
         try {
           const fileName = "Untitled note";
           const folderId = null; // No folder selected (BE will assign a default folder)
-      
+    
           // Create the file using the modified API function
           const response = await createFile(folderId, fileName);
-      
+    
           // Extract the correct file ID from the API response
           const fileId = response?.body?.data?._id;
-      
+    
           if (fileId) {
-            console.log("New file created with ID:", fileId);
+            // console.log("New file created with ID:", fileId);   // Debugging
             navigate(`/notecanvas/${fileId}`);
             setIsModalOpen(false);
           } else {
@@ -85,8 +89,10 @@ export default function Sidebar({ onLogout }) {
           }
         } catch (error) {
           console.error("Error creating new file:", error);
+        } finally {
+          setCreatingFile(false); // Stop loading
         }
-      };   
+      };
 
     return (
         <div className={`sidebar ${isCollapsed ? 'collapsed' : ''}`}>
