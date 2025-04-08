@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './Subscription.css';
 import { useNavigate } from "react-router-dom";
-import { generatePaymentQR } from '../../../server/api';
+import { generatePaymentQR, getUserDetails } from '../../../server/api';
 // Import Icon
 import Folder from '../../../assets/Icon_fill/Folder.svg';
 import CrownIcon from '../../../assets/Icon_fill/SubscribeNow.svg';
@@ -90,9 +90,45 @@ const planFeatures = {
   // ],
 };
 
-export default function Subscription() {
+export default function Subscription({ user, userId, token }) {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false); // Loading state
+  const [userNomal, setUserNomal] = useState(null);
+
+  const storedUser = JSON.parse(localStorage.getItem("user")) || {};
+  const storedToken = localStorage.getItem("access_token");
+
+  if (!storedUser.userId || !storedToken) {
+    console.error(" Missing userId or token in localStorage");
+  }
+
+  useEffect(() => {
+    // Use stored values if props are not available
+    const finalUserId = userId || storedUser.userId;
+    const finalToken = token || storedToken;
+
+    if (!finalUserId || !finalToken) {
+      console.error("Missing userId or token before fetching user details");
+      return;
+    }
+
+    const fetchUserData = async () => {
+      try {
+        const userDetails = await getUserDetails(finalUserId, finalToken);
+        // console.log("Fetched user details:", userDetails); // Debugging
+
+        if (!userDetails) {
+          console.warn("User details are null or undefined");
+        }
+
+        setUserNomal(userDetails);
+      } catch (error) {
+        console.error("Error fetching user details:", error);
+      }
+    };
+
+    fetchUserData();
+  }, [userId, token]);
 
   const handleLearnerCheckOut = async () => {
     if (loading) return; // Prevent multiple clicks
@@ -217,10 +253,18 @@ export default function Subscription() {
               </li>
             ))}
           </ul>
-          <button className="subscription-button" onClick={handleLearnerCheckOut}>
+          <button
+            className="subscription-button"
+            onClick={handleLearnerCheckOut}
+            disabled={loading || userNomal?.role === "learner" || userNomal?.role === "pro"}
+          >
             {/* css for tryBeta-icon is in Smartlearning.css */}
             <img src={TryBeta} alt="Try Beta Icon" className="tryBeta-icon" />
-            {loading ? "Processing..." : "Subscribe now"}
+            {userNomal?.role === "learner" || userNomal?.role === "pro"
+              ? "Already Subscribed"
+              : loading
+                ? "Processing..."
+                : "Subscribe now"}
           </button>
         </div>
 
@@ -238,10 +282,18 @@ export default function Subscription() {
               </li>
             ))}
           </ul>
-          <button className="subscription-button" onClick={handleProUserCheckOut}>
+          <button
+            className="subscription-button"
+            onClick={handleProUserCheckOut}
+            disabled={loading || userNomal?.role === "pro"}
+          >
             {/* css for tryBeta-icon is in Smartlearning.css */}
             <img src={TryBeta} alt="Try Beta Icon" className="tryBeta-icon" />
-            {loading ? "Processing..." : "Subscribe now"}
+            {userNomal?.role === "pro"
+              ? "Already Subscribed"
+              : loading
+                ? "Processing..."
+                : "Subscribe now"}
           </button>
         </div>
 

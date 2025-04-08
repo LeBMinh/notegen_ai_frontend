@@ -4,7 +4,8 @@ import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import Typo from "typo-js";
 import './NoteCanvas.css';
-import { retrieveById, updateFileContent, processTextWithGemini } from '../../../server/api';
+import { Tooltip } from '@mui/material';
+import { retrieveById, updateFileContent, processTextWithGemini, renameStorageItem } from '../../../server/api';
 
 //import image
 import NoFolder from '../../../assets/Stock3D-png/NoteCanvas.png';
@@ -85,7 +86,8 @@ export default function NoteCanvas() {
   const [saveStatus, setSaveStatus] = useState("Saved"); // Default state is "Saved"
   const [loadingEnhance, setLoadingEnhance] = useState(false);
   const [isEnhancedMode, setIsEnhancedMode] = useState(false); // New state for transition
-
+  const [isEditing, setIsEditing] = useState(false);
+  const [editedName, setEditedName] = useState(note?.name || 'Untitled Note');
 
   const handleCloseNoteCanvas = () => {
     navigate(-1); // Go back one step in history
@@ -154,6 +156,18 @@ export default function NoteCanvas() {
     fetchNoteAndFolder();
   }, [id]);
 
+  // Rename logic &  Handle key press
+  const handleKeyDown = async (e) => {
+    if (e.key === "Enter" || (e.key === "Enter" && e.shiftKey)) {
+      try {
+        await renameStorageItem(note._id, null, editedName.trim());
+        setNote({ ...note, name: editedName.trim() }); // Update locally
+        setIsEditing(false);
+      } catch (error) {
+        console.error("Rename failed", error);
+      }
+    }
+  };
 
   // Load Typo.js dictionary once
   useEffect(() => {
@@ -210,7 +224,7 @@ export default function NoteCanvas() {
 
         setSaveStatus("Saved ✔️"); //  Move this here after success
         // Reset save status after a few seconds
-        setTimeout(() => setSaveStatus(""), 3000);
+        setTimeout(() => setSaveStatus(""), 500);
       } catch (error) {
         console.error("Error saving content:", error);
         setSaveStatus("Failed to save"); // Show error message on failure
@@ -306,10 +320,53 @@ export default function NoteCanvas() {
                 <div className="noteCanvas-back-btn-container" onClick={handleCloseNoteCanvas}>
                   <img src={BackToPrevious} alt="BackToPrevious Icon" className="backToPrevious-icon" />
                 </div>
-                <div className="noteCanvas-noteTitle-container">
-                  <img src={UntitledNote} alt="Note Title Icon" className="noteCanvas-noteTitle-icon" />
-                  <h2 className="noteCanvas-title">{note.name || 'Untitled Note'}</h2>
-                </div>
+                {note && (
+                  <div className="noteCanvas-noteTitle-container">
+                    <Tooltip title="Edit note name" arrow
+                    PopperProps={{
+                      modifiers: [
+                        {
+                          name: 'offset',
+                          options: {
+                            offset: [0, -10], // [horizontal, vertical]
+                          },
+                        },
+                      ],
+                    }}>
+                      <span 
+                      className='noteCanvas-noteTitle-icon-container'
+                      style={{ display: "inline-flex", alignItems: "center", cursor: "pointer" }}
+                        onClick={() => {
+                          // console.log("note:", note); // Dubugging
+                          setEditedName(note?.name || 'Untitled Note');
+                          setIsEditing(true);
+                        }}
+                      >
+                        <img
+                          src={UntitledNote}
+                          alt="Note Title Icon"
+                          className="noteCanvas-noteTitle-icon"
+                        />
+                      </span>
+                    </Tooltip>
+
+                    {isEditing ? (
+                      <input
+                        className="noteCanvas-title-input"
+                        type="text"
+                        value={editedName}
+                        autoFocus
+                        onChange={(e) => setEditedName(e.target.value)}
+                        onKeyDown={handleKeyDown}
+                        onBlur={() => setIsEditing(false)} // Optional: cancel on blur
+                      />
+                    ) : (
+                      <div className="noteCanvas-title">
+                        {note.name || 'Untitled Note'}
+                      </div>
+                    )}
+                  </div>
+                )}
               </div>
 
               <div id="toolbar">
@@ -419,7 +476,7 @@ export default function NoteCanvas() {
             {/* === Save Status === */}
             <div className='noteCanvas-save-container'>
               <div className={`noteCanvas-save-status ${saveStatus.toLowerCase()}`}>
-                {saveStatus || "Saving...?"}
+                {saveStatus || "Typing...? Auto save after 2s"}
               </div>
             </div>
 

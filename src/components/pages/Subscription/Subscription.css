@@ -232,6 +232,11 @@
     -webkit-user-drag: none; /* Disable drag functionality */
     user-select: none; /* Disable text selection */
   }
+
+  .subscription-button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }  
   
   .subscription-button:hover {
     background: linear-gradient(90deg, #2c97ff, #25C1B3);

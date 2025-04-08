@@ -174,7 +174,8 @@ export default function DBoardModals({ openMD, onClose, onNavigateToCanvas }) {
               <Button
                 variant="outlined"
                 onClick={handleSkip}
-                startIcon={<span role="img" aria-label="skip">⏭️</span>}
+                // startIcon={<span role="img" aria-label="skip">⏭️</span>}
+                startIcon={loadingCreateFile ? "" : "⏭️"}
               >
                 {loadingCreateFile ? <CircularProgress size={20} /> : "Skip for now"}
               </Button>

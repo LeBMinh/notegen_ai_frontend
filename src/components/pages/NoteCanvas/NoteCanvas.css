@@ -138,7 +138,7 @@
   display: flex;
   align-items: center;
   /* margin-bottom: 16px; */
-  gap: 20px;
+  gap: 10px;
 }
 
 .noteCanvas-back-btn-container {
@@ -168,13 +168,50 @@
 .noteCanvas-noteTitle-icon {
   width: 28px;
   filter: invert(32%) sepia(0%) saturate(0%) hue-rotate(323deg) brightness(96%) contrast(88%);
+  cursor: pointer;
+  z-index: 10;
+  position: relative;
+}
+
+.noteCanvas-noteTitle-icon-container {
+  padding: 4px;
+}
+
+.noteCanvas-noteTitle-icon-container:hover {
+  background-color: #ddf2fd; /* Soft blue */
+  border-radius: 15px;
 }
 
 .noteCanvas-title {
+  max-height: 50px;
+  max-width: 345px;
   font-size: 1.5rem;
   font-weight: bold;
   color: var(--dark-2);
+  overflow-x: auto;
 }
+
+/* Custom scrollbar styling for WebKit browsers (e.g., Chrome, Edge, Safari) */
+.noteCanvas-title::-webkit-scrollbar {
+  width: 2px; /* Set scrollbar width */
+}
+
+.noteCanvas-title::-webkit-scrollbar-thumb {
+  background-color: var(--light-2); /* Color of the scrollbar thumb */
+  border-radius: 4px; /* Rounded scrollbar edges */
+}
+
+.noteCanvas-title-input {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: var(--dark-2);
+  max-width: 340px;
+  border: none;
+  outline: none;
+  background-color: transparent;
+  border-bottom: 1px solid var(--primary-1);
+}
+
 
 /* Note Canvas Editor */
 .noteCanvas-main .ql-container.ql-snow {

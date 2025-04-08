@@ -101,13 +101,17 @@
   width: 5px; /* Set scrollbar width */
 }
 
-.noteGallery-folders-container::-webkit-scrollbar-thumb ,
+.noteGallery-folders-container::-webkit-scrollbar-thumb {
+  background-color: #e5fcf8; /* Color of the scrollbar thumb */
+}
 .notes-gallery-container::-webkit-scrollbar-thumb {
   background-color: var(--primary-1); /* Color of the scrollbar thumb */
   border-radius: 4px; /* Rounded scrollbar edges */
 }
 
-.noteGallery-folders-container::-webkit-scrollbar-thumb:hover ,
+.noteGallery-folders-container::-webkit-scrollbar-thumb:hover {
+  background: var(--secondary-2); /* Darker color on hover */
+}
 .notes-gallery-container::-webkit-scrollbar-thumb:hover {
   background: var(--primary-3); /* Darker color on hover */
 }

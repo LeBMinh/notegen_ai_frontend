@@ -144,7 +144,7 @@ export default function Dashboard() {
   const handleNavigateToCanvas = async () => {
     if (creatingFile) return; // Prevent multiple clicks
     setCreatingFile(true); // Start loading
-    
+
     try {
       const fileName = "Untitled note";
       const folderId = null; // No folder selected (BE will assign a default folder)
