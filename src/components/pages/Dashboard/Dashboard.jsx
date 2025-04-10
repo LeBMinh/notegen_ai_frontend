@@ -274,7 +274,9 @@ export default function Dashboard() {
                   onClick={() => handlePinNote(note)} // Attach click event
                 /> */}
                   <div className="dashboard-note-TandC">
-                    <h3 className="dashboard-note-title">{note.name}</h3>
+                    <h3 className="dashboard-note-title">
+                      {note.name.length > 30 ? `${note.name.slice(0, 30)}...` : note.name}
+                    </h3>
                     <p
                       className="dashboard-note-content"
                       dangerouslySetInnerHTML={{

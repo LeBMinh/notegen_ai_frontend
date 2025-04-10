@@ -317,7 +317,12 @@ export default function NoteGallery() {
                     <div
                       className="noteGallery-note-title"
                       dangerouslySetInnerHTML={{
-                        __html: highlightText(note.name, searchTerm),
+                        __html: highlightText(
+                          note.name.length > 30 || note.name.length == 0
+                            ? `${note.name.slice(0, 30)}...`
+                            : note.name
+                          , searchTerm
+                        ),
                       }}
                     />
                     <div className="noteGallery-note-content">

@@ -1,14 +1,21 @@
-.dialog-title {
+  .DBodals-dialog-title {
+    margin-top: 35px;
     text-align: center;
-    font-size: 1.5rem;
+    font-size: 2.1rem;
     font-weight: bold;
+    font-family: -apple-system, BlinkMacSystemFont, "San Francisco Pro", sans-serif;
+    background: linear-gradient(#25C1B3, #3372FF);
+      background-clip: text;  /* Standard property for compatibility */
+      -moz-background-clip: text; /* Firefox */
+      -ms-background-clip: text; /* Internet Explorer */
+      -webkit-text-fill-color: transparent;
   }
   
-  .dialog-content {
-    padding: 16px;
+  .DBodals-addNewFolder-icon{
+    width: 1.3rem;
+    /* --primary-6: #3372FF  */
+    filter: invert(35%) sepia(99%) saturate(2326%) hue-rotate(211deg) brightness(100%) contrast(103%);
   }
   
-  .dialog-actions {
-    justify-content: space-between;
-  }
+
   

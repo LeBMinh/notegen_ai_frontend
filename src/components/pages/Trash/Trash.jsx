@@ -161,52 +161,54 @@ export default function Trash() {
           </div>
 
           {/* Folders in trash */}
-          <div className="trash-folder-container">
-            {folders.map(folder => (
-              <div key={folder._id} className="trash-folder-card">
-                <div className="trash-folder-card-container">
-                  <div className="trash-folder-header-card">
-                    <div className="trash-folder-timestamp">
-                      {new Date(folder.deleted_at).toLocaleString("en-US", {
-                        timeZone: "America/New_York",
-                        year: "numeric",
-                        month: "long",
-                        day: "numeric",
-                        hour: "2-digit",
-                        minute: "2-digit",
-                        second: "2-digit",
-                        hour12: true,
-                      })}
+          {folders.length > 0 && (
+            <div className="trash-folder-container">
+              {folders.map(folder => (
+                <div key={folder._id} className="trash-folder-card">
+                  <div className="trash-folder-card-container">
+                    <div className="trash-folder-header-card">
+                      <div className="trash-folder-timestamp">
+                        {new Date(folder.deleted_at).toLocaleString("en-US", {
+                          timeZone: "America/New_York",
+                          year: "numeric",
+                          month: "long",
+                          day: "numeric",
+                          hour: "2-digit",
+                          minute: "2-digit",
+                          second: "2-digit",
+                          hour12: true,
+                        })}
+                      </div>
+                      <button
+                        className="trash-folder-putBack-btn"
+                        onClick={() => handleRecover(null, folder._id)}
+                        disabled={recovering === folder._id}
+                      >
+                        {recovering === folder._id ? (
+                          <CircularProgress size={18} color="inherit" />
+                        ) : (
+                          <>
+                            <img src={PutBack} alt="putBack Icon" className="trash-putBack-icon" />
+                            Put back
+                          </>
+                        )}
+                      </button>
                     </div>
-                    <button
-                      className="trash-folder-putBack-btn"
-                      onClick={() => handleRecover(null, folder._id)}
-                      disabled={recovering === folder._id}
-                    >
-                      {recovering === folder._id ? (
-                        <CircularProgress size={18} color="inherit" />
-                      ) : (
-                        <>
-                          <img src={PutBack} alt="putBack Icon" className="trash-putBack-icon" />
-                          Put back
-                        </>
-                      )}
-                    </button>
-                  </div>
 
-                  <div className="trash-folder-content">
-                    <img src={Folder} alt="Folder Icon" className="trash-folder-icon" />
-                    <div className="trash-folder-title">
-                      {folder.name.length > 50 ||
-                        folder.name.length === 0
-                        ? `${folder.name.slice(0, 50)}...`
-                        : folder.name}
+                    <div className="trash-folder-content">
+                      <img src={Folder} alt="Folder Icon" className="trash-folder-icon" />
+                      <div className="trash-folder-title">
+                        {folder.name.length > 50 ||
+                          folder.name.length === 0
+                          ? `${folder.name.slice(0, 50)}...`
+                          : folder.name}
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
+          )}
 
           {/* Notes in trash */}
           <div className="trash-note-container">
