@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import './Trash.css';
 import { retrieveTrashStorage, recoverFromTrash, clearTrash } from '../../../server/api';
-import { Button, CircularProgress, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from "@mui/material";
+import { Button, Pagination, CircularProgress, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from "@mui/material";
 
 // import images & icons
 import Trash_3D from '../../../assets/Stock3D-png/Trash.png';
@@ -18,6 +18,7 @@ export default function Trash() {
   const [recovering, setRecovering] = useState(null);
   const [openDialog, setOpenDialog] = useState(false); // State for MUI Dialog
   const [modalLoading, setModalLoading] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
 
   // Fetch all trash data
   const fetchTrashData = async () => {
@@ -109,6 +110,34 @@ export default function Trash() {
     }
   };
 
+  const formatVietnamTime = (timestamp) => {
+    const date = new Date(timestamp + "Z");
+
+    const options = {
+      timeZone: "Asia/Ho_Chi_Minh",
+      year: "numeric",
+      month: "long",
+      day: "2-digit",
+      hour: "2-digit",
+      minute: "2-digit",
+      second: "2-digit",
+      hour12: true,
+    };
+
+    // Intl.DateTimeFormat: an JS object for customize date & time format
+    const parts = new Intl.DateTimeFormat("en-US", options).formatToParts(date);
+    const map = Object.fromEntries(parts.map(({ type, value }) => [type, value]));
+
+    return `${map.month} ${map.day}, ${map.year} at ${map.hour}:${map.minute}:${map.second} ${map.dayPeriod}`;
+  };
+
+  // Pagination for Note list
+  const notesPerPage = 5;
+  const handlePageChange = (_, value) => setCurrentPage(value);
+
+  const totalPages = Math.ceil(notes.length / notesPerPage);
+  const paginatedNotes = notes.slice((currentPage - 1) * notesPerPage, currentPage * notesPerPage);
+
   return (
     <div className='trashContainer'>
       {loading ? (
@@ -168,16 +197,7 @@ export default function Trash() {
                   <div className="trash-folder-card-container">
                     <div className="trash-folder-header-card">
                       <div className="trash-folder-timestamp">
-                        {new Date(folder.deleted_at).toLocaleString("en-US", {
-                          timeZone: "America/New_York",
-                          year: "numeric",
-                          month: "long",
-                          day: "numeric",
-                          hour: "2-digit",
-                          minute: "2-digit",
-                          second: "2-digit",
-                          hour12: true,
-                        })}
+                        {formatVietnamTime(folder.deleted_at)}
                       </div>
                       <button
                         className="trash-folder-putBack-btn"
@@ -212,21 +232,12 @@ export default function Trash() {
 
           {/* Notes in trash */}
           <div className="trash-note-container">
-            {notes.map(note => (
+            {paginatedNotes.map(note => (
               <div key={note._id} className="trash-note-card">
                 <div className="trash-note-card-container">
                   <div className="trash-note-card-left">
                     <div className="trash-folder-timestamp">
-                      {new Date(note.deleted_at).toLocaleString("en-US", {
-                        timeZone: "America/New_York",
-                        year: "numeric",
-                        month: "long",
-                        day: "numeric",
-                        hour: "2-digit",
-                        minute: "2-digit",
-                        second: "2-digit",
-                        hour12: true,
-                      })}
+                      {formatVietnamTime(note.deleted_at)}
                     </div>
 
                     <div className="trash-note-card-content">
@@ -261,6 +272,32 @@ export default function Trash() {
               </div>
             ))}
           </div>
+
+          {/* MUI Pagination Counter */}
+          {totalPages > 1 && (
+            <Pagination
+              count={totalPages}
+              page={currentPage}
+              onChange={handlePageChange}
+              shape="rounded"
+              sx={{
+                display: 'flex',
+                justifyContent: 'center',
+                marginTop: 1,
+                '& .MuiPaginationItem-root': {
+                  border: 'none',
+                  color: 'inherit',
+                },
+                '& .Mui-selected': {
+                  border: '2px solid #3372FF',
+                  color: '#3372FF',
+                  backgroundColor: 'transparent',
+                  borderRadius: "8px",
+                },
+              }}
+            />
+          )}
+
 
           {/* MUI Confirmation Dialog */}
           <Dialog open={openDialog} onClose={() => setOpenDialog(false)}>

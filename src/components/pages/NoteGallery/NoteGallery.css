@@ -91,7 +91,7 @@
   grid-template-columns: repeat(auto-fit, minmax(10em, 1fr)); /* Adaptive grid (that behave like display flex) */
   /* margin-bottom: 0.8rem; */
   max-width: 100%; 
-  max-height: 210px; /* Limit the container's height */
+  max-height: 160px; /* Limit the container's height */
   overflow-y: auto; /* Add vertical scrolling when content overflows */
 }
 
@@ -241,12 +241,16 @@
     height: 70px;
   }
 
+  .notes-gallery-heightAdjust-container{
+    height: 346px; 
+  }
+
   .notes-gallery-container {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     /* grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); */
     gap: 0.9rem;
-    max-height: 47vh; /* Limit the container's height */
+    max-height: 346px; /* Limit the container's height */
     overflow-y: auto; /* Add vertical scrolling when content overflows */
   }
   
@@ -260,7 +264,6 @@
     background-color: #D2EFFF80;
     cursor: pointer;
     transition: border-color 0.2s ease-in-out; /* Smooth transition for border color */
-
   }
   
   .noteGallery-note-card:hover {
@@ -311,6 +314,19 @@
 
   .noteGallery-context-item:hover{
     background: var(--light-2);
+  }
+  
+  .noteGallery-notes-pagination {
+    margin-top: 12px;
+    display: flex;
+    justify-content: center;
+  }
+  
+  .noteGallery-notes-pagination .MuiPaginationItem-root.Mui-selected {
+    border: 2px solid #3372FF;
+    color: #3372FF;
+    background-color: transparent;
+    border-radius: 8px;
   }
   
   

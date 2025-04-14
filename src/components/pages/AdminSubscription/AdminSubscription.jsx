@@ -5,6 +5,7 @@ import { confirmPayment, getAllUsers, getPaymentHistory } from "../../../server/
 // import icons
 import MagnifyingGlass from '../../../assets/Icon_line/FindNow.svg';
 import MoreDetail from '../../../assets/Icon_line/BackToPrevious.svg';
+import ExportCSV from '../../../assets/Icon_line/Save_btn.svg';
 
 export default function AdminSubscription() {
   const [transactionId, setTransactionId] = useState("");
@@ -110,6 +111,50 @@ export default function AdminSubscription() {
     return matchSearch && matchDate;
   });
 
+  // Handle export CSV file
+  const handleExportCSV = () => {
+    const completedTxns = filteredTransactions.filter(txn => txn.status === "completed");
+
+    if (completedTxns.length === 0) {
+      alert("No completed transactions to export.");
+      return;
+    }
+
+    const headers = ["#", "Username", "User ID", "Note", "Code", "Date", "Amount (VND)", "Status"];
+    const rows = completedTxns.map((txn, index) => [
+      index + 1,
+      txn.username,
+      txn.user_id,
+      txn.note,
+      txn.confirmation_code,
+      new Date(txn.created_at + "Z").toLocaleString("en-SG", {
+        timeZone: "Asia/Ho_Chi_Minh",
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+        hour: "2-digit",
+        minute: "2-digit",
+        second: "2-digit",
+        hour12: true,
+      }),
+      txn.amount,
+      txn.status
+    ]);
+
+    const csvRows = [headers, ...rows];
+    const csvString = csvRows.map(e => e.map(cell => `"${String(cell).replace(/"/g, '""')}"`).join(",")).join("\n");
+
+    // Add UTF-8 BOM to support Vietnamese characters
+    const blob = new Blob(["\uFEFF" + csvString], { type: "text/csv;charset=utf-8;" });
+
+    const link = document.createElement("a");
+    const url = URL.createObjectURL(blob);
+    link.href = url;
+    link.setAttribute("download", "completed_transactions.csv");
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
 
   return (
     <div className='adminSubscription-container'>
@@ -169,10 +214,17 @@ export default function AdminSubscription() {
         </div>
 
         {/* Total Transactions */}
-        <h3>
-          Total Transactions ({transactions.filter(txn => txn.status === "completed").length}):
-          <span style={{ color: "green" }}> {totalAmount.toLocaleString()} VND</span>
-        </h3>
+        <div className='adminSubscription-mount-export-container'>
+          <h3>
+            Total Transactions ({transactions.filter(txn => txn.status === "completed").length}):
+            <span style={{ color: "green" }}> {totalAmount.toLocaleString()} VND</span>
+          </h3>
+
+          <div className='adminSubscription-exportCSV-btn' onClick={handleExportCSV} >
+            <img src={ExportCSV} alt="ExportCSV Icon" className="exportCSV-icon" />
+            Export Completed Transactions
+          </div>
+        </div>
 
         {/* Transaction List */}
         <div className="admin-subscription-table">

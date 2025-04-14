@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import "./NoteGallery.css";
 import { retrieveStorage, moveFile, renameStorageItem, deleteStorageItem } from '../../../server/api';
 import CircularProgress from "@mui/material/CircularProgress";
-import { Dialog, DialogTitle, DialogContent, TextField, DialogActions, Button, Menu, MenuItem, ListItemIcon, ListItemText } from "@mui/material";
+import { Dialog, DialogTitle, DialogContent, TextField, DialogActions, Button, Menu, MenuItem, ListItemIcon, ListItemText, Pagination } from "@mui/material";
 
 // import image
 import NoFolder from '../../../assets/Stock3D-png/NoteGallery.png';
@@ -29,6 +29,7 @@ export default function NoteGallery() {
   const [renameDialogOpen, setRenameDialogOpen] = useState(false);
   const [newName, setNewName] = useState("");
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
 
   const navigate = useNavigate();
 
@@ -194,6 +195,14 @@ export default function NoteGallery() {
     }
   };
 
+  // Pagination for Note list
+  const itemsPerPage = 10; // 2 columns * 5 rows
+
+  const paginatedNotes = filteredNotes.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
+
 
   const highlightText = (text, searchTerm) => {
     if (!searchTerm) return text;  // No search term, return original text
@@ -289,54 +298,65 @@ export default function NoteGallery() {
         </div>
 
         {/* Notes List*/}
-        <div className="notes-gallery-container">
-          {loading ? (
-            <div className="notes-gallery-loading-container">
-              <CircularProgress size={40} />
-            </div>
-          ) : filteredNotes.length === 0 ? (
-            <div className="notes-gallery-no-note-message">
-              <img
-                src={NoNote}
-                alt={'NoNote Icon'}
-                className="notes-gallery-noNote-icon"
-              />
-              No note? Go create some 📑
-            </div>
-          ) : (
-            filteredNotes.map(note => (
-              <div
-                key={note._id}
-                className="noteGallery-note-card"
-                onClick={() => handleNoteToCanvas(note._id)}
-                onContextMenu={(event) => handleRightClick(event, note, "file")}
-              >
-                <div className="noteGallery-note-card-container">
-                  <img src={NoteCard} alt="Note Icon" className="noteGallery-note-icon" />
-                  <div>
-                    <div
-                      className="noteGallery-note-title"
-                      dangerouslySetInnerHTML={{
-                        __html: highlightText(
-                          note.name.length > 30 || note.name.length == 0
-                            ? `${note.name.slice(0, 30)}...`
-                            : note.name
-                          , searchTerm
-                        ),
-                      }}
-                    />
-                    <div className="noteGallery-note-content">
-                      {note.content.original.replace(/<\/?[^>]+(>|$)/g, "").length > 50 ||
-                        note.content.original.replace(/<\/?[^>]+(>|$)/g, "").length === 0
-                        ? `${note.content.original.replace(/<\/?[^>]+(>|$)/g, "").slice(0, 50)}...`
-                        : note.content.original.replace(/<\/?[^>]+(>|$)/g, "")}
+        <div className="notes-gallery-heightAdjust-container">
+          <div className="notes-gallery-container">
+            {loading ? (
+              <div className="notes-gallery-loading-container">
+                <CircularProgress size={40} />
+              </div>
+            ) : filteredNotes.length === 0 ? (
+              <div className="notes-gallery-no-note-message">
+                <img
+                  src={NoNote}
+                  alt={'NoNote Icon'}
+                  className="notes-gallery-noNote-icon"
+                />
+                No note? Go create some 📑
+              </div>
+            ) : (
+              paginatedNotes.map(note => (
+                <div
+                  key={note._id}
+                  className="noteGallery-note-card"
+                  onClick={() => handleNoteToCanvas(note._id)}
+                  onContextMenu={(event) => handleRightClick(event, note, "file")}
+                >
+                  <div className="noteGallery-note-card-container">
+                    <img src={NoteCard} alt="Note Icon" className="noteGallery-note-icon" />
+                    <div>
+                      <div
+                        className="noteGallery-note-title"
+                        dangerouslySetInnerHTML={{
+                          __html: highlightText(
+                            note.name.length > 30 || note.name.length == 0
+                              ? `${note.name.slice(0, 30)}...`
+                              : note.name
+                            , searchTerm
+                          ),
+                        }}
+                      />
+                      <div className="noteGallery-note-content">
+                        {note.content.original.replace(/<\/?[^>]+(>|$)/g, "").length > 50 ||
+                          note.content.original.replace(/<\/?[^>]+(>|$)/g, "").length === 0
+                          ? `${note.content.original.replace(/<\/?[^>]+(>|$)/g, "").slice(0, 50)}...`
+                          : note.content.original.replace(/<\/?[^>]+(>|$)/g, "")}
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-            ))
-          )}
+              ))
+            )}
+          </div>
         </div>
+
+        {/* MUI Pagination Counter */}
+        <Pagination
+          count={Math.ceil(filteredNotes.length / itemsPerPage)}
+          page={currentPage}
+          onChange={(event, value) => setCurrentPage(value)}
+          shape="rounded"
+          className="noteGallery-notes-pagination"
+        />
 
         <div className="noteGallery-rightClick-container">
           {/* Right Click Context Menu */}
