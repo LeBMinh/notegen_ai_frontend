@@ -12,7 +12,7 @@
 .stats-item {
     background-color: #ffffff;
     border-radius: 26px;
-    padding: calc(10px - 1px) 12px; /* Adjust padding to account for initial border size */
+    padding: calc(10px - 1px) 10px; /* Adjust padding to account for initial border size */
     border: 1px solid var(--lightBorder);
     width: 10.1em;
     height: 6em;
@@ -22,7 +22,7 @@
   .stats-item:hover {
     border: 2px solid #0000;   /* Must be 4-char alpha-hex make gradient border work */
     border-radius: 26px;
-    padding: calc(10px - 2px) 12px; /* Adjust padding to maintain consistent size */
+    padding: calc(10px - 2px) 9px; /* Adjust padding to maintain consistent size */
     background:
       linear-gradient(white,white) padding-box,
       linear-gradient(#25C1B3,#3372FF) border-box;
