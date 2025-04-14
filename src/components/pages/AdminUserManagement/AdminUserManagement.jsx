@@ -2,9 +2,11 @@ import React, { useEffect, useState } from "react";
 import "./AdminUserManagement.css";
 import { TextField, MenuItem, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Select, InputLabel, FormControl } from "@mui/material";
 import { getAllUsers } from "../../../server/api";
+
+// import icons
 import TotalUserIcon from "../../../assets/Icon_line/UserTime.svg";
 import PremiumUserIcon from "../../../assets/Icon_line/AddUser.svg";
-
+import ExportCSV from '../../../assets/Icon_line/Save_btn.svg';
 
 export default function AdminUserManagement() {
     const [users, setUsers] = useState([]);
@@ -55,6 +57,50 @@ export default function AdminUserManagement() {
     const indexOfFirstUser = indexOfLastUser - usersPerPage;
     const currentUsers = filteredUsers.slice(indexOfFirstUser, indexOfLastUser);
     const totalPages = Math.ceil(filteredUsers.length / usersPerPage);
+
+    // Handle export CSV file
+    const handleExportCSV = () => {
+        if (users.length === 0) {
+            alert("No users to export.");
+            return;
+        }
+
+        const headers = ["#", "Username", "Email", "Role", "Created At", "Is Admin", "Confirmation"];
+        const rows = users.map((user, index) => [
+            index + 1,
+            user.username,
+            user.email,
+            user.role,
+            new Date(user.created_at + "Z").toLocaleString("en-SG", {
+                timeZone: "Asia/Ho_Chi_Minh",
+                year: "numeric",
+                month: "2-digit",
+                day: "2-digit",
+                hour: "2-digit",
+                minute: "2-digit",
+                second: "2-digit",
+                hour12: true,
+            }),
+            user.isAdmin ? "Yes" : "No",
+            user.confirmation ? "Confirmed" : "Pending",
+        ]);
+
+        const csvRows = [headers, ...rows];
+        const csvString = csvRows
+            .map((row) => row.map(cell => `"${String(cell).replace(/"/g, '""')}"`).join(","))
+            .join("\n");
+
+        // Add UTF-8 BOM to support Vietnamese characters
+        const blob = new Blob(["\uFEFF" + csvString], { type: "text/csv;charset=utf-8;" });
+
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement("a");
+        link.href = url;
+        link.setAttribute("download", "userInfo_list.csv");
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    };
 
     return (
         <div className="userManagement-container">
@@ -110,19 +156,26 @@ export default function AdminUserManagement() {
 
             {/* Search & Filter Bar */}
             <div className="userManagement-filters">
-                <TextField
-                    sx={{
-                        width: '30ch',
-                        "& .MuiOutlinedInput-root": {
-                            borderRadius: "8px", // Set your desired border radius
-                            height: "45px", // Set desired height for the entire input
-                        },
-                    }}
-                    label="Search by username and email"
-                    variant="outlined"
-                    value={search}
-                    onChange={(e) => setSearch(e.target.value)}
-                />
+                <div className="userManagement-filters but-on-the-left">
+                    <TextField
+                        sx={{
+                            width: '30ch',
+                            "& .MuiOutlinedInput-root": {
+                                borderRadius: "8px", // Set your desired border radius
+                                height: "45px", // Set desired height for the entire input
+                            },
+                        }}
+                        label="Search by username and email"
+                        variant="outlined"
+                        value={search}
+                        onChange={(e) => setSearch(e.target.value)}
+                    />
+
+                    <div className='userManagement-exportCSV-btn' onClick={handleExportCSV} >
+                        <img src={ExportCSV} alt="ExportCSV Icon" className="exportCSV-icon" />
+                        Export UserInfo to CSV
+                    </div>
+                </div>
 
                 <TextField
                     type="date"

@@ -83,7 +83,7 @@
 .userManagement-filters {
     display: flex;
     gap: 15px;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
     justify-content: space-between;
     align-items: center;
 }
@@ -95,6 +95,33 @@
 .userManagement-filters input {
     flex: 1;
 }
+
+.userManagement-exportCSV-btn{
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    justify-content: center;
+    padding: 0.4rem 0.6rem;
+    border-radius: 0.9rem;
+    font-size: 14px;
+    font-weight: 700;
+    background: var(--light-2);
+    border: 1px solid var(--light-3);
+    color: var(--dark-2);
+    cursor: pointer;
+    -webkit-user-drag: none; /* Disable drag functionality */
+    user-select: none; /* Disable text selection */
+  }
+  
+  .exportCSV-icon{
+    width: 1.3rem;
+    filter: invert(31%) sepia(6%) saturate(21%) hue-rotate(19deg) brightness(98%) contrast(90%);
+  }
+  
+  .userManagement-exportCSV-btn:hover {
+    background: var(--light-3);
+    border: 1px solid var(--dark-2);
+  }
 
 /* ---- User Table ---- */
 .MuiTableContainer-root {
